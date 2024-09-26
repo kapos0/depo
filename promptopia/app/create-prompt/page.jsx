@@ -13,14 +13,16 @@ export default function CreatePrompt() {
   });
   async function createPrompt(e) {
     e.preventDefault();
+    const tags = post.tag ? post.tag.split(", ") : [];
     setSubmitting(true);
+    console.log(tags);
     try {
       const response = await fetch("/api/prompt/new", {
         method: "POST",
         body: JSON.stringify({
           prompt: post.prompt,
           userId: session?.user.id,
-          tag: post.tag,
+          tag: tags,
         }),
       });
       if (response.ok) router.push("/");
