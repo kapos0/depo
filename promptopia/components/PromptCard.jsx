@@ -28,7 +28,7 @@ export default function PromptCard({
     navigator.clipboard.writeText(post.prompt);
     setTimeout(() => setCopied(false), 3000);
   }
-  console.log(post);
+  
   return (
     <div className="prompt_card">
       <div className="flex justify-between items-start gap-5">

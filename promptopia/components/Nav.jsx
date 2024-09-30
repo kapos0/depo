@@ -22,9 +22,9 @@ export default function Nav() {
           width={30}
           height={30}
           className="object-contain"
-          alt="Promptopia Logo"
+          alt="Tiny Thoughts"
         />
-        <p className="logo_text">Promptopia</p>
+        <p className="logo_text">Tiny Thoughts</p>
       </Link>
       <div className="sm:flex hidden">
         {session?.user ? (
@@ -86,7 +86,7 @@ export default function Nav() {
                   className="dropdown_link"
                   onClick={() => setToggleDropdown(false)}
                 >
-                  Create Prompt
+                  Create Post
                 </Link>
                 <button
                   type="button"
