@@ -2,6 +2,7 @@ import Post from "@/models/post";
 import { connectToDB } from "@/utils/database";
 
 export const GET = async (request, { params }) => {
+  console.log("bu bir"+params.id)
   try {
     await connectToDB();
 
