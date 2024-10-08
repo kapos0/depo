@@ -9,6 +9,7 @@ let posts = [
   { id: 5, title: "Post Five", content: "This is post Five" },
   { id: 6, title: "Post Six", content: "This is post Six" },
   { id: 7, title: "Post Seven", content: "This is post Seven" },
+  { id: 8, title: "Post Eight", content: "This is post Eight" },
 ];
 
 router.get("/", (req, res) => {
