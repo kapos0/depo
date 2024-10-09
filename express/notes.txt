@@ -1,2 +1,1 @@
-dev komutuna --watch eklersen nodemona gerek kalmaz
 .env dosyası için "--env-file=.env bunu --watchdan sonra yazarsan calisir"

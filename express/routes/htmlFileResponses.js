@@ -15,3 +15,4 @@ router.get("/about", (req, res) => {
 });
 
 export default router;
+//this file is not used is just kept for reference

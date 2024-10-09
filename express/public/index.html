@@ -3,13 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home Page</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
     />
+    <title>Posts</title>
   </head>
   <body>
-    <h1>Welcome to homepage</h1>
+    <div class="container">
+      <h1>Posts</h1>
+      <form id="add-post-form">
+        <label for="title">Title: </label>
+        <br />
+        <input type="text" id="title" name="title" />
+        <label for="content">Content: </label>
+        <br />
+        <input type="text" id="content" name="content" />
+        <button type="submit">Add Post</button>
+      </form>
+      <button id="get-posts-btn">Get Posts</button>
+      <ul id="output"></ul>
+    </div>
+    <script src="./js/main.js"></script>
   </body>
 </html>
