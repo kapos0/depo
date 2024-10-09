@@ -7,7 +7,7 @@ import {
   createPost,
   updatePost,
   deletePost,
-} from "../controllers/postController";
+} from "../controllers/postController.js";
 
 router.get("/", getPosts);
 router.get("/:id", getSinglePost);
