@@ -1,0 +1,23 @@
+{
+  "name": "photogallery",
+  "version": "1.0.0",
+  "description": "A photo gallery app with mern stack",
+  "type": "module",
+  "main": "./backend/server.js.js",
+  "scripts": {
+    "dev": "node --watch ./backend/server.js"
+  },
+  "keywords": [
+    "mernstack",
+    "mongodb",
+    "express",
+    "react"
+  ],
+  "author": "Mehmet Enes Turhan",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "mongoose": "^8.7.1"
+  }
+}
