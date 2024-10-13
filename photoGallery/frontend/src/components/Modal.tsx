@@ -1,6 +1,20 @@
-export default function Modal() {
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/store";
+import { updatePhoto, PhotoItem } from "../redux/photoGallerySlice";
+export default function Modal({ _id, title, image, price }: PhotoItem) {
+  const dispatch: AppDispatch = useDispatch();
+  const [newTitle, setNewTitle] = useState(title);
+  const [newImageUrl, setNewImageUrl] = useState(image);
+  const [newPrice, setNewPrice] = useState(price);
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    dispatch(
+      updatePhoto({ _id, title: newTitle, image: newImageUrl, price: newPrice })
+    );
+    setNewTitle("");
+    setNewImageUrl("");
+    setNewPrice(0);
   }
   return (
     <div className="modal fade" id="editModal">
@@ -17,24 +31,42 @@ export default function Modal() {
           <div className="modal-body p-4">
             <form onSubmit={handleSubmit}>
               <div className="form-outline mb-4">
-                <input type="text" id="title" className="form-control" />
                 <label className="form-label" htmlFor="title">
-                  Photo Title
+                  Photo Title:
                 </label>
+                <input
+                  type="text"
+                  id="title"
+                  className="form-control"
+                  value={newTitle}
+                  onChange={(e) => setNewTitle(e.target.value)}
+                />
               </div>
 
               <div className="form-outline mb-4">
-                <input type="number" id="price" className="form-control" />
                 <label className="form-label" htmlFor="price">
-                  Photo Price
+                  Photo Price:
                 </label>
+                <input
+                  type="number"
+                  id="price"
+                  className="form-control"
+                  value={newPrice}
+                  onChange={(e) => setNewPrice(Number(e.target.value))}
+                />
               </div>
 
               <div className="form-outline mb-4">
-                <input type="text" id="imageurl" className="form-control" />
                 <label className="form-label" htmlFor="imageurl">
-                  Image Url
+                  Image Url:
                 </label>
+                <input
+                  type="text"
+                  id="imageurl"
+                  className="form-control"
+                  value={newImageUrl}
+                  onChange={(e) => setNewImageUrl(e.target.value)}
+                />
               </div>
 
               <button type="submit" className="btn btn-primary">
