@@ -6,7 +6,6 @@ import { getImageUrl } from "../../utils";
 export const About = () => {
   return (
     <section className={styles.container} id="about">
-      <h2 className={styles.title}>Hakkımda</h2>
       <div className={styles.content}>
         <img
           src={getImageUrl("about/aboutImage.png")}
@@ -15,22 +14,22 @@ export const About = () => {
         />
         <ul className={styles.aboutItems}>
           <li className={styles.aboutItem}>
-            <img src={getImageUrl("about/cursorIcon.png")} alt="Cursor icon" />
+            <img src={getImageUrl("about/serverIcon.png")} alt="Server icon" />
             <div className={styles.aboutItemText}>
-              <h3>Full-Stack Developer</h3>
+              <h3>Front-End Developer</h3>
               <p>
-                I'm a frontend developer without experience but learning with
-                passion
+                Hızlı ve optimize edilmiş Front-End sistemleri geliştirme
+                konusunda deneyimim var React ile çalışmaktayım
               </p>
             </div>
           </li>
           <li className={styles.aboutItem}>
-            <img src={getImageUrl("about/serverIcon.png")} alt="Server icon" />
+            <img src={getImageUrl("about/uiIcon.png")} alt="Cursor icon" />
             <div className={styles.aboutItemText}>
-              <h3>Backend Developer</h3>
+              <h3>Full-Stack Developer</h3>
               <p>
-                I have experience developing fast and optimised back-end systems
-                and APIs
+                Deneyimi olmayan ama tutkuyla öğrenen bir Full-Stack
+                geliştiricisiyim Next.JS ile çalışmaktayım
               </p>
             </div>
           </li>

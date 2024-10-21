@@ -1,25 +1,9 @@
 [
   {
-    "title": "Project A",
+    "title": "Tiny Thoughts Blog Project",
     "imageSrc": "projects/project.png",
-    "description": "This is a project made to learn the latest languages by building an app.",
-    "skills": ["React", "Express", "Node"],
-    "demo": "https://www.example.com",
-    "source": "https://www.github.com"
-  },
-  {
-    "title": "Project B",
-    "imageSrc": "projects/project.png",
-    "description": "This is a project made to learn the latest languages by building an app.",
-    "skills": ["React", "Express", "Node", "Sass"],
-    "demo": "https://www.example.com",
-    "source": "https://www.github.com"
-  },
-  {
-    "title": "Project C",
-    "imageSrc": "projects/project.png",
-    "description": "This is a project made to learn the latest languages by building an app.",
-    "skills": ["React", "Express", "Node"],
+    "description": "Next.js ile oluşturulmuş bir blog projesidir. Blog yazıları ve yorumlar için MongoDB kullanılmıştır.",
+    "skills": ["Next.js", "React", "MongoDB", "Tailwind CSS"],
     "demo": "https://www.example.com",
     "source": "https://www.github.com"
   }

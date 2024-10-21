@@ -9,12 +9,13 @@ export const Hero = () => {
       <div className={styles.content}>
         <h1 className={styles.title}>Mehmet Enes Turhan</h1>
         <p className={styles.description}>
-          Full-Stack geliştiricisi olmak için sürekli olarak azimli bir şekilde
-          çalışmaktayım, Ekip çalışmalarında iyiyimdir (Buradaki yazı daha iyi
-          yazılacak, hero image appe' la ki memojiden yapılcak)
+          Full-Stack geliştiricisi olma yolunda azimle çalışıyorum. Ekip
+          çalışmalarında kendimi başarılı buluyorum ve birlikte çalışmanın
+          getirdiği sinerjiyi önemsiyorum. Ayrıca, bilgisayar teknikeri olarak
+          tecrübem bulunmakta; bilgisayar donanımlarına hakimim.
         </p>
         <a
-          href="/assets/CVMehmetEnesTurhan.pdf"
+          href="/assets/MehmetEnesTurhanCV.pdf"
           className={styles.contactBtn}
           style={{ marginBlock: 12 }}
           download="MehmetEnesTurhanCV.pdf"
