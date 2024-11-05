@@ -1,10 +1,63 @@
 [
   {
     "title": "Tiny Thoughts Blog Project",
-    "imageSrc": "projects/project.png",
+    "imageSrc": "projects/tinythoughts/anasayfa.jpeg",
     "description": "Next.js ile oluşturulmuş bir blog projesidir. Blog yazıları ve yorumlar için MongoDB kullanılmıştır.",
-    "skills": ["Next.js", "React", "MongoDB", "Tailwind CSS"],
-    "demo": "https://www.example.com",
-    "source": "https://www.github.com"
+    "skills": ["Next.js", "React", "MongoDB", "Tailwind"],
+    "demo": {
+      "source":  "/assets/projects/tinythoughts/tinythoughts.pdf",
+      "download": "tinythoughtsSunum.pdf"
+    },
+    "source": "https://github.com/kapos0/projeler"
+  },{
+    "title": "Lezizo yemek tarifleri uygulaması",
+    "imageSrc": "projects/lezizo/anasayfa.png",
+    "description": "Lezizo, yemek tariflerini isimleri ve içeriklerinde bulunan malzemelere göre arayabileceğiniz, ayrıca kişisel menüler oluşturmanıza olanak tanıyan bir uygulamadır.",
+    "skills": ["FastApi", "React","Python", "MySql"],
+    "demo": {
+      "source":  "/assets/projects/lezizo/lezizoSunumu.pdf",
+      "download": "lezizoSunum.pdf"
+    },
+    "source": "https://github.com/kapos0/projeler"
+  },{
+    "title": "Moria windows form mesajlaşma uygulaması",
+    "imageSrc": "projects/moria/moriaAnasayfa.png",
+    "description": "Moria, C# ve SQL kullanılarak Windows masaüstü ortamı için geliştirilmiş bir mesajlaşma uygulamasıdır.",
+    "skills": ["C#", "SQL"],
+    "demo": {
+      "source":  "/assets/projects/moria/moria.pdf",
+      "download": "moriaSunum.pdf"
+    },
+    "source": "https://github.com/kapos0/projeler"
+  },{
+    "title": "Meram Belediyesi Video Portalı",
+    "imageSrc": "projects/videoportal/meramAnasayfa.jpeg",
+    "description": "Üretken akademi ve Mega yazılım akademisi tarafından verilen react eğitimi için final projesi, Meram Belediyesi Video Portalı projesi, Meram Belediyesi'nin youtube' da ki video içeriklerini kullanıcılarına sunan bir web uygulamasıdır.",
+    "skills": ["React", "Bootstrap", "RapidAPİ"],
+    "demo": {
+      "source":  "/assets/projects/videoportal/uretkenakademifinal.pdf",
+      "download": "videoportaliSunum.pdf"
+    },
+    "source": "https://github.com/kapos0/projeler"
+  },{
+    "title": "Redux Toolkit ile Blog Uygulaması",
+    "imageSrc": "projects/reduxblog.png",
+    "description": "Redux Toolkit ile dummyjson apisinden gelen blog postlarının manipüle edilmesi için Kodluyoruz eğitiminde yapılan proje.",
+    "skills": ["React", "Redux Toolkit", "Bootstrap"],
+    "demo": {
+      "source":  "https://stunning-bonbon-ffaafd.netlify.app/",
+      "download": ""
+    },
+    "source": "https://github.com/kapos0/projeler"
+  },{
+    "title": "Redux Toolkit ile Note Uygulaması",
+    "imageSrc": "projects/notesap.png",
+    "description": "Kodluyoruz eğitimi redux toolkit ile yapılan not uygulaması.",
+    "skills": ["React", "Redux Toolkit", "Bootstrap"],
+    "demo": {
+      "source":  "https://celadon-tiramisu-d88399.netlify.app/",
+      "download": ""
+    },
+    "source": "https://github.com/kapos0/projeler"
   }
 ]

@@ -15,7 +15,7 @@ export const Hero = () => {
           tecrübem bulunmakta; bilgisayar donanımlarına hakimim.
         </p>
         <a
-          href="/assets/MehmetEnesTurhanCV.pdf"
+          href="../../data/MehmetEnesTurhanCV.pdf"
           className={styles.contactBtn}
           style={{ marginBlock: 12 }}
           download="MehmetEnesTurhanCV.pdf"
