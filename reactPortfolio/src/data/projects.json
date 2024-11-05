@@ -5,7 +5,7 @@
     "description": "Next.js ile oluşturulmuş bir blog projesidir. Blog yazıları ve yorumlar için MongoDB kullanılmıştır.",
     "skills": ["Next.js", "React", "MongoDB", "Tailwind"],
     "demo": {
-      "source":  "https://turhanportfolyo.netlify.app/assets/projects/tinythoughts/tinythoughts.pdf",
+      "source":  "/assets/projects/tinythoughts/tinythoughts.pdf",
       "download": "tinythoughtsSunum.pdf"
     },
     "source": "https://github.com/kapos0/projeler"
@@ -15,7 +15,7 @@
     "description": "Lezizo, yemek tariflerini isimleri ve içeriklerinde bulunan malzemelere göre arayabileceğiniz, ayrıca kişisel menüler oluşturmanıza olanak tanıyan bir uygulamadır.",
     "skills": ["FastApi", "React","Python", "MySql"],
     "demo": {
-      "source":  "https://turhanportfolyo.netlify.app/assets/projects/lezizo/lezizoSunumu.pdf",
+      "source":  "/assets/projects/lezizo/lezizoSunumu.pdf",
       "download": "lezizoSunum.pdf"
     },
     "source": "https://github.com/kapos0/projeler"
@@ -25,7 +25,7 @@
     "description": "Moria, C# ve SQL kullanılarak Windows masaüstü ortamı için geliştirilmiş bir mesajlaşma uygulamasıdır.",
     "skills": ["C#", "SQL"],
     "demo": {
-      "source":  "https://turhanportfolyo.netlify.app/assets/projects/moria/moria.pdf",
+      "source":  "/assets/projects/moria/Moria.pdf",
       "download": "moriaSunum.pdf"
     },
     "source": "https://github.com/kapos0/projeler"
@@ -35,7 +35,7 @@
     "description": "Üretken akademi ve Mega yazılım akademisi tarafından verilen react eğitimi için final projesi, Meram Belediyesi Video Portalı projesi, Meram Belediyesi'nin youtube' da ki video içeriklerini kullanıcılarına sunan bir web uygulamasıdır.",
     "skills": ["React", "Bootstrap", "RapidAPİ"],
     "demo": {
-      "source":  "https://turhanportfolyo.netlify.app/assets/projects/videoportal/uretkenakademifinal.pdf",
+      "source":  "/assets/projects/videoportal/uretkenakademifinal.pdf",
       "download": "videoportaliSunum.pdf"
     },
     "source": "https://github.com/kapos0/projeler"
