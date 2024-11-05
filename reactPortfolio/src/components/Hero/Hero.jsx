@@ -22,7 +22,7 @@ export const Hero = () => {
         >
           CV' yi indir
         </a>
-        <a href="mailto:myemail@email.com" className={styles.contactBtn}>
+        <a href="mailto:eden.turhann@gmail.com" className={styles.contactBtn}>
           Mail iletişim
         </a>
       </div>

@@ -14,7 +14,7 @@ export const About = () => {
         />
         <ul className={styles.aboutItems}>
           <li className={styles.aboutItem}>
-            <img src={getImageUrl("about/serverIcon.png")} alt="Server icon" />
+            <img src={getImageUrl("about/cursorIcon.png")} alt="Server icon" />
             <div className={styles.aboutItemText}>
               <h3>Front-End Developer</h3>
               <p>
@@ -25,8 +25,8 @@ export const About = () => {
           </li>
           <li className={styles.aboutItem}>
             <img
-              src={getImageUrl("about/tekniker.png")}
-              alt="tekniker icon"
+              src={getImageUrl("about/serverIcon.png")}
+              alt="server icon"
               style={{ width: "70px", marginRight: "10px" }}
             />
             <div className={styles.aboutItemText}>
