@@ -24,6 +24,17 @@ export const About = () => {
             </div>
           </li>
           <li className={styles.aboutItem}>
+            <img src={getImageUrl("about/techician.png")} alt="tekniker icon" />
+            <div className={styles.aboutItemText}>
+              <h3>Bilgisayar teknikeri</h3>
+              <p>
+                Özellikle karatay belediyesinde çalıştığım süre zarfında birçok
+                bilgisayar teknikerliği işlerini yaptım ve bu işlerde tecrübe
+                kazandım
+              </p>
+            </div>
+          </li>
+          <li className={styles.aboutItem}>
             <img src={getImageUrl("about/uiIcon.png")} alt="Cursor icon" />
             <div className={styles.aboutItemText}>
               <h3>Full-Stack Developer</h3>
