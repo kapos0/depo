@@ -24,7 +24,11 @@ export const About = () => {
             </div>
           </li>
           <li className={styles.aboutItem}>
-            <img src={getImageUrl("about/techician.png")} alt="tekniker icon" />
+            <img
+              src={getImageUrl("about/tekniker.png")}
+              alt="tekniker icon"
+              style={{ width: "70px", marginRight: "10px" }}
+            />
             <div className={styles.aboutItemText}>
               <h3>Bilgisayar teknikeri</h3>
               <p>
