@@ -1,0 +1,12 @@
+.env sample for express api
+```
+PORT=
+MONGODB_URI=
+JWT_SECRET=
+NODE_ENV=
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+```
+
+.env sample for react front end
