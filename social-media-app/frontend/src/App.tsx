@@ -1,7 +1,8 @@
 export default function App() {
   return (
-    <div>
-      <h1>Hello</h1>
-    </div>
+    <>
+      <h1 className="text-5xl text-blue-500">Hello</h1>
+      <button className="btn">Button</button>
+    </>
   );
 }
