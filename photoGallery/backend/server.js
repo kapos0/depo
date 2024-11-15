@@ -16,4 +16,3 @@ app.listen(PORT, () => {
   console.log("Server is running on http://localhost:" + PORT);
   connectDB();
 });
-/*https://youtu.be/O3BUHwfHf84?si=zTTkfske1HxHE2QI*/
