@@ -10,5 +10,11 @@
     "organisation": "Üretken Akademi",
     "experiences": ["Mega yazılım akademisi ile beraber sunulan eğitimi tamamladım."],
     "imageSrc": "history/uretkenAkademiLogo.jpg"
+  },
+  {
+    "role": "Bilgisayar Proğramcılığı",
+    "organisation": "KTO Karatay Üniversitesi",
+    "experiences": ["Programlamanın temelleri, ardunio ile gömülü sistemler ve temel yapay zeka eğitimleri yanında C#, HTML, CSS ve JavaScript dilleri ile web programlama eğitimleri aldım."],
+    "imageSrc": "history/ktologo.png"
   }
 ]
