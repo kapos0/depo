@@ -11,6 +11,9 @@ yarn-error.log*
 # Environment variables
 .env
 
+# Mongodb data folder for docker
+data/
+
 # Production build
 /build
 /dist

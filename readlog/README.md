@@ -2,16 +2,16 @@
 
 ---
 
-### For the backend sample .env file
+## For the backend sample .env file
 
-```
+```env
 PORT=
 mongoDBURI_CLOUD=
 mongoDBURI_LOCAL=
 ```
 
-### For the frontend sample .env file
+## For the frontend sample .env file
 
-```
-VITE_BASE_URL=
+```env
+VITE_BASE_URL= http://localhost:8000/api/books
 ```
