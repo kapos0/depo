@@ -1,14 +1,12 @@
 "use client"
-import Header from "@/components/Header"
 import Posts from "@/components/Posts"
-import Footer from "@/components/Footer"
+import HomePageHeader from "@/components/HomePageHeader"
 
 export default function Index() {
     return (
         <>
-            <Header />
+            <HomePageHeader />
             <Posts />
-            <Footer />
         </>
     )
 }

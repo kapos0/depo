@@ -1,6 +1,6 @@
 import { StaticImageData } from "next/image"
 
-export type BlogItemType = {
+export type PostItemType = {
     id: number
     title: string
     description: string
@@ -11,11 +11,4 @@ export type BlogItemType = {
     author_img: StaticImageData
 }
 
-export const categories: string[] = [
-    "All",
-    "Tech",
-    "Design",
-    "Business",
-    "Entertainment",
-    "Lifestyle",
-]
+export const categories: string[] = ["All", "Tech", "Business", "Lifestyle"]

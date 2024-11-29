@@ -7,7 +7,10 @@ export default function Posts() {
     const [menu, setMenu] = useState<string>("All")
     return (
         <>
-            <div className="flex justify-center gap-6 my-10">
+            <div
+                className="flex justify-center gap-6 my-10 overflow-x-auto sm:overflow-x-scroll 
+                whitespace-nowrap"
+            >
                 {categories.map((category, index) => (
                     <button
                         key={index}

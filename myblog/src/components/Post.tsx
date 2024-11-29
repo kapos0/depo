@@ -1,13 +1,15 @@
 import Image from "next/image"
-import { BlogItemType } from "@/utils/definations"
+import { PostItemType } from "@/utils/definations"
 import { assets } from "../assets/assets"
+import Link from "next/link"
 
 export default function Post({
+    id,
     title,
     description,
     image,
     category,
-}: BlogItemType) {
+}: PostItemType) {
     return (
         <div className="max-w-[330px] sm:max-w-[300px] bg-white border border-black hover:shadow-[-7px_7px_0px_#000000]">
             <Image
@@ -27,18 +29,19 @@ export default function Post({
                 <p className="mb-3 text-sm tracking-tight text-gray-700">
                     {description}
                 </p>
-                <button
+                <Link
+                    href={`/posts/${id}`}
                     type="button"
                     className="inline-flex items-center py-2 font-semibold text-center"
                 >
-                    Read More{" "}
+                    Read More
                     <Image
                         src={assets.arrow}
                         alt="Read More arrow image"
                         width={12}
                         className="ml-2"
                     />
-                </button>
+                </Link>
             </div>
         </div>
     )
