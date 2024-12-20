@@ -1,4 +1,5 @@
 import "@/assets/globals.css"
+import Navbar from "@/components/Navbar"
 export default function RootLayout({
     children,
 }: Readonly<{
@@ -14,7 +15,10 @@ export default function RootLayout({
                 />
                 <title>Hype Jungle</title>
             </head>
-            <body>{children}</body>
+            <body>
+                <Navbar />
+                <main>{children}</main>
+            </body>
         </html>
     )
 }

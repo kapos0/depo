@@ -11,7 +11,9 @@ pnpm i
 ## .env file example
 
 ```env
-
+AUTH_SECRET=
+AUTH_GITHUB_CLIENT_ID=
+AUTH_GITHUB_CLIENT_SECRET=
 ```
 
 Then, run the development server:
