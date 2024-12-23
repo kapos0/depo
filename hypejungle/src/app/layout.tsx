@@ -1,6 +1,7 @@
 import localFont from "next/font/local"
 import "@/assets/globals.css"
 import Navbar from "@/components/Navbar"
+import "easymde/dist/easymde.min.css"
 
 const workSans = localFont({
     src: [
