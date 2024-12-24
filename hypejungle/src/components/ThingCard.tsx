@@ -3,6 +3,9 @@ import { EyeIcon } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "./ui/button"
+import { Author, Creator } from "@/sanity/types"
+
+export type ThingTypeCard = Omit<Creator, "author"> & { author?: Author }
 
 export default function ThingCard({ post }: { post: any }) {
     const {
@@ -26,7 +29,7 @@ export default function ThingCard({ post }: { post: any }) {
             </div>
             <div className="flex-between mt-5 gap-5">
                 <div className="flex-1">
-                    <Link href={`/users/${post.author?._id}`}>
+                    <Link href={`/users/${author?._id}`}>
                         <p className="text-16-medium line-clamp-1">
                             {author?.name}
                         </p>
@@ -37,7 +40,7 @@ export default function ThingCard({ post }: { post: any }) {
                         </h3>
                     </Link>
                 </div>
-                <Link href={`/users/${post.author?._id}`}>
+                <Link href={`/users/${author?._id}`}>
                     <Image
                         src="https://placehold.co/48x48"
                         alt="user profile"
