@@ -9,7 +9,9 @@ export default async function Home({
     searchParams: Promise<{ query: string }>
 }) {
     const { query } = await searchParams
-    const { data: posts } = await sanityFetch({ query: THINGS_QUERY })
+    const params = { search: query || null }
+
+    const { data: posts } = await sanityFetch({ query: THINGS_QUERY, params })
 
     return (
         <>
