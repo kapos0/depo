@@ -1,7 +1,7 @@
 import SearchForm from "@/components/SearchForm"
 import ThingCard, { ThingTypeCard } from "@/components/ThingCard"
 import { client } from "@/sanity/lib/client"
-import { CREATORS_QUERY } from "@/sanity/lib/queries"
+import { THINGS_QUERY } from "@/sanity/lib/queries"
 
 export default async function Home({
     searchParams,
@@ -9,9 +9,9 @@ export default async function Home({
     searchParams: Promise<{ query: string }>
 }) {
     const { query } = await searchParams
-    //const posts: ThingTypeCard[] = await client.fetch(CREATORS_QUERY)
-    const posts = await client.fetch(CREATORS_QUERY)
-
+    //const posts: ThingTypeCard[] = await client.fetch(THINGS_QUERY)
+    const posts = await client.fetch(THINGS_QUERY)
+    console.log(posts)
     return (
         <>
             <section className="pink_container">

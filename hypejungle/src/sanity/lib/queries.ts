@@ -1,7 +1,7 @@
 import { defineQuery } from "next-sanity"
 
-export const CREATORS_QUERY = defineQuery(`
-        *[_type=="creator" && defined(slug.current)] | order(_createdAt desc) {
+export const THINGS_QUERY = defineQuery(`
+        *[_type=="thing" && defined(slug.current)] | order(_createdAt desc) {
         _id,
         title,
         slug,

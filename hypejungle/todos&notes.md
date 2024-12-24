@@ -3,10 +3,10 @@
 ## Todos
 
 - Kodu bi gözden geçir
-- Uygulamadaki kod mantığını gözden geçir hani creatorlar thing oluşturuyorlar
+- Uygulamadaki kod mantığını gözden geçir hani authorlar thing oluşturuyorlar thingler falan mantıksal bir hata varmı acaba
 
 ## Notes
 
-- Creator' lar var bunlar yazarlar ve bu yazarlar thing oluşturuyorlar
-  things adlı veri tabanında creatorların oluşturduğu thingler var
+- Author' lar var bunlar yazarlar ve bu yazarlar thing oluşturuyorlar
+  things adlı veri tabanında authorların oluşturduğu thingler var
 - Belki' de şuan'lık her bir yazar sadece bir adet thing oluşturabiliyordur

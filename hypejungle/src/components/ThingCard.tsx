@@ -3,9 +3,9 @@ import { EyeIcon } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "./ui/button"
-import { Author, Creator } from "@/sanity/types"
+import { Author, Thing } from "@/sanity/types"
 
-export type ThingTypeCard = Omit<Creator, "author"> & { author?: Author }
+export type ThingTypeCard = Omit<Thing, "author"> & { author?: Author }
 
 export default function ThingCard({ post }: { post: any }) {
     const {
