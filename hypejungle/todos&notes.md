@@ -4,11 +4,9 @@
 
 - Kodu bi gözden geçir
 - Uygulamadaki kod mantığını gözden geçir hani authorlar thing oluşturuyorlar thingler falan mantıksal bir hata varmı acaba
-- şu sanity markdown uyumsuzluk olayına bakmalısın
 
 ## Notes
 
 - Author' lar var bunlar yazarlar ve bu yazarlar thing oluşturuyorlar
   things adlı veri tabanında authorların oluşturduğu thingler var
 - Belki' de şuan'lık her bir yazar sadece bir adet thing oluşturabiliyordur
-- ppr ve after bende zaten açık çünkü artık stable versiyona geçtiler

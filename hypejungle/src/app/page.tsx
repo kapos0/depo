@@ -2,6 +2,7 @@ import SearchForm from "@/components/SearchForm"
 import ThingCard, { ThingTypeCard } from "@/components/ThingCard"
 import { sanityFetch, SanityLive } from "@/sanity/lib/live"
 import { THINGS_QUERY } from "@/sanity/lib/queries"
+import { auth } from "../../auth"
 
 export default async function Home({
     searchParams,
@@ -10,6 +11,8 @@ export default async function Home({
 }) {
     const { query } = await searchParams
     const params = { search: query || null }
+
+    const session = await auth()
 
     const { data: posts } = await sanityFetch({ query: THINGS_QUERY, params })
 
