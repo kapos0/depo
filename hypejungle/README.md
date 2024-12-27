@@ -34,3 +34,5 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+Note: update github oauth url and sentry cors origin settings according to the website url
