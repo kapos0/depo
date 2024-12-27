@@ -1,6 +1,6 @@
 import { formatDate } from "@/lib/utils"
 import { client } from "@/sanity/lib/client"
-import { THING_BY_ID_QUERY } from "@/sanity/lib/queries"
+import { PLAYLIST_BY_SLUG_QUERY, THING_BY_ID_QUERY } from "@/sanity/lib/queries"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -8,6 +8,7 @@ import markdownit from "markdown-it"
 import { Suspense } from "react"
 import { Skeleton } from "@/components/ui/skeleton"
 import View from "@/components/View"
+import ThingCard, { ThingTypeCard } from "@/components/ThingCard"
 
 export default async function ThingPage({
     params,
@@ -17,8 +18,13 @@ export default async function ThingPage({
     const md = markdownit()
 
     const id = (await params).id
-    const post = await client.fetch(THING_BY_ID_QUERY, { id })
-
+    const [post, { select: editorPosts }] = await Promise.all([
+        client.fetch(THING_BY_ID_QUERY, { id }),
+        client.fetch(PLAYLIST_BY_SLUG_QUERY, {
+            slug: "lorem_test",
+        }),
+    ])
+    //Promise.all sayesinde bu iki istekte aynı anda yola çıkar yani sıra ile yapılıp sayfanın yüklenmesini yaşatmaz
     if (!post) return notFound()
     const parsedContent = md.render(post?.pitch || "")
     return (
@@ -71,6 +77,22 @@ export default async function ThingPage({
                     )}
                 </div>
                 <hr className="divider" />
+                {editorPosts?.length > 0 && (
+                    <div className="max-w-4xl mx-auto">
+                        <p className="text-30-semibold">Editor Picks</p>
+
+                        <ul className="mt-7 card_grid-sm">
+                            {editorPosts.map(
+                                (post: ThingTypeCard, i: number) => (
+                                    <ThingCard
+                                        key={i}
+                                        post={post}
+                                    />
+                                )
+                            )}
+                        </ul>
+                    </div>
+                )}
                 <Suspense fallback={<Skeleton className="view_skeleton" />}>
                     <View id={id} />
                 </Suspense>

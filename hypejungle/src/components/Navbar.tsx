@@ -1,6 +1,9 @@
 import Image from "next/image"
 import Link from "next/link"
 import { auth, signIn, signOut } from "@/../auth"
+import { BadgePlus, LogOut } from "lucide-react"
+import { Avatar, AvatarFallback } from "@radix-ui/react-avatar"
+import { AvatarImage } from "./ui/avatar"
 
 export default async function Navbar() {
     const session = await auth()
@@ -20,7 +23,8 @@ export default async function Navbar() {
                     {session && session?.user ? (
                         <>
                             <Link href="/create">
-                                <span>Create</span>
+                                <span className="max-sm:hidden">Create</span>
+                                <BadgePlus className="size-6 sm:hidden" />
                             </Link>
                             <form
                                 action={async () => {
@@ -28,10 +32,29 @@ export default async function Navbar() {
                                     await signOut({ redirectTo: "/" })
                                 }}
                             >
-                                <button type="submit">Log Out</button>
+                                <button type="submit">
+                                    <span className="max-sm:hidden">
+                                        Log Out
+                                    </span>
+                                    <LogOut className="size-6 sm:hidden text-red-500" />
+                                </button>
                             </form>
                             <Link href={`/user/${session?.id}`}>
-                                <span>{session?.user?.name}</span>
+                                <Avatar className="size-10">
+                                    <AvatarImage
+                                        src={
+                                            session?.user?.image ||
+                                            "https://placehold.co/48x48"
+                                        }
+                                        alt="user image"
+                                        style={{
+                                            height: 48,
+                                            width: 48,
+                                            borderRadius: "100%",
+                                        }}
+                                    />
+                                    <AvatarFallback>AV</AvatarFallback>
+                                </Avatar>
                             </Link>
                         </>
                     ) : (

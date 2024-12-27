@@ -4,7 +4,7 @@ import { notFound } from "next/navigation"
 import { AUTHOR_BY_ID_QUERY } from "@/sanity/lib/queries"
 import Image from "next/image"
 import { Suspense } from "react"
-import { ThingCardSkeleton } from "@/components/ThingCard"
+import { ThingCardSkeleton } from "@/components/subComponents/ThingCardSkeleton"
 import UserThings from "@/components/UserThings"
 
 export default async function UserPage({

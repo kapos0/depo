@@ -1,9 +1,9 @@
 import { client } from "@/sanity/lib/client"
-import { THING_BY_AUTHOR_QUERY } from "@/sanity/lib/queries"
+import { THINGS_BY_AUTHOR_QUERY } from "@/sanity/lib/queries"
 import ThingCard, { ThingTypeCard } from "./ThingCard"
 
 export default async function UserThings({ id }: { id: string }) {
-    const things = await client.fetch(THING_BY_AUTHOR_QUERY, { id })
+    const things = await client.fetch(THINGS_BY_AUTHOR_QUERY, { id })
 
     return (
         <>
