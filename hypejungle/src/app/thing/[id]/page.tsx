@@ -21,7 +21,7 @@ export default async function ThingPage({
     const [post, { select: editorPosts }] = await Promise.all([
         client.fetch(THING_BY_ID_QUERY, { id }),
         client.fetch(PLAYLIST_BY_SLUG_QUERY, {
-            slug: "lorem_test",
+            slug: "editor_picks",
         }),
     ])
     //Promise.all sayesinde bu iki istekte aynı anda yola çıkar yani sıra ile yapılıp sayfanın yüklenmesini yaşatmaz

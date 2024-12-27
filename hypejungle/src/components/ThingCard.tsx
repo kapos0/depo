@@ -7,7 +7,7 @@ import { Author, Thing } from "@/sanity/types"
 
 export type ThingTypeCard = Omit<Thing, "author"> & { author?: Author }
 
-export default function ThingCard({ post }: { post: any }) {
+export default function ThingCard({ post }: { post: ThingTypeCard }) {
     const {
         _createdAt,
         views,
@@ -42,7 +42,7 @@ export default function ThingCard({ post }: { post: any }) {
                 </div>
                 <Link href={`/user/${author?._id}`}>
                     <Image
-                        src={author?.image}
+                        src={author?.image || ""}
                         alt="user profile"
                         width={48}
                         height={48}
@@ -53,7 +53,7 @@ export default function ThingCard({ post }: { post: any }) {
             <Link href={`/thing/${_id}`}>
                 <p className="startup-card_desc">{description}</p>
                 <Image
-                    src={image}
+                    src={image || ""}
                     alt="thing image"
                     width={800}
                     height={400}
@@ -61,7 +61,7 @@ export default function ThingCard({ post }: { post: any }) {
                 />
             </Link>
             <div className="flex-between gap-3 mt-5">
-                <Link href={`/?query=${category.toLowerCase()}`}>
+                <Link href={`/?query=${category?.toLowerCase()}`}>
                     <p className="text-16-medium">{category}</p>
                 </Link>
                 <Button

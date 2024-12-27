@@ -18,7 +18,10 @@ export default function StartupForm() {
     const { toast } = useToast()
     const router = useRouter()
 
-    async function handleFormSubmit(prevState: any, formData: FormData) {
+    async function handleFormSubmit(
+        prevState: { error: string; status: string },
+        formData: FormData
+    ) {
         try {
             const formValues = {
                 title: formData.get("title") as string,
@@ -76,6 +79,7 @@ export default function StartupForm() {
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [state, formAction, isPending] = useActionState(handleFormSubmit, {
         error: "",
         status: "INITIAL",
