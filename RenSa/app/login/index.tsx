@@ -1,6 +1,6 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Colors from "@/constant/Colors";
 import { useRouter } from "expo-router";
+import Colors from "@/constant/Colors";
 
 export default function LoginScreen() {
     const router = useRouter();

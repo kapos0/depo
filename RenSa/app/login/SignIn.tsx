@@ -13,7 +13,6 @@ import {
     Alert,
     ToastAndroid,
 } from "react-native";
-import { storeData } from "@/lib/AsyncStorage";
 
 export default function SignIn() {
     const router = useRouter();
@@ -38,7 +37,6 @@ export default function SignIn() {
             signInWithEmailAndPassword(auth, email, password)
                 .then(async (userCredential) => {
                     const user = userCredential.user;
-                    await storeData("useDetail", user);
                     router.replace("/(tabs)");
                 })
                 .catch((error) => {

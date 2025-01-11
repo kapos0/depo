@@ -13,7 +13,6 @@ import {
     Alert,
 } from "react-native";
 import { useState } from "react";
-import { storeData } from "@/lib/AsyncStorage";
 
 export default function SignUp() {
     const router = useRouter();
@@ -52,7 +51,6 @@ export default function SignUp() {
                     await updateProfile(user, {
                         displayName: userName,
                     });
-                    await storeData("useDetail", user);
                     router.push("/(tabs)");
                 })
                 .catch((error) => {
