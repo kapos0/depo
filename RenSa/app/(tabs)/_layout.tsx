@@ -1,9 +1,20 @@
-import React from "react";
-import { Tabs } from "expo-router";
-
+import React, { useEffect, useState } from "react";
+import { Redirect, Tabs, useRouter } from "expo-router";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/lib/FirebaseConfig";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { getData } from "@/lib/AsyncStorage";
 
 export default function TabLayout() {
+    const router = useRouter();
+
+    async function getUserDetail() {
+        const userInfo = getData("userDetail");
+        if (!userInfo) return <Redirect href="/login" />;
+    }
+    useEffect(() => {
+        getUserDetail();
+    }, []);
     return (
         <Tabs
             screenOptions={{

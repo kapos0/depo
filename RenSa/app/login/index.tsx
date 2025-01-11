@@ -44,9 +44,9 @@ const styles = StyleSheet.create({
     textContainer: {
         padding: 25,
         backgroundColor: Colors.PRIMARY,
+        height: "100%",
     },
     text: {
-        height: "100%",
         fontSize: 30,
         color: Colors.WHITE,
         textAlign: "center",
