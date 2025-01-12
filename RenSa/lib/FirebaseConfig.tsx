@@ -6,7 +6,9 @@ import {
     getAuth,
     indexedDBLocalPersistence,
     getReactNativePersistence,
+    Auth,
 } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 import { Platform } from "react-native";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -24,14 +26,20 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-let auth;
-if (Platform.OS === "web") {
-    auth = getAuth(app);
-    auth.setPersistence(indexedDBLocalPersistence);
-} else {
-    auth = initializeAuth(app, {
-        persistence: getReactNativePersistence(AsyncStorage),
-    });
-}
+let auth =
+    Platform.OS === "web"
+        ? (() => {
+              const webAuth = getAuth(app);
+              webAuth
+                  .setPersistence(indexedDBLocalPersistence)
+                  .catch((error) =>
+                      console.error("Failed to set persistence:", error)
+                  );
+              return webAuth;
+          })()
+        : initializeAuth(app, {
+              persistence: getReactNativePersistence(AsyncStorage),
+          });
 
 export { auth };
+export const db = getFirestore(app);
