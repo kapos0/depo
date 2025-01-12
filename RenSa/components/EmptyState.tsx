@@ -1,9 +1,11 @@
 import Colors from "@/constant/Colors";
 import ConstantString from "@/constant/ConstantString";
+import { useRouter } from "expo-router";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function EmptyState() {
+    const router = useRouter();
     return (
         <View style={styles.container}>
             <Image
@@ -12,7 +14,10 @@ export default function EmptyState() {
             />
             <Text style={styles.text}>{ConstantString.NoHabits}</Text>
             <Text style={styles.subText}>{ConstantString.HabitsSubText}</Text>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => router.push("/add-new-habit")}
+            >
                 <Text style={styles.buttonText}>
                     {ConstantString.AddNewHabitBtn}
                 </Text>
