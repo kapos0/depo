@@ -18,8 +18,8 @@ export function FormatReminderTime(timestamp: number) {
 }
 
 export function getDateRange(startDate: any, endDate: any) {
-    const start = moment(startDate, "MM/DD/YYYY");
-    const end = moment(endDate, "MM/DD/YYYY");
+    const start = moment(new Date(startDate), "MM/DD/YYYY");
+    const end = moment(new Date(endDate), "MM/DD/YYYY");
     const dates = [];
     while (start.isSameOrBefore(end)) {
         dates.push(start.format("MM/DD/YYYY"));
