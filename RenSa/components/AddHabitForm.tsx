@@ -14,7 +14,6 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import Colors from "@/constant/Colors";
 import { TypeList, WhenToTake } from "@/constant/Options";
 import {
-    FormatDate,
     FormatDateForText,
     FormatReminderTime,
     getDateRange,
@@ -34,35 +33,29 @@ export default function AddHabitForm() {
         name?: string;
         type?: { name: string };
         when?: string;
-        dose?: any;
-        startDate?: any;
-        endDate?: any;
-        reminder?: any;
+        dose?: string;
+        startDate?: Date;
+        endDate?: Date;
+        reminder?: string;
+        frequency?: string;
     }
 
     const [formData, setFormData] = useState<FormData>({});
-    function handleInputChange(field: string, value: any) {
+    function handleInputChange(field: keyof FormData, value: any) {
         setFormData((prev) => ({ ...prev, [field]: value }));
     }
     useEffect(() => {
-        handleInputChange("startDate", FormatDate(new Date().getTime()));
+        handleInputChange("startDate", new Date());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    async function SaveHabit() {
+    async function SaveHabit(): Promise<void> {
         setLoading(true);
         const docId = Date.now().toString();
-        if (
-            !(
-                formData.name ||
-                formData.dose ||
-                formData.type ||
-                formData.startDate
-            )
-        ) {
-            setLoading(false);
-            Alert.alert("Please fill all the fields");
-            return;
-        }
-        const dates = getDateRange(formData?.startDate, formData?.endDate);
+
+        const dates = getDateRange(
+            formData.startDate ?? new Date(),
+            formData.endDate ?? new Date()
+        );
         try {
             await setDoc(doc(db, "habitTracker", docId), {
                 ...formData,
@@ -107,7 +100,7 @@ export default function AddHabitForm() {
                                 { marginRight: 10 },
                                 {
                                     backgroundColor:
-                                        item.name == formData?.type?.name
+                                        item.name === formData?.type?.name
                                             ? Colors.PRIMARY
                                             : Colors.WHITE,
                                 },
@@ -119,7 +112,7 @@ export default function AddHabitForm() {
                                     styles.typeText,
                                     {
                                         color:
-                                            item.name == formData?.type?.name
+                                            item.name === formData?.type?.name
                                                 ? Colors.WHITE
                                                 : "#000000",
                                     },
@@ -177,20 +170,21 @@ export default function AddHabitForm() {
                         color="black"
                     />
                     <Text style={styles.text}>
-                        {FormatDateForText(formData?.startDate) ?? "Start Date"}
+                        {formData.startDate
+                            ? FormatDateForText(formData.startDate)
+                            : "Start Date"}
                     </Text>
                 </TouchableOpacity>
                 {showStartDate && (
                     <RnDateTimePicker
                         minimumDate={new Date()}
-                        onChange={(event) => {
-                            handleInputChange(
-                                "startDate",
-                                FormatDate(event.nativeEvent.timestamp)
-                            );
-                            setShowStartDate((prev) => !prev);
+                        onChange={(event, selectedDate) => {
+                            const currentDate =
+                                selectedDate || formData.startDate;
+                            handleInputChange("startDate", currentDate);
+                            setShowStartDate(false);
                         }}
-                        value={new Date(formData?.startDate) ?? new Date()}
+                        value={formData.startDate ?? new Date()}
                     />
                 )}
                 <TouchableOpacity
@@ -204,20 +198,21 @@ export default function AddHabitForm() {
                         color="black"
                     />
                     <Text style={styles.text}>
-                        {FormatDateForText(formData?.endDate) ?? "End Date"}
+                        {formData.endDate
+                            ? FormatDateForText(formData.endDate)
+                            : "End Date"}
                     </Text>
                 </TouchableOpacity>
                 {showEndDate && (
                     <RnDateTimePicker
                         minimumDate={new Date()}
-                        onChange={(event) => {
-                            handleInputChange(
-                                "endDate",
-                                FormatDate(event.nativeEvent.timestamp)
-                            );
-                            setShowEndDate((prev) => !prev);
+                        onChange={(event, selectedDate) => {
+                            const currentDate =
+                                selectedDate || formData.endDate;
+                            handleInputChange("endDate", currentDate);
+                            setShowEndDate(false);
                         }}
-                        value={new Date(formData?.endDate) ?? new Date()}
+                        value={formData.endDate ?? new Date()}
                     />
                 )}
             </View>
@@ -238,15 +233,24 @@ export default function AddHabitForm() {
                 {showReminderPicker && (
                     <RnDateTimePicker
                         mode="time"
-                        minimumDate={new Date()}
-                        onChange={(event) => {
+                        onChange={(event, selectedTime) => {
+                            const currentTime =
+                                selectedTime || formData.reminder;
                             handleInputChange(
                                 "reminder",
-                                FormatReminderTime(event.nativeEvent.timestamp)
+                                FormatReminderTime(
+                                    (
+                                        (currentTime as Date) ?? new Date()
+                                    ).getTime()
+                                )
                             );
-                            setShownReminderPicker((prev) => !prev);
+                            setShownReminderPicker(false);
                         }}
-                        value={new Date(formData?.reminder) ?? new Date()}
+                        value={
+                            formData.reminder
+                                ? new Date(`1970-01-01T${formData.reminder}:00`)
+                                : new Date()
+                        }
                     />
                 )}
             </View>
@@ -258,7 +262,17 @@ export default function AddHabitForm() {
                         backgroundColor: loading ? Colors.GRAY : Colors.PRIMARY,
                     },
                 ]}
-                onPress={() => SaveHabit()}
+                onPress={() => {
+                    if (
+                        !formData.name ||
+                        !formData.type ||
+                        !formData.frequency
+                    ) {
+                        Alert.alert("Plese fill all the req fields");
+                        return;
+                    }
+                    SaveHabit();
+                }}
                 disabled={loading}
             >
                 <Text style={styles.buttonText}>

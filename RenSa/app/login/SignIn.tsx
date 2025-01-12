@@ -14,39 +14,40 @@ import {
     ToastAndroid,
 } from "react-native";
 
+interface SignInParams {
+    email: string;
+    password: string;
+}
+
 export default function SignIn() {
     const router = useRouter();
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
 
-    function OnSignIn({
-        email,
-        password,
-    }: {
-        email: string;
-        password: string;
-    }) {
+    function OnSignIn({ email, password }: SignInParams): void {
         if (!email || !password) {
             if (Platform.OS !== "android") {
                 Alert.alert("missing fields");
             } else {
                 ToastAndroid.show("missing fields", ToastAndroid.BOTTOM);
             }
-        } else {
-            signInWithEmailAndPassword(auth, email, password)
-                .then(async (userCredential) => {
-                    const user = userCredential.user;
-                    router.replace("/(tabs)");
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    if (errorCode == "auth/invalid-credential")
-                        Alert.alert("invalid credential");
-                });
+            return;
         }
+        signInWithEmailAndPassword(auth, email, password)
+            .then(async (_userCredential) => {
+                router.replace("/(tabs)");
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.error("Error Message: " + errorMessage);
+                if (errorCode === "auth/invalid-credential") {
+                    Alert.alert("invalid credential");
+                }
+            });
     }
+
     return (
         <View style={styles.textContainer}>
             <Text style={styles.textHeader}>Let's Sign You In</Text>

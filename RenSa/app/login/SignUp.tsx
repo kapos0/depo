@@ -14,22 +14,21 @@ import {
 } from "react-native";
 import { useState } from "react";
 
+interface CreateAccountParams {
+    email: string;
+    password: string;
+}
+
 export default function SignUp() {
     const router = useRouter();
 
-    const [userName, setUserName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+    const [userName, setUserName] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-    function onCreateAccount({
-        email,
-        password,
-    }: {
-        email: string;
-        password: string;
-    }) {
-        if (password !== confirmPassword)
+    function onCreateAccount({ email, password }: CreateAccountParams): void {
+        if (password !== confirmPassword) {
             if (Platform.OS !== "android") {
                 Alert.alert("passwords do not match");
             } else {
@@ -38,36 +37,41 @@ export default function SignUp() {
                     ToastAndroid.BOTTOM
                 );
             }
+            return;
+        }
         if (!email || !password || !userName) {
             if (Platform.OS !== "android") {
                 Alert.alert("missing fields");
             } else {
                 ToastAndroid.show("missing fields", ToastAndroid.BOTTOM);
             }
-        } else {
-            createUserWithEmailAndPassword(auth, email, password)
-                .then(async (userCredential) => {
-                    const user = userCredential.user;
-                    await updateProfile(user, {
-                        displayName: userName,
-                    });
-                    router.push("/(tabs)");
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    if (errorCode == "auth/email-already-in-use")
-                        if (Platform.OS !== "android") {
-                            ToastAndroid.show(
-                                "Email elready exits",
-                                ToastAndroid.BOTTOM
-                            );
-                        } else {
-                            Alert.alert("Email already exits");
-                        }
-                });
+            return;
         }
+        createUserWithEmailAndPassword(auth, email, password)
+            .then(async (userCredential) => {
+                const user = userCredential.user;
+                await updateProfile(user, {
+                    displayName: userName,
+                });
+                router.push("/(tabs)");
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.error("Error Message: " + errorMessage);
+                if (errorCode === "auth/email-already-in-use") {
+                    if (Platform.OS !== "android") {
+                        ToastAndroid.show(
+                            "Email already exists",
+                            ToastAndroid.BOTTOM
+                        );
+                    } else {
+                        Alert.alert("Email already exists");
+                    }
+                }
+            });
     }
+
     return (
         <View style={styles.textContainer}>
             <Text style={styles.textHeader}>Let's Sign You Up</Text>

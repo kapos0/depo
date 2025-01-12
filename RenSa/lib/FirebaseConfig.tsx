@@ -26,20 +26,15 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-let auth =
-    Platform.OS === "web"
-        ? (() => {
-              const webAuth = getAuth(app);
-              webAuth
-                  .setPersistence(indexedDBLocalPersistence)
-                  .catch((error) =>
-                      console.error("Failed to set persistence:", error)
-                  );
-              return webAuth;
-          })()
-        : initializeAuth(app, {
-              persistence: getReactNativePersistence(AsyncStorage),
-          });
+let auth: Auth;
+if (Platform.OS === "web") {
+    auth = getAuth(app);
+    auth.setPersistence(indexedDBLocalPersistence);
+} else {
+    auth = initializeAuth(app, {
+        persistence: getReactNativePersistence(AsyncStorage),
+    });
+}
 
 export { auth };
 export const db = getFirestore(app);

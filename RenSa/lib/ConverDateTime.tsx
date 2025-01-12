@@ -1,14 +1,14 @@
 import moment from "moment";
 
-export function FormatDate(timestamp: number) {
+export function FormatDate(timestamp: number): Date {
     return new Date(timestamp);
 }
 
-export function FormatDateForText(date: any) {
+export function FormatDateForText(date: Date | string): string {
     return moment(date).format("L");
 }
 
-export function FormatReminderTime(timestamp: number) {
+export function FormatReminderTime(timestamp: number): string {
     const date = new Date(timestamp);
     const timeString = date.toLocaleTimeString([], {
         hour: "2-digit",
@@ -17,10 +17,13 @@ export function FormatReminderTime(timestamp: number) {
     return timeString;
 }
 
-export function getDateRange(startDate: any, endDate: any) {
+export function getDateRange(
+    startDate: Date | string,
+    endDate: Date | string
+): string[] {
     const start = moment(new Date(startDate), "MM/DD/YYYY");
     const end = moment(new Date(endDate), "MM/DD/YYYY");
-    const dates = [];
+    const dates: string[] = [];
     while (start.isSameOrBefore(end)) {
         dates.push(start.format("MM/DD/YYYY"));
         start.add(1, "days");
