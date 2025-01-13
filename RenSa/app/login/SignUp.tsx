@@ -53,7 +53,7 @@ export default function SignUp() {
                 await updateProfile(user, {
                     displayName: userName,
                 });
-                router.push("/(tabs)");
+                router.push("/");
             })
             .catch((error) => {
                 const errorCode = error.code;

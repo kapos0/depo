@@ -8,8 +8,12 @@ export default function RootLayout() {
                 headerShown: false,
             }}
         >
-            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="index" />
             <Stack.Screen name="login/index" />
+            <Stack.Screen
+                name="action-modal/index"
+                options={{ presentation: "modal" }}
+            />
         </Stack>
     );
 }

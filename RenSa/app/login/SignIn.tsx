@@ -36,7 +36,7 @@ export default function SignIn() {
         }
         signInWithEmailAndPassword(auth, email, password)
             .then(async (_userCredential) => {
-                router.replace("/(tabs)");
+                router.replace("/");
             })
             .catch((error) => {
                 const errorCode = error.code;

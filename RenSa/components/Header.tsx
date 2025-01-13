@@ -1,29 +1,48 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { auth } from "@/lib/FirebaseConfig";
 import Colors from "@/constant/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useRouter } from "expo-router";
 
 export default function Header() {
     const user = auth.currentUser;
-
+    const router = useRouter();
     return (
         <View style={styles.outerContainer}>
             <View style={styles.innerContainer}>
                 <View style={styles.container}>
-                    <Image
-                        source={require("@/assets/images/smiley.png")}
-                        style={styles.image}
-                    />
+                    <TouchableOpacity
+                        onPress={() => {
+                            auth.signOut()
+                                .then(() => {
+                                    router.replace("/login");
+                                })
+                                .catch((error) => {
+                                    console.error("Error signing out: ", error);
+                                });
+                        }}
+                    >
+                        <Image
+                            source={require("@/assets/images/smiley.png")}
+                            style={styles.image}
+                        />
+                    </TouchableOpacity>
                     <Text style={styles.text}>
                         Hello {user?.displayName} 👋
                     </Text>
                 </View>
-                <Ionicons
-                    name="settings-outline"
-                    size={34}
-                    color={Colors.DARK_GRAY}
-                />
+                <TouchableOpacity
+                    onPress={() => {
+                        router.push("/add-new-habit");
+                    }}
+                >
+                    <Ionicons
+                        name="medkit-outline"
+                        size={34}
+                        color={Colors.PRIMARY}
+                    />
+                </TouchableOpacity>
             </View>
         </View>
     );

@@ -33,7 +33,6 @@ export default function AddHabitForm() {
         name?: string;
         type?: { name: string };
         when?: string;
-        dose?: string;
         startDate?: Date;
         endDate?: Date;
         reminder?: string;
@@ -59,12 +58,13 @@ export default function AddHabitForm() {
         try {
             await setDoc(doc(db, "habitTracker", docId), {
                 ...formData,
+                status: "Waiting",
                 dates: dates,
                 userEmail: user?.email,
                 docId: docId,
             });
             setLoading(false);
-            router.push("/(tabs)");
+            router.push("/");
         } catch (error) {
             setLoading(false);
             console.error(error);

@@ -30,3 +30,15 @@ export function getDateRange(
     }
     return dates;
 }
+
+export function GetDateRangeToText() {
+    const dateList = [];
+    for (let i = 0; i <= 7; i++) {
+        dateList.push({
+            date: moment().add(i, "day").format("DD"),
+            day: moment().add(i, "day").format("dd"),
+            formattedDate: moment().add(i, "day").format("L"),
+        });
+    }
+    return dateList;
+}
