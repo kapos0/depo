@@ -1,5 +1,6 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { Toaster } from "react-hot-toast";
 import "@/assets/globals.css";
 
 import NavBar from "@/components/NavBar";
@@ -40,6 +41,7 @@ export default function RootLayout({
                                 </div>
                             </div>
                         </main>
+                        <Toaster />
                     </ThemeProvider>
                 </body>
             </html>
