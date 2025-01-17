@@ -1,6 +1,6 @@
-"use client"
-import { SessionProvider } from "next-auth/react"
-import UserButton from "@/components/ui/userButton"
+"use client";
+import { SessionProvider } from "next-auth/react";
+import UserButton from "@/components/ui/userButton";
 
 export default function Home() {
     return (
@@ -9,5 +9,5 @@ export default function Home() {
                 <UserButton />
             </SessionProvider>
         </div>
-    )
+    );
 }
