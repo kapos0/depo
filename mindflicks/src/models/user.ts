@@ -38,15 +38,24 @@ const UserSchema = new Schema(
         posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
         comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
         likes: [{ type: Schema.Types.ObjectId, ref: "Like" }],
-        followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
-        following: [{ type: Schema.Types.ObjectId, ref: "User" }],
+        followers: [{ type: Schema.Types.ObjectId, ref: "Follows" }],
+        following: [{ type: Schema.Types.ObjectId, ref: "Follows" }],
         notifications: [{ type: Schema.Types.ObjectId, ref: "Notification" }],
         notificationsCreated: [
             { type: Schema.Types.ObjectId, ref: "Notification" },
         ],
+        followersCount: {
+            type: Number,
+            default: 0,
+        },
+        followingCount: {
+            type: Number,
+            default: 0,
+        },
     },
     { timestamps: true }
 );
+
 const User = mongoose.models.User || mongoose.model("User", UserSchema);
 export default User;
 
@@ -69,4 +78,6 @@ export type UserType = {
     following?: string[];
     notifications?: string[];
     notificationsCreated?: string[];
+    followersCount?: number;
+    followingCount?: number;
 };

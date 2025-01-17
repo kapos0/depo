@@ -14,7 +14,6 @@ export default async function SideBar() {
 
     const user = await getUserByClerckID(authUser.id);
     if (!user) return null;
-
     return (
         <Card className="sticky top-20">
             <CardContent className="pt-6">
