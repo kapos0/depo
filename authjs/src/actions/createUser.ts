@@ -3,6 +3,7 @@
 import { connectDB } from "@/lib/conntectDB";
 import { executeAction } from "@/lib/executeAction";
 import User from "@/models/user";
+import bcrypt from "bcryptjs";
 
 export async function createUserAction(formData: FormData) {
     return executeAction({
@@ -15,9 +16,14 @@ export async function createUserAction(formData: FormData) {
                 email: formData.get("email") as string,
             });
             if (existingUser) throw new Error("User already exists");
+            const hashedPassword = await bcrypt.hash(
+                formData.get("password") as string,
+                10
+            );
             const user = new User({
                 email: formData.get("email") as string,
-                password: formData.get("password") as string,
+                provider: "credentials",
+                password: hashedPassword,
             });
             await user.save();
         },
