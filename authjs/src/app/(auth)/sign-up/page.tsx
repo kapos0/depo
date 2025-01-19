@@ -1,7 +1,9 @@
+import { createUserAction } from "@/actions/createUser";
 import { GithubSignIn } from "@/components/github-sign-in";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function Page() {
     return (
@@ -26,8 +28,12 @@ export default async function Page() {
             {/* Email/Password Sign Up */}
             <form
                 className="space-y-4"
-                action={async () => {
+                action={async (formData: FormData) => {
                     "use server";
+                    const res = await createUserAction(formData);
+                    if (res.success) {
+                        redirect("/sign-in");
+                    }
                 }}
             >
                 <Input
