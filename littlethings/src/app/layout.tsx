@@ -1,3 +1,6 @@
+import { SessionProvider } from "next-auth/react";
+import ThemeComp from "@/components/ThemeComp";
+import Header from "@/components/Header";
 import "@/assets/globals.css";
 
 export default function RootLayout({
@@ -6,21 +9,24 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <head>
                 <link
                     rel="shortcut icon"
                     href="/favicon.ico"
                     type="image/x-icon"
                 />
-                <title>Auth.js demo</title>
+                <title>Little Things</title>
             </head>
             <body>
-                <main className="flex items-center justify-center min-h-screen bg-gray-100">
-                    <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-                        {children}
-                    </div>
-                </main>
+                <ThemeComp>
+                    <Header />
+                    <main className="flex items-center justify-center min-h-screen">
+                        <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+                            <SessionProvider>{children}</SessionProvider>
+                        </div>
+                    </main>
+                </ThemeComp>
             </body>
         </html>
     );
