@@ -21,23 +21,28 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 },
             },
             authorize: async (credentials) => {
-                if (!credentials.email || !credentials.password)
+                if (!credentials.email || !credentials.password) {
                     throw new Error("Email and password are required");
-                await connectDB();
-                const user = await User.findOne({
-                    email: credentials?.email,
-                    provider: "credentials",
-                });
-                if (
-                    user &&
-                    (await bcrypt.compare(
-                        credentials.password as string,
-                        user.password
-                    ))
-                ) {
-                    return user;
-                } else {
-                    throw new Error("Invalid email or password");
+                }
+                try {
+                    await connectDB();
+                    const user = await User.findOne({
+                        email: credentials.email,
+                        provider: "credentials",
+                    });
+                    if (
+                        user &&
+                        (await bcrypt.compare(
+                            credentials.password as string,
+                            user.password
+                        ))
+                    ) {
+                        return user;
+                    } else {
+                        throw new Error("Email or password is incorrect");
+                    }
+                } catch (error) {
+                    throw new Error("Failed to login" + error);
                 }
             },
         }),
@@ -45,22 +50,30 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     ],
     callbacks: {
         async signIn({ account, profile }) {
-            await connectDB();
-
-            if (account?.provider === "github") {
-                const existingUser = await User.findOne({
-                    email: profile?.email,
-                });
-                if (!existingUser) {
-                    await User.create({
-                        email: profile?.email,
-                        username: profile?.login,
-                        avatar: profile?.avatar_url,
-                        provider: "github",
+            try {
+                await connectDB();
+                if (account?.provider === "github") {
+                    if (!profile?.email) {
+                        throw new Error(
+                            "GitHub profile does not provide an email"
+                        );
+                    }
+                    const existingUser = await User.findOne({
+                        email: profile.email,
                     });
+                    if (!existingUser) {
+                        await User.create({
+                            email: profile.email,
+                            username: profile.login,
+                            avatar: profile.avatar_url,
+                            provider: "github",
+                        });
+                    }
                 }
+                return true;
+            } catch {
+                throw new Error("Failed to sign in");
             }
-            return true;
         },
     },
     secret: process.env.AUTH_SECRET,

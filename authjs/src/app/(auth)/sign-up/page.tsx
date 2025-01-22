@@ -1,11 +1,11 @@
-import { createUserAction } from "@/actions/createUser";
+"use client";
+import { handleSignUp } from "@/actions/handleSignUp";
 import { GithubSignIn } from "@/components/github-sign-in";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
-export default async function Page() {
+export default function Page() {
     return (
         <div className="w-full max-w-sm mx-auto space-y-6">
             <h1 className="text-2xl font-bold text-center mb-6">
@@ -24,17 +24,9 @@ export default async function Page() {
                     </span>
                 </div>
             </div>
-
-            {/* Email/Password Sign Up */}
             <form
                 className="space-y-4"
-                action={async (formData: FormData) => {
-                    "use server";
-                    const res = await createUserAction(formData);
-                    if (res.success) {
-                        redirect("/sign-in");
-                    }
-                }}
+                action={(formData) => handleSignUp(formData)}
             >
                 <Input
                     name="email"

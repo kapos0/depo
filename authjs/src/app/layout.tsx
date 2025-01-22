@@ -1,4 +1,6 @@
 import "@/assets/globals.css";
+import ToastProvider from "@/components/toast-component";
+import { SessionProvider } from "next-auth/react";
 
 export default function RootLayout({
     children,
@@ -16,11 +18,14 @@ export default function RootLayout({
                 <title>Auth.js demo</title>
             </head>
             <body>
-                <main className="flex items-center justify-center min-h-screen bg-gray-100">
-                    <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-                        {children}
-                    </div>
-                </main>
+                <SessionProvider>
+                    <main className="flex items-center justify-center min-h-screen bg-gray-100">
+                        <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+                            {children}
+                            <ToastProvider />
+                        </div>
+                    </main>
+                </SessionProvider>
             </body>
         </html>
     );
