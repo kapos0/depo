@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { GithubSignIn } from "@/components/github-sign-in";
-import { executeAction } from "@/lib/executeAction";
 
 export default async function Page() {
     const session = await auth();
@@ -31,11 +30,7 @@ export default async function Page() {
                 className="space-y-4"
                 action={async (formData: FormData) => {
                     "use server";
-                    await executeAction({
-                        actionFn: async () => {
-                            await signIn("credentials", formData);
-                        },
-                    });
+                    await signIn("credentials", formData);
                 }}
             >
                 <Input

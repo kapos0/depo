@@ -9,7 +9,7 @@ function SignOut() {
 
     return (
         <div className="flex justify-center">
-            <Button variant="destructive" onClick={handleSignOut}>
+            <Button variant="link" onClick={handleSignOut}>
                 Sign Out
             </Button>
         </div>

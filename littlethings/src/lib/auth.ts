@@ -9,8 +9,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
         Credentials({
             credentials: {
-                email: {},
-                password: {},
+                email: {
+                    label: "Email",
+                    type: "email",
+                    placeholder: "Enter your email",
+                },
+                password: {
+                    label: "Password",
+                    type: "password",
+                    placeholder: "Enter your password",
+                },
             },
             authorize: async (credentials) => {
                 if (!credentials.email || !credentials.password)
@@ -38,7 +46,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     callbacks: {
         async signIn({ account, profile }) {
             await connectDB();
-
             if (account?.provider === "github") {
                 const existingUser = await User.findOne({
                     email: profile?.email,
@@ -54,7 +61,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             }
             return true;
         },
-        async session({ session }) {
+        /*async session({ session }) {
             await connectDB();
 
             const dbUser = await User.findOne({ email: session.user.email });
@@ -62,7 +69,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 session.user.id = dbUser._id.toString();
             }
             return session;
-        },
+        },Sanırım bu şey kullanılmıyor işlevsellik aynı şekilde devam ederse kullanmaktan vaz geç sende*/
     },
     secret: process.env.AUTH_SECRET,
 });

@@ -9,8 +9,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
         Credentials({
             credentials: {
-                email: {},
-                password: {},
+                email: {
+                    label: "Email",
+                    type: "email",
+                    placeholder: "Enter your email",
+                },
+                password: {
+                    label: "Password",
+                    type: "password",
+                    placeholder: "Enter your password",
+                },
             },
             authorize: async (credentials) => {
                 if (!credentials.email || !credentials.password)
@@ -53,15 +61,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 }
             }
             return true;
-        },
-        async session({ session }) {
-            await connectDB();
-
-            const dbUser = await User.findOne({ email: session.user.email });
-            if (dbUser) {
-                session.user.id = dbUser._id.toString();
-            }
-            return session;
         },
     },
     secret: process.env.AUTH_SECRET,

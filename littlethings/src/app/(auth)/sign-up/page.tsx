@@ -31,7 +31,7 @@ export default async function Page() {
                 action={async (formData: FormData) => {
                     "use server";
                     const res = await createUserAction(formData);
-                    if (res.success) {
+                    if (res) {
                         redirect("/sign-in");
                     }
                 }}

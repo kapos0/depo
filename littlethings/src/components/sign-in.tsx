@@ -9,7 +9,7 @@ function SignIn() {
 
     return (
         <div className="flex justify-center">
-            <Button variant="destructive" onClick={handleSignIn}>
+            <Button variant="link" onClick={handleSignIn}>
                 Sign In
             </Button>
         </div>

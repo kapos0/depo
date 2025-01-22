@@ -4,11 +4,11 @@ import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { GithubSignIn } from "@/components/ui/github-sign-in";
-import { executeAction } from "@/lib/executeAction";
 
 export default async function Page() {
     const session = await auth();
     if (session) redirect("/");
+
     return (
         <div className="w-full max-w-sm mx-auto space-y-6">
             <h1 className="text-2xl font-bold text-center mb-6">Sign In</h1>
@@ -31,11 +31,7 @@ export default async function Page() {
                 className="space-y-4"
                 action={async (formData: FormData) => {
                     "use server";
-                    await executeAction({
-                        actionFn: async () => {
-                            await signIn("credentials", formData);
-                        },
-                    });
+                    await signIn("credentials", formData);
                 }}
             >
                 <Input

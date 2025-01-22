@@ -1,7 +1,7 @@
 "use client";
-import { MdLightMode, MdDarkMode } from "react-icons/md";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { Moon, Sun } from "lucide-react";
 
 export default function DarkModeSwitch() {
     const { theme, setTheme, systemTheme } = useTheme();
@@ -12,12 +12,12 @@ export default function DarkModeSwitch() {
         <div>
             {mounted &&
                 (currentTheme === "dark" ? (
-                    <MdLightMode
+                    <Sun
                         onClick={() => setTheme("light")}
                         className="text-xl cursor-pointer hover:text-amber-500"
                     />
                 ) : (
-                    <MdDarkMode
+                    <Moon
                         onClick={() => setTheme("dark")}
                         className="text-xl cursor-pointer hover:text-amber-500"
                     />
