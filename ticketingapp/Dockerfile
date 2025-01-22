@@ -1,5 +1,10 @@
 FROM node:20-alpine
 
+ENV AUTH_SECRET=p0eUJuhDR+35stAsCnAxYr9hPT0U30yAeu4LKybhR9A=
+ENV AUTH_GITHUB_ID=Ov23liFEB4xFmKA1zv7r
+ENV AUTH_GITHUB_SECRET=cbf07cba2348bf5694dbf45ab41758a10cdbbdf4
+ENV AUTH_TRUST_HOST=true
+
 ENV MONGODB_URI=mongodb+srv://dalinnx1:ImjATx4D7zIgVXmy@cluster0.0bk7b.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 ENV PUBLIC_URL=http://localhost:3000/
 ENV SMTP_HOST=smtp.yandex.com
