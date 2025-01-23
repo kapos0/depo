@@ -3,6 +3,7 @@ import ThemeComp from "@/components/ThemeComp";
 import Header from "@/components/Header";
 import ToastProvider from "@/components/toast-component";
 import "@/assets/globals.css";
+import SearchBox from "@/components/Search";
 
 export default function RootLayout({
     children,
@@ -22,6 +23,7 @@ export default function RootLayout({
             <body>
                 <ThemeComp>
                     <Header />
+                    <SearchBox />
                     <SessionProvider>
                         {children}
                         <ToastProvider />
