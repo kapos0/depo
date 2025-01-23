@@ -1,17 +1,29 @@
-import { auth, signIn } from "@/lib/auth";
-import Link from "next/link";
-import { redirect } from "next/navigation";
+"use client";
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { handleSignIn } from "@/actions/handleSignIn";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { GithubSignIn } from "@/components/ui/github-sign-in";
+import { useSession } from "next-auth/react";
+import { GithubSignIn } from "@/components/github-sign-in";
 
-export default async function Page() {
-    const session = await auth();
-    if (session) redirect("/");
+export default function Page() {
+    const session = useSession();
+    const router = useRouter();
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (session.data?.user) {
+            router.push("/");
+        }
+    }, [session.data, router]);
 
     return (
         <div className="w-full max-w-sm mx-auto space-y-6">
-            <h1 className="text-2xl font-bold text-center mb-6">Sign In</h1>
+            <h1 className="text-2xl font-bold text-center mb-6 text-gray-600">
+                Sign In
+            </h1>
 
             <GithubSignIn />
 
@@ -26,12 +38,30 @@ export default async function Page() {
                 </div>
             </div>
 
-            {/* Email/Password Sign In */}
+            {error && (
+                <div className="text-red-500 text-sm text-center mb-4">
+                    {error}
+                </div>
+            )}
+
             <form
                 className="space-y-4"
-                action={async (formData: FormData) => {
-                    "use server";
-                    await signIn("credentials", formData);
+                onSubmit={async (event) => {
+                    event.preventDefault();
+                    const formData = new FormData(
+                        event.target as HTMLFormElement
+                    );
+
+                    try {
+                        await handleSignIn("credentials", formData);
+                        router.push("/");
+                    } catch (err) {
+                        if (err instanceof Error) {
+                            setError(err.message);
+                        } else {
+                            setError("An unknown error occurred");
+                        }
+                    }
                 }}
             >
                 <Input
@@ -55,9 +85,7 @@ export default async function Page() {
 
             <div className="text-center">
                 <Button asChild variant="link">
-                    <Link href="/sign-up">
-                        Don&apos;t have an account? Sign up
-                    </Link>
+                    <a href="/sign-up">Don&apos;t have an account? Sign up</a>
                 </Button>
             </div>
         </div>
