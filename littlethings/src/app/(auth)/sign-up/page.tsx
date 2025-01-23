@@ -29,6 +29,13 @@ export default function Page() {
                 action={(formData) => handleSignUp(formData)}
             >
                 <Input
+                    name="username"
+                    placeholder="User Name"
+                    type="text"
+                    required
+                    autoComplete="username"
+                />
+                <Input
                     name="email"
                     placeholder="Email"
                     type="email"

@@ -1,28 +1,61 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
-const userSchema = new Schema({
-    username: {
-        type: String,
-        required: false,
-    },
-    avatar: {
-        type: String,
-        required: false,
-    },
-    email: {
+const favSchema = new mongoose.Schema({
+    movieId: {
         type: String,
         required: true,
-        unique: true,
     },
-    password: {
+    title: {
         type: String,
-        required: false,
+        required: true,
     },
-    provider: {
+    description: {
+        type: String,
+        required: true,
+    },
+    dateReleased: {
+        type: Date,
+        required: true,
+    },
+    rating: {
+        type: Number,
+        required: true,
+    },
+    image: {
         type: String,
         required: true,
     },
 });
 
-export const User = mongoose.models.User || mongoose.model("User", userSchema);
+const userSchema = new mongoose.Schema(
+    {
+        username: {
+            type: String,
+            required: false,
+        },
+        avatar: {
+            type: String,
+            required: false,
+        },
+        email: {
+            type: String,
+            required: true,
+            unique: true,
+        },
+        password: {
+            type: String,
+            required: false,
+        },
+        provider: {
+            type: String,
+            required: true,
+        },
+        favs: {
+            type: [favSchema],
+            default: [],
+        },
+    },
+    { timestamps: true }
+);
+const User = mongoose.models.User || mongoose.model("User", userSchema);
 export default User;

@@ -21,9 +21,7 @@ export default function Page() {
 
     return (
         <div className="w-full max-w-sm mx-auto space-y-6">
-            <h1 className="text-2xl font-bold text-center mb-6 text-gray-600">
-                Sign In
-            </h1>
+            <h1 className="text-2xl font-bold text-center mb-6 ">Sign In</h1>
 
             <GithubSignIn />
 
