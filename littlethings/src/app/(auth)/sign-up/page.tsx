@@ -1,6 +1,7 @@
 "use client";
 import { handleSignUp } from "@/actions/handleSignUp";
-import { GithubSignIn } from "@/components/github-sign-in";
+import { GithubSignInCom } from "@/components/github-sign-in";
+import { GoogleSignInCom } from "@/components/google-sign-in";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
@@ -12,7 +13,8 @@ export default function Page() {
                 Create Account
             </h1>
 
-            <GithubSignIn />
+            <GithubSignInCom />
+            <GoogleSignInCom />
 
             <div className="relative">
                 <div className="absolute inset-0 flex items-center">

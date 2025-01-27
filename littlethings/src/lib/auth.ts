@@ -2,6 +2,7 @@ import User from "@/models/user";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
+import Google from "next-auth/providers/google";
 import { connectDB } from "@/lib/conntectDB";
 import bcrypt from "bcryptjs";
 
@@ -47,6 +48,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
         }),
         GitHub,
+        Google,
     ],
     callbacks: {
         async signIn({ account, profile }) {
@@ -67,6 +69,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                             username: profile.login,
                             avatar: profile.avatar_url,
                             provider: "github",
+                        });
+                    }
+                }
+                if (account?.provider === "google") {
+                    if (!profile?.email) {
+                        throw new Error(
+                            "Google profile does not provide an email"
+                        );
+                    }
+                    const existingUser = await User.findOne({
+                        email: profile.email,
+                    });
+                    if (!existingUser) {
+                        await User.create({
+                            email: profile.email,
+                            username: profile.login,
+                            avatar: profile.avatar_url,
+                            provider: "google",
                         });
                     }
                 }

@@ -1,7 +1,7 @@
 import { githubSignIn } from "@/actions/githubSignIn";
 import { Button } from "@/components/ui/button";
 
-function GithubSignIn() {
+function GithubSignInCom() {
     return (
         <form action={githubSignIn}>
             <Button className="w-full" variant="default">
@@ -11,4 +11,4 @@ function GithubSignIn() {
     );
 }
 
-export { GithubSignIn };
+export { GithubSignInCom };

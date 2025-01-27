@@ -6,7 +6,8 @@ import { handleSignIn } from "@/actions/handleSignIn";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useSession } from "next-auth/react";
-import { GithubSignIn } from "@/components/github-sign-in";
+import { GithubSignInCom } from "@/components/github-sign-in";
+import { GoogleSignInCom } from "@/components/google-sign-in";
 
 export default function Page() {
     const session = useSession();
@@ -23,7 +24,8 @@ export default function Page() {
         <div className="w-full max-w-sm mx-auto space-y-6">
             <h1 className="text-2xl font-bold text-center mb-6 ">Sign In</h1>
 
-            <GithubSignIn />
+            <GithubSignInCom />
+            <GoogleSignInCom />
 
             <div className="relative">
                 <div className="absolute inset-0 flex items-center">
