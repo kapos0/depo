@@ -6,16 +6,17 @@ import {
     ID,
     Query,
     Storage,
+    ImageGravity,
 } from "react-native-appwrite";
 
 export const appwriteConfig = {
-    endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
-    platform: process.env.EXPO_PUBLIC_APPWRITE_PLATFORM,
-    projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID,
-    storageId: process.env.EXPO_PUBLIC_APPWRITE_STORAGE_ID,
-    databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID,
-    userCollectionId: process.env.EXPO_PUBLIC_APPWRITE_USER_COLLECTION_ID,
-    videoCollectionId: process.env.EXPO_PUBLIC_APPWRITE_VIDEO_COLLECTION_ID,
+    endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
+    platform: process.env.EXPO_PUBLIC_APPWRITE_PLATFORM!,
+    projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!,
+    storageId: process.env.EXPO_PUBLIC_APPWRITE_STORAGE_ID!,
+    databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!,
+    userCollectionId: process.env.EXPO_PUBLIC_APPWRITE_USERS_COLLECTION_ID!,
+    mediaCollectionId: process.env.EXPO_PUBLIC_APPWRITE_MEDIAS_COLLECTION_ID!,
 };
 
 const client = new Client();
@@ -30,12 +31,23 @@ const storage = new Storage(client);
 const avatars = new Avatars(client);
 const databases = new Databases(client);
 
-// Register user
+export async function signIn(email: string, password: string) {
+    try {
+        const session = await account.createEmailPasswordSession(
+            email,
+            password
+        );
+        return session;
+    } catch (error) {
+        throw new Error(String(error));
+    }
+}
+
 export async function createUser(
     email: string,
     password: string,
     username: string
-) {
+): Promise<any> {
     try {
         const newAccount = await account.create(
             ID.unique(),
@@ -44,16 +56,15 @@ export async function createUser(
             username
         );
 
-        if (!newAccount) throw Error;
-
+        if (!newAccount) {
+            throw new Error("Failed to create account");
+        }
         const avatarUrl = avatars.getInitials(username);
-
         await signIn(email, password);
-
         const newUser = await databases.createDocument(
             appwriteConfig.databaseId,
             appwriteConfig.userCollectionId,
-            ID.unique(),
+            ID.unique(), // Document ID
             {
                 accountId: newAccount.$id,
                 email: email,
@@ -64,22 +75,11 @@ export async function createUser(
 
         return newUser;
     } catch (error) {
+        console.error("Error in createUser:", error);
         throw new Error(String(error));
     }
 }
 
-// Sign In
-export async function signIn(email: string, password: string) {
-    try {
-        const session = await account.createEmailSession(email, password);
-
-        return session;
-    } catch (error) {
-        throw new Error(String(error));
-    }
-}
-
-// Get Account
 export async function getAccount() {
     try {
         const currentAccount = await account.get();
@@ -90,7 +90,15 @@ export async function getAccount() {
     }
 }
 
-// Get Current User
+export const checkSession = async (): Promise<boolean> => {
+    try {
+        const session = await account.get();
+        return !!session;
+    } catch {
+        return false;
+    }
+};
+
 export async function getCurrentUser() {
     try {
         const currentAccount = await getAccount();
@@ -111,7 +119,6 @@ export async function getCurrentUser() {
     }
 }
 
-// Sign Out
 export async function signOut() {
     try {
         const session = await account.deleteSession("current");
@@ -122,7 +129,6 @@ export async function signOut() {
     }
 }
 
-// Upload File
 export async function uploadFile(file: any, type: string) {
     if (!file) return;
 
@@ -143,21 +149,19 @@ export async function uploadFile(file: any, type: string) {
     }
 }
 
-// Get File Preview
 export async function getFilePreview(fileId: string, type: string) {
     let fileUrl;
 
     try {
-        if (type === "video") {
+        if (type === "media") {
             fileUrl = storage.getFileView(appwriteConfig.storageId, fileId);
         } else if (type === "image") {
             fileUrl = storage.getFilePreview(
                 appwriteConfig.storageId,
                 fileId,
                 2000,
-                2000,
-                "top",
-                100
+                100,
+                ImageGravity.Top
             );
         } else {
             throw new Error("Invalid file type");
@@ -171,30 +175,29 @@ export async function getFilePreview(fileId: string, type: string) {
     }
 }
 
-// Create Video Post
-type VideoPostForm = {
+type MediaPostForm = {
     title: string;
     thumbnail: any;
-    video: any;
+    media: any;
     prompt: string;
     userId: string;
 };
 
-export async function createVideoPost(form: VideoPostForm) {
+export async function createMediaPost(form: MediaPostForm) {
     try {
-        const [thumbnailUrl, videoUrl] = await Promise.all([
+        const [thumbnailUrl, mediaUrl] = await Promise.all([
             uploadFile(form.thumbnail, "image"),
-            uploadFile(form.video, "video"),
+            uploadFile(form.media, "media"),
         ]);
 
         const newPost = await databases.createDocument(
             appwriteConfig.databaseId,
-            appwriteConfig.videoCollectionId,
+            appwriteConfig.mediaCollectionId,
             ID.unique(),
             {
                 title: form.title,
                 thumbnail: thumbnailUrl,
-                video: videoUrl,
+                media: mediaUrl,
                 prompt: form.prompt,
                 creator: form.userId,
             }
@@ -206,12 +209,11 @@ export async function createVideoPost(form: VideoPostForm) {
     }
 }
 
-// Get all video Posts
 export async function getAllPosts() {
     try {
         const posts = await databases.listDocuments(
             appwriteConfig.databaseId,
-            appwriteConfig.videoCollectionId
+            appwriteConfig.mediaCollectionId
         );
 
         return posts.documents;
@@ -220,12 +222,11 @@ export async function getAllPosts() {
     }
 }
 
-// Get video posts created by user
 export async function getUserPosts(userId: string) {
     try {
         const posts = await databases.listDocuments(
             appwriteConfig.databaseId,
-            appwriteConfig.videoCollectionId,
+            appwriteConfig.mediaCollectionId,
             [Query.equal("creator", userId)]
         );
 
@@ -235,12 +236,11 @@ export async function getUserPosts(userId: string) {
     }
 }
 
-// Get video posts that matches search query
 export async function searchPosts(query: string) {
     try {
         const posts = await databases.listDocuments(
             appwriteConfig.databaseId,
-            appwriteConfig.videoCollectionId,
+            appwriteConfig.mediaCollectionId,
             [Query.search("title", query)]
         );
 
@@ -252,12 +252,11 @@ export async function searchPosts(query: string) {
     }
 }
 
-// Get latest created video posts
 export async function getLatestPosts() {
     try {
         const posts = await databases.listDocuments(
             appwriteConfig.databaseId,
-            appwriteConfig.videoCollectionId,
+            appwriteConfig.mediaCollectionId,
             [Query.orderDesc("$createdAt"), Query.limit(7)]
         );
 

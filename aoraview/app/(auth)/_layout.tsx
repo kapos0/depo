@@ -1,8 +1,11 @@
 import React from "react";
-import { Stack } from "expo-router";
+import { Redirect, Stack } from "expo-router";
 import Loader from "@/components/Loader";
+import { useGlobalContext } from "@/lib/GlobalProvider";
 
 export default function AuthLayout() {
+    const { loading, isLogged } = useGlobalContext();
+    if (!loading && isLogged) return <Redirect href="/home" />;
     return (
         <>
             <Stack screenOptions={{ headerShown: false }}>
@@ -10,7 +13,7 @@ export default function AuthLayout() {
                 <Stack.Screen name="sign-up" />
             </Stack>
 
-            <Loader isLoading={false} />
+            <Loader isLoading={loading} />
         </>
     );
 }

@@ -10,9 +10,12 @@ import images from "@/assets/constants/images";
 import FormField from "@/components/FormField";
 import { useState } from "react";
 import CustomButton from "@/components/CustomButton";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
+import { signIn } from "@/lib/appwrite";
+import { useGlobalContext } from "@/lib/GlobalProvider";
 
 export default function SignIn() {
+    const { setUser, setIsLogged } = useGlobalContext();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [form, setForm] = useState({
         email: "",
@@ -23,6 +26,16 @@ export default function SignIn() {
             Alert.alert("Error", "Please fill in all fields");
 
         setIsSubmitting(true);
+        try {
+            const result = await signIn(form.email, form.password);
+            setUser(result);
+            setIsLogged(true);
+            router.replace("/home");
+        } catch (error) {
+            Alert.alert("Error", (error as any).message);
+        } finally {
+            setIsSubmitting(false);
+        }
     }
     return (
         <SafeAreaView className="bg-primary h-full">

@@ -1,8 +1,9 @@
 import React from "react";
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import { Image, View } from "react-native";
 import Loader from "@/components/Loader";
 import icons from "@/assets/constants/icons";
+import { useGlobalContext } from "@/lib/GlobalProvider";
 
 function TabIcon({ icon, color }: { icon: any; color: string }) {
     return (
@@ -18,6 +19,9 @@ function TabIcon({ icon, color }: { icon: any; color: string }) {
 }
 
 export default function TabsLayout() {
+    const { loading, isLogged } = useGlobalContext();
+    if (!loading && !isLogged) return <Redirect href="/(auth)/sign-in" />;
+
     return (
         <>
             <Tabs
@@ -71,7 +75,7 @@ export default function TabsLayout() {
                 />
             </Tabs>
 
-            <Loader isLoading={false} />
+            <Loader isLoading={loading} />
         </>
     );
 }

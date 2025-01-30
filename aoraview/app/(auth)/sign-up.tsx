@@ -1,6 +1,6 @@
 import CustomButton from "@/components/CustomButton";
 import FormField from "@/components/FormField";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import {
     Alert,
     Dimensions,
@@ -12,9 +12,12 @@ import {
 } from "react-native";
 import images from "@/assets/constants/images";
 import { useState } from "react";
+import { createUser } from "@/lib/appwrite";
+import { useGlobalContext } from "@/lib/GlobalProvider";
 
 export default function SignUp() {
-    const [isSubmitting, setSubmitting] = useState(false);
+    const { setUser, setIsLogged } = useGlobalContext();
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [form, setForm] = useState({
         username: "",
         email: "",
@@ -24,7 +27,21 @@ export default function SignUp() {
         if (form.username === "" || form.email === "" || form.password === "")
             Alert.alert("Error", "Please fill in all fields");
 
-        setSubmitting(true);
+        setIsSubmitting(true);
+        try {
+            const result = await createUser(
+                form.email,
+                form.password,
+                form.username
+            );
+            setUser(result);
+            setIsLogged(true);
+            router.replace("/home");
+        } catch (error) {
+            Alert.alert("Error", (error as any).message);
+        } finally {
+            setIsSubmitting(false);
+        }
     }
     return (
         <SafeAreaView className="bg-primary h-full">

@@ -3,6 +3,7 @@ import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
 import "@/assets/global.css";
+import GlobalProvider from "@/lib/GlobalProvider";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -26,7 +27,7 @@ export default function RootLayout() {
     if (!fontsLoaded && !error) return null;
 
     return (
-        <>
+        <GlobalProvider>
             <Stack screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="index" />
                 <Stack.Screen name="(auth)" />
@@ -34,6 +35,6 @@ export default function RootLayout() {
                 <Stack.Screen name="search/[query]" />
             </Stack>
             <StatusBar backgroundColor="#161622" style="light" />
-        </>
+        </GlobalProvider>
     );
 }
