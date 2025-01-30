@@ -1,0 +1,80 @@
+import React from "react";
+import { Tabs } from "expo-router";
+import { Image, View } from "react-native";
+import Loader from "@/components/Loader";
+import icons from "@/assets/constants/icons";
+
+function TabIcon({ icon, color }: { icon: any; color: string }) {
+    return (
+        <View className="flex items-center justify-center gap-2">
+            <Image
+                source={icon}
+                resizeMode="contain"
+                tintColor={color}
+                className="w-6 h-6"
+            />
+        </View>
+    );
+}
+
+export default function TabsLayout() {
+    return (
+        <>
+            <Tabs
+                screenOptions={{
+                    tabBarActiveTintColor: "#FFA001",
+                    tabBarInactiveTintColor: "#CDCDE0",
+                    tabBarShowLabel: false,
+                    tabBarStyle: {
+                        backgroundColor: "#161622",
+                        borderTopWidth: 1,
+                        borderTopColor: "#232533",
+                    },
+                }}
+            >
+                <Tabs.Screen
+                    name="home"
+                    options={{
+                        headerShown: false,
+                        tabBarIcon: ({ color }) => (
+                            <TabIcon icon={icons.home} color={color} />
+                        ),
+                    }}
+                />
+                <Tabs.Screen
+                    name="bookmark"
+                    options={{
+                        title: "Bookmark",
+                        headerShown: false,
+                        tabBarIcon: ({ color }) => (
+                            <TabIcon icon={icons.bookmark} color={color} />
+                        ),
+                    }}
+                />
+
+                <Tabs.Screen
+                    name="create"
+                    options={{
+                        title: "Create",
+                        headerShown: false,
+                        tabBarIcon: ({ color }) => (
+                            <TabIcon icon={icons.plus} color={color} />
+                        ),
+                    }}
+                />
+                <Tabs.Screen
+                    name="profile"
+                    options={{
+                        title: "Profile",
+                        headerShown: false,
+                        tabBarIcon: ({ color }) => (
+                            <TabIcon icon={icons.profile} color={color} />
+                        ),
+                    }}
+                />
+            </Tabs>
+
+            <Loader isLoading={false} />
+        </>
+    );
+}
