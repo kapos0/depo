@@ -1,10 +1,16 @@
-import { Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React from "react";
+import { Stack } from "expo-router";
+import Loader from "@/components/Loader";
 
 export default function AuthLayout() {
     return (
-        <SafeAreaView>
-            <Text>Auth</Text>
-        </SafeAreaView>
+        <>
+            <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="sign-in" />
+                <Stack.Screen name="sign-up" />
+            </Stack>
+
+            <Loader isLoading={false} />
+        </>
     );
 }

@@ -25,6 +25,7 @@ export default function TabsLayout() {
                     tabBarActiveTintColor: "#FFA001",
                     tabBarInactiveTintColor: "#CDCDE0",
                     tabBarShowLabel: false,
+                    headerShown: false,
                     tabBarStyle: {
                         backgroundColor: "#161622",
                         borderTopWidth: 1,
@@ -35,7 +36,6 @@ export default function TabsLayout() {
                 <Tabs.Screen
                     name="home"
                     options={{
-                        headerShown: false,
                         tabBarIcon: ({ color }) => (
                             <TabIcon icon={icons.home} color={color} />
                         ),
@@ -45,7 +45,6 @@ export default function TabsLayout() {
                     name="bookmark"
                     options={{
                         title: "Bookmark",
-                        headerShown: false,
                         tabBarIcon: ({ color }) => (
                             <TabIcon icon={icons.bookmark} color={color} />
                         ),
@@ -56,7 +55,6 @@ export default function TabsLayout() {
                     name="create"
                     options={{
                         title: "Create",
-                        headerShown: false,
                         tabBarIcon: ({ color }) => (
                             <TabIcon icon={icons.plus} color={color} />
                         ),
@@ -66,7 +64,6 @@ export default function TabsLayout() {
                     name="profile"
                     options={{
                         title: "Profile",
-                        headerShown: false,
                         tabBarIcon: ({ color }) => (
                             <TabIcon icon={icons.profile} color={color} />
                         ),
