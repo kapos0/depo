@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
-import { StatusBar } from "expo-status-bar";
 import "@/assets/global.css";
 import GlobalProvider from "@/lib/GlobalProvider";
+import { StatusBar } from "react-native";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -34,7 +34,7 @@ export default function RootLayout() {
                 <Stack.Screen name="(tabs)" />
                 <Stack.Screen name="search/[query]" />
             </Stack>
-            <StatusBar backgroundColor="#161622" style="light" />
+            <StatusBar backgroundColor="#161622" barStyle="light-content" />
         </GlobalProvider>
     );
 }

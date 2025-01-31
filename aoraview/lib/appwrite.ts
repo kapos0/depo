@@ -114,7 +114,7 @@ export async function getCurrentUser() {
 
         return currentUser.documents[0];
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return null;
     }
 }
@@ -259,7 +259,6 @@ export async function getLatestPosts() {
             appwriteConfig.mediaCollectionId,
             [Query.orderDesc("$createdAt"), Query.limit(7)]
         );
-
         return posts.documents;
     } catch (error) {
         throw new Error(String(error));
