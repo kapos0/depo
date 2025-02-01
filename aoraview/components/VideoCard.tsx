@@ -59,7 +59,12 @@ export default function VideoCard({
             {play ? (
                 <Video
                     source={{ uri: media }}
-                    className="w-full h-60 rounded-xl mt-3"
+                    style={{
+                        width: "100%",
+                        height: 240,
+                        borderRadius: 12,
+                        marginTop: 12,
+                    }}
                     resizeMode={ResizeMode.CONTAIN}
                     useNativeControls
                     shouldPlay

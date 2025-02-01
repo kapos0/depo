@@ -37,7 +37,6 @@ export default function Home() {
     const [refresinh, setRefreshing] = useState(false);
     const [latestPosts, setLatestPosts] = useState<Post[]>([]);
     async function fetchData(isItRefreshing = false) {
-        if (!isLogged) return <Redirect href="/(auth)/sign-in" />;
         setLoading(true);
         try {
             const response = isItRefreshing
@@ -80,6 +79,7 @@ export default function Home() {
         fetchData(false);
         setRefreshing(false);
     }
+    if (!isLogged) return <Redirect href="/(auth)/sign-in" />;
     return (
         <>
             <SafeAreaView className="bg-primary h-full">

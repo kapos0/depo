@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
     FlatList,
     Image,
@@ -38,9 +38,16 @@ function Item({ activeItem, item }: { activeItem: any; item: any }) {
             {play ? (
                 <Video
                     source={{ uri: item.media }}
-                    className="w-52 h-72 rounded-[33px] mt-3 bg-white/10"
                     resizeMode={ResizeMode.CONTAIN}
                     useNativeControls
+                    style={{
+                        width: 208 /* w-52 */,
+                        height: 312 /* h-72 */,
+                        borderRadius: 33 /* rounded-[33px] */,
+                        marginTop: 12 /* mt-3 */,
+                        backgroundColor:
+                            "rgba(255, 255, 255, 0.1)" /* bg-white/10 */,
+                    }}
                     shouldPlay
                     onPlaybackStatusUpdate={(status) => {
                         if (status.isLoaded && status.didJustFinish)
@@ -74,9 +81,14 @@ function Item({ activeItem, item }: { activeItem: any; item: any }) {
 
 export default function Trending({ posts }: { posts: any }) {
     const [activeItem, setActiveItem] = useState(posts[0]);
-    function viewableItemsChanged({ viewableItems }: { viewableItems: any }) {
-        if (viewableItems.length > 0) setActiveItem(viewableItems[0].key);
-    }
+
+    const viewableItemsChanged = useCallback(
+        ({ viewableItems }: { viewableItems: any }) => {
+            if (viewableItems.length > 0) setActiveItem(viewableItems[0].key);
+        },
+        []
+    );
+
     return (
         <FlatList
             data={posts}
