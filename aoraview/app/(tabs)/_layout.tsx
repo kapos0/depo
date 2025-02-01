@@ -21,7 +21,6 @@ function TabIcon({ icon, color }: { icon: any; color: string }) {
 export default function TabsLayout() {
     const { loading, isLogged } = useGlobalContext();
     if (!loading && !isLogged) return <Redirect href="/(auth)/sign-in" />;
-
     return (
         <>
             <Tabs
@@ -40,7 +39,7 @@ export default function TabsLayout() {
                 <Tabs.Screen
                     name="home"
                     options={{
-                        tabBarIcon: ({ color }) => (
+                        tabBarIcon: ({ color }: { color: string }) => (
                             <TabIcon icon={icons.home} color={color} />
                         ),
                     }}
@@ -49,7 +48,7 @@ export default function TabsLayout() {
                     name="bookmark"
                     options={{
                         title: "Bookmark",
-                        tabBarIcon: ({ color }) => (
+                        tabBarIcon: ({ color }: { color: string }) => (
                             <TabIcon icon={icons.bookmark} color={color} />
                         ),
                     }}
@@ -59,7 +58,7 @@ export default function TabsLayout() {
                     name="create"
                     options={{
                         title: "Create",
-                        tabBarIcon: ({ color }) => (
+                        tabBarIcon: ({ color }: { color: string }) => (
                             <TabIcon icon={icons.plus} color={color} />
                         ),
                     }}
@@ -68,7 +67,7 @@ export default function TabsLayout() {
                     name="profile"
                     options={{
                         title: "Profile",
-                        tabBarIcon: ({ color }) => (
+                        tabBarIcon: ({ color }: { color: string }) => (
                             <TabIcon icon={icons.profile} color={color} />
                         ),
                     }}

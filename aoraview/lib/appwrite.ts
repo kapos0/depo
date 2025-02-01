@@ -179,7 +179,7 @@ type MediaPostForm = {
     title: string;
     thumbnail: any;
     media: any;
-    prompt: string;
+    content: string;
     userId: string;
 };
 
@@ -198,7 +198,7 @@ export async function createMediaPost(form: MediaPostForm) {
                 title: form.title,
                 thumbnail: thumbnailUrl,
                 media: mediaUrl,
-                prompt: form.prompt,
+                content: form.content,
                 creator: form.userId,
             }
         );

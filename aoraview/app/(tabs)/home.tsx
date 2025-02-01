@@ -31,7 +31,7 @@ export type Post = {
 };
 
 export default function Home() {
-    const { isLogged, user } = useGlobalContext();
+    const { user } = useGlobalContext();
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState<Post[]>([]);
     const [refresinh, setRefreshing] = useState(false);
@@ -79,7 +79,6 @@ export default function Home() {
         fetchData(false);
         setRefreshing(false);
     }
-    if (!isLogged) return <Redirect href="/(auth)/sign-in" />;
     return (
         <>
             <SafeAreaView className="bg-primary h-full">

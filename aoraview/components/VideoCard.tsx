@@ -47,13 +47,13 @@ export default function VideoCard({
                     </View>
                 </View>
 
-                <View className="pt-2">
+                <TouchableOpacity className="pt-2">
                     <Image
-                        source={icons.menu}
-                        className="w-5 h-5"
+                        source={icons.bookMarkHeart}
+                        className="w-5 h-5 bg-white"
                         resizeMode="contain"
                     />
-                </View>
+                </TouchableOpacity>
             </View>
 
             {play ? (
@@ -82,7 +82,7 @@ export default function VideoCard({
                     <Image
                         source={{ uri: thumbnail }}
                         className="w-full h-full rounded-xl mt-3"
-                        resizeMode="cover"
+                        resizeMode="contain"
                     />
 
                     <Image
