@@ -18,7 +18,7 @@ import Trending from "@/components/Trending";
 import { getAllPosts, getLatestPosts } from "@/lib/appwrite";
 import Loader from "@/components/Loader";
 
-type Post = {
+export type Post = {
     $id: string;
     title: string;
     thumbnail: string;

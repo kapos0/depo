@@ -243,7 +243,6 @@ export async function searchPosts(query: string) {
             appwriteConfig.mediaCollectionId,
             [Query.search("title", query)]
         );
-
         if (!posts) throw new Error("Something went wrong");
 
         return posts.documents;
