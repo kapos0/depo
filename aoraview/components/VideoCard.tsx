@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import { ResizeMode, Video } from "expo-av";
 
 import icons from "@/assets/constants/icons";
+import { addFavMedia, removeFavMedia } from "@/lib/appwrite";
 
 export default function VideoCard({
     title,
@@ -10,15 +11,28 @@ export default function VideoCard({
     avatar,
     thumbnail,
     media,
+    isItInFav,
+    mediaId,
+    onFavChange,
 }: {
     title: string;
     creator: string;
     avatar: string;
     thumbnail: string;
     media: string;
+    isItInFav: boolean;
+    mediaId?: string;
+    onFavChange: () => void;
 }) {
     const [play, setPlay] = useState(false);
-
+    async function handleRemoveFav(mediaId: string) {
+        await removeFavMedia(mediaId || "");
+        onFavChange();
+    }
+    async function handleAddFav(mediaId: string) {
+        await addFavMedia(mediaId || "");
+        onFavChange();
+    }
     return (
         <View className="flex flex-col items-center px-4 mb-14">
             <View className="flex flex-row gap-3 items-start">
@@ -47,10 +61,21 @@ export default function VideoCard({
                     </View>
                 </View>
 
-                <TouchableOpacity className="pt-2">
+                <TouchableOpacity
+                    className="pt-2"
+                    onPress={
+                        isItInFav
+                            ? () => handleRemoveFav(mediaId || "")
+                            : () => handleAddFav(mediaId || "")
+                    }
+                >
                     <Image
-                        source={icons.bookMarkHeart}
-                        className="w-5 h-5 bg-white"
+                        source={
+                            isItInFav
+                                ? icons.bookMarkHeart
+                                : icons.bookMarkHeartFill
+                        }
+                        className="w-5 h-5"
                         resizeMode="contain"
                     />
                 </TouchableOpacity>

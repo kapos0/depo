@@ -58,6 +58,7 @@ export default function Search() {
                             title={item.title}
                             thumbnail={item.thumbnail}
                             media={item.media}
+                            isItInFav={false}
                             creator={item.creator.username}
                             avatar={item.creator.avatar}
                         />

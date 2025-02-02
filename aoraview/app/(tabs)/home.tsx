@@ -8,7 +8,6 @@ import {
     Image,
     Alert,
 } from "react-native";
-import { Redirect } from "expo-router";
 import images from "@/assets/constants/images";
 import VideoCard from "@/components/VideoCard";
 import EmptyState from "@/components/EmptyState";
@@ -34,7 +33,7 @@ export default function Home() {
     const { user } = useGlobalContext();
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState<Post[]>([]);
-    const [refresinh, setRefreshing] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
     const [latestPosts, setLatestPosts] = useState<Post[]>([]);
     async function fetchData(isItRefreshing = false) {
         setLoading(true);
@@ -92,6 +91,8 @@ export default function Home() {
                             media={item.media}
                             creator={item.creator.username}
                             avatar={item.creator.avatar}
+                            mediaId={item.$id}
+                            isItInFav={false}
                         />
                     )}
                     ListHeaderComponent={() => (
@@ -134,7 +135,7 @@ export default function Home() {
                     )}
                     refreshControl={
                         <RefreshControl
-                            refreshing={refresinh}
+                            refreshing={refreshing}
                             onRefresh={onRefresh}
                         />
                     }

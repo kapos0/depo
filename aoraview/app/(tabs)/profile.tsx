@@ -1,6 +1,13 @@
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Image, FlatList, TouchableOpacity, Alert } from "react-native";
+import {
+    View,
+    Image,
+    FlatList,
+    TouchableOpacity,
+    Alert,
+    RefreshControl,
+} from "react-native";
 import icons from "@/assets/constants/icons";
 import { getUserPosts, signOut } from "@/lib/appwrite";
 import { useGlobalContext } from "@/lib/GlobalProvider";
@@ -15,39 +22,41 @@ export default function Profile() {
     const { user, setUser, setIsLogged } = useGlobalContext();
     const [posts, setPosts] = useState<Post[]>();
     const [loading, setLoading] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
     useEffect(() => {
-        async function fetchPosts() {
-            try {
-                setLoading(true);
-                const response = await getUserPosts(user.$id);
-                const posts = response.map((doc: any) => ({
-                    $id: doc.$id,
-                    title: doc.title,
-                    thumbnail: doc.thumbnail,
-                    content: doc.content,
-                    media: doc.media,
-                    creator: {
-                        username: doc.creator.username,
-                        avatar: doc.creator.avatar,
-                    },
-                }));
-                setPosts(posts);
-                setLoading(false);
-            } catch (error) {
-                Alert.alert(
-                    "Error",
-                    "An error occurred while fetching data: " +
-                        (error as Error).message
-                );
-                setLoading(false);
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        }
         fetchPosts();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    async function fetchPosts() {
+        try {
+            setLoading(true);
+            const response = await getUserPosts(user.$id);
+            const posts = response.map((doc: any) => ({
+                $id: doc.$id,
+                title: doc.title,
+                thumbnail: doc.thumbnail,
+                content: doc.content,
+                media: doc.media,
+                creator: {
+                    username: doc.creator.username,
+                    avatar: doc.creator.avatar,
+                },
+            }));
+            setPosts(posts);
+            setLoading(false);
+        } catch (error) {
+            Alert.alert(
+                "Error",
+                "An error occurred while fetching data: " +
+                    (error as Error).message
+            );
+            setLoading(false);
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     async function logout() {
         setLoading(true);
@@ -57,6 +66,12 @@ export default function Profile() {
         setIsLogged(false);
 
         router.replace("/sign-in");
+    }
+
+    async function onRefresh() {
+        setRefreshing(true);
+        await fetchPosts();
+        setRefreshing(false);
     }
 
     return (
@@ -72,6 +87,7 @@ export default function Profile() {
                             media={item.media}
                             creator={item.creator.username}
                             avatar={item.creator.avatar}
+                            isItInFav={false}
                         />
                     )}
                     ListEmptyComponent={() => (
@@ -122,6 +138,12 @@ export default function Profile() {
                             </View>
                         </View>
                     )}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                        />
+                    }
                 />
             </SafeAreaView>
             <Loader isLoading={loading} />

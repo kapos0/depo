@@ -90,6 +90,86 @@ export async function getAccount() {
     }
 }
 
+export async function getUserFavs() {
+    try {
+        const currentAccount = await getCurrentUser();
+        if (!currentAccount) throw new Error("No current account found");
+
+        const currentUser = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            [Query.equal("$id", currentAccount.$id)]
+        );
+        if (!currentUser || currentUser.documents.length === 0)
+            throw new Error("No current user found");
+
+        return currentUser.documents[0].fav_medias || [];
+    } catch (error) {
+        throw new Error(String(error));
+    }
+}
+
+export async function addFavMedia(mediaId: string) {
+    try {
+        const currentAccount = await getCurrentUser();
+        if (!currentAccount) throw new Error("No current account found");
+
+        const currentUser = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            [Query.equal("$id", currentAccount.$id)]
+        );
+        if (!currentUser || currentUser.documents.length === 0)
+            throw new Error("No current user found");
+
+        const favMedias = currentUser.documents[0].fav_medias || [];
+        favMedias.push(mediaId);
+
+        await databases.updateDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            currentUser.documents[0].$id,
+            {
+                fav_medias: favMedias,
+            }
+        );
+    } catch (error) {
+        throw new Error(String(error));
+    }
+}
+
+export async function removeFavMedia(mediaId: string) {
+    if (!mediaId) return;
+    try {
+        const currentAccount = await getCurrentUser();
+        if (!currentAccount) throw new Error("No current account found");
+
+        const currentUser = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            [Query.equal("$id", currentAccount.$id)]
+        );
+        if (!currentUser || currentUser.documents.length === 0)
+            throw new Error("No current user found");
+
+        const favMedias = currentUser.documents[0].fav_medias || [];
+        const updatedFavMedias = favMedias.filter((item: any) => {
+            return item.$id !== mediaId;
+        });
+
+        await databases.updateDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            currentUser.documents[0].$id,
+            {
+                fav_medias: updatedFavMedias,
+            }
+        );
+    } catch (error) {
+        throw new Error(String(error));
+    }
+}
+
 export const checkSession = async (): Promise<boolean> => {
     try {
         const session = await account.get();
