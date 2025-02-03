@@ -42,7 +42,7 @@ async function register(formData: FormData): Promise<any> {
 
     await User.create({ username, provider, email, password: hashedPassword });
     console.log(`User created successfully 🥂`);
-    redirect("/login");
+    redirect("/sign-in");
 }
 
 async function fetchAllUsers() {
@@ -51,4 +51,8 @@ async function fetchAllUsers() {
     return users;
 }
 
-export { register, login, fetchAllUsers };
+async function getUserByid(id: string) {
+    return true;
+}
+
+export { register, login, fetchAllUsers, getUserByid };

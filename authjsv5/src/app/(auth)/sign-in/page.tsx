@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { login } from "@/actions/userActions";
+import { login } from "@/controllers/userController";
 
 export default function signInPage() {
     return (

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { register } from "@/actions/userActions";
+import { register } from "@/controllers/userController";
 
 export default function signUpPage() {
     return (

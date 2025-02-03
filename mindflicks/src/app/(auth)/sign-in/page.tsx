@@ -1,7 +1,11 @@
 import Link from "next/link";
-import { login } from "@/actions/userActions";
+import { login } from "@/controllers/userController";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
-export default function signInPage() {
+export default async function signInPage() {
+    const session = await auth();
+    if (session) redirect("/");
     return (
         <main className="relative min-h-screen w-full bg-white">
             <div className="p-6" x-data="app">
