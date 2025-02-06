@@ -1,18 +1,22 @@
 "use client";
 import Link from "next/link";
-import { fastLogin, login } from "@/controllers/userController";
+import { login } from "@/controllers/userController";
+import { signIn, useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 export default function signInPage() {
+    const user = useSession();
+    if (!(user.status === "unauthenticated")) redirect("/");
     async function handleGoogleFastLogin() {
         try {
-            await fastLogin("google");
+            await signIn("google");
         } catch (error) {
             console.error(error);
         }
     }
     async function handleGithubFastLogin() {
         try {
-            await fastLogin("github");
+            await signIn("github");
         } catch (error) {
             console.error(error);
         }

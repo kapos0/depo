@@ -48,12 +48,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     username,
                     provider: "credentials",
                 });
-                console.log(
-                    await User.findOne({
-                        username,
-                        provider: "credentials",
-                    })
-                );
 
                 if (!user || !user.password)
                     throw new Error("Invalid username or password");
@@ -85,7 +79,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         email: user?.email,
                         username: user?.name,
                         provider: account?.provider,
-                        avatar: user?.image,
+                        image: user?.image,
+                        website: "",
+                        bio: "",
+                        location: "",
+                        posts: [],
+                        notifications: [],
+                        followers: [],
+                        following: [],
                         isVerified: true,
                     });
                     await newUser.save();
