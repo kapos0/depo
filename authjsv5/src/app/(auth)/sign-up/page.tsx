@@ -1,13 +1,26 @@
+"use client";
 import Link from "next/link";
-import { register } from "@/controllers/userController";
+import { fastLogin, register } from "@/controllers/userController";
 
 export default function signUpPage() {
+    async function handleGoogleFastLogin() {
+        try {
+            await fastLogin("google");
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    async function handleGithubFastLogin() {
+        try {
+            await fastLogin("github");
+        } catch (error) {
+            console.error(error);
+        }
+    }
     return (
         <main className="relative min-h-screen w-full bg-white">
             <div className="p-6" x-data="app">
-                {/* header */}
                 <header className="flex w-full justify-end">
-                    {/* buttons */}
                     <div>
                         <Link
                             href="/sign-in"
@@ -18,7 +31,6 @@ export default function signUpPage() {
                     </div>
                 </header>
                 <div className="absolute left-1/2 top-1/2 mx-auto max-w-sm -translate-x-1/2 -translate-y-1/2 transform space-y-4 text-center w-full">
-                    {/* register content */}
                     <div className="space-y-4">
                         <header className="mb-3 text-4xl font-bold">
                             Create your profile
@@ -63,18 +75,18 @@ export default function signUpPage() {
                     </div>
                     <footer>
                         <div className="grid grid-cols-2 gap-4">
-                            <a
-                                href="#"
+                            <button
+                                onClick={handleGoogleFastLogin}
                                 className="rounded-2xl border-b-2 border-b-gray-300 bg-white px-4 py-2.5 font-bold text-blue-700 ring-2 ring-gray-300 hover:bg-gray-200 active:translate-y-[0.125rem] active:border-b-gray-200"
                             >
                                 GOOGLE
-                            </a>
-                            <a
-                                href="#"
+                            </button>
+                            <button
+                                onClick={handleGithubFastLogin}
                                 className="rounded-2xl border-b-2 border-b-gray-300 bg-white px-4 py-2.5 font-bold text-blue-500 ring-2 ring-gray-300 hover:bg-gray-200 active:translate-y-[0.125rem] active:border-b-gray-200"
                             >
                                 GITHUB
-                            </a>
+                            </button>
                         </div>
                     </footer>
                 </div>

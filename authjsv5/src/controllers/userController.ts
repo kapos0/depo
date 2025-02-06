@@ -25,6 +25,15 @@ async function login(formData: FormData): Promise<any> {
     redirect("/");
 }
 
+async function fastLogin(service: "github" | "google") {
+    try {
+        await signIn(service, { callbackUrl: "/" });
+    } catch (error) {
+        console.error(error);
+        throw new Error("Failed to login");
+    }
+}
+
 async function register(formData: FormData): Promise<any> {
     const username = formData.get("username") as string;
     const email = formData.get("email") as string;
@@ -60,4 +69,4 @@ async function fetchUser() {
     return dbUser;
 }
 
-export { register, login, fetchAllUsers, fetchUser };
+export { fastLogin, register, login, fetchAllUsers, fetchUser };
