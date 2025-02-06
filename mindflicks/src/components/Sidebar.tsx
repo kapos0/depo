@@ -49,7 +49,7 @@ export default async function Sidebar() {
                             <div className="flex justify-between">
                                 <div>
                                     <p className="font-medium">
-                                        {user.following.legnth || 0}
+                                        {user.following.length || 0}
                                     </p>
                                     <p className="text-xs text-muted-foreground">
                                         Following
@@ -58,7 +58,7 @@ export default async function Sidebar() {
                                 <Separator orientation="vertical" />
                                 <div>
                                     <p className="font-medium">
-                                        {user.followers.legnth || 0}
+                                        {user.followers.length || 0}
                                     </p>
                                     <p className="text-xs text-muted-foreground">
                                         Followers

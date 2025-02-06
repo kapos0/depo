@@ -7,6 +7,7 @@ import { auth, signIn } from "@/auth";
 import { CredentialsSignin } from "next-auth";
 import { hash } from "bcryptjs";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 async function login(formData: FormData): Promise<any> {
     const username = formData.get("username") as string;
@@ -152,7 +153,7 @@ async function toggleFollow(targetUserId: string) {
                 },
             });
         }
-
+        revalidatePath("/");
         return { success: true };
     } catch (error) {
         console.error("Error in toggleFollow:", error);
