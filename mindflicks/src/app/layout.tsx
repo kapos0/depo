@@ -3,6 +3,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import "@/assets/globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import Sidebar from "@/components/Sidebar";
+import { Toaster } from "react-hot-toast";
 
 export default function RootLayout({
     children,
@@ -40,6 +41,7 @@ export default function RootLayout({
                                 </div>
                             </div>
                         </main>
+                        <Toaster />
                     </ThemeProvider>
                 </SessionProvider>
             </body>

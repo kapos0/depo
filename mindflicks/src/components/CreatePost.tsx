@@ -16,9 +16,9 @@ export default function CreatePost() {
     const [isPosting, setIsPosting] = useState(false);
     const [showImageUpload, setShowImageUpload] = useState(false);
 
-    const handleSubmit = async () => {
+    async function handleSubmit() {
         if (!content.trim()) return;
-
+        console.log("🚀 ~ CreatePost ~ showImageUpload:", showImageUpload);
         setIsPosting(true);
         try {
             const result = await createUserPost(content, imageUrl);
@@ -36,7 +36,7 @@ export default function CreatePost() {
         } finally {
             setIsPosting(false);
         }
-    };
+    }
 
     return (
         <Card className="mb-6">
@@ -65,7 +65,7 @@ export default function CreatePost() {
                                 size="sm"
                                 className="text-muted-foreground hover:text-primary"
                                 onClick={() =>
-                                    setShowImageUpload(!showImageUpload)
+                                    setShowImageUpload((prev) => !prev)
                                 }
                                 disabled={isPosting}
                             >

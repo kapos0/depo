@@ -38,7 +38,7 @@ export default async function WhoToFollow() {
                                         @{user.username}
                                     </p>
                                     <p className="text-muted-foreground">
-                                        {user.followersCount.lenght || 0}
+                                        {user.followersCount.lenght || 0}{" "}
                                         followers
                                     </p>
                                 </div>

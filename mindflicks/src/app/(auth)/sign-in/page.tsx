@@ -3,10 +3,15 @@ import Link from "next/link";
 import { login } from "@/controllers/userController";
 import { signIn, useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import { useEffect } from "react";
 
-export default function signInPage() {
+export default function SignInPage() {
     const user = useSession();
-    if (!(user.status === "unauthenticated")) redirect("/");
+    useEffect(() => {
+        if (user.status !== "unauthenticated") {
+            redirect("/");
+        }
+    }, [user.status]);
     async function handleGoogleFastLogin() {
         try {
             await signIn("google");
