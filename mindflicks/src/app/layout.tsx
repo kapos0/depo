@@ -2,7 +2,7 @@ import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/components/theme-provider";
 import "@/assets/globals.css";
 import Navbar from "@/components/Navbar/Navbar";
-import Sidebar from "@/components/SideBar/Sidebar";
+import Sidebar from "@/components/Sidebar";
 
 export default function RootLayout({
     children,

@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Button } from "../ui/button";
-import { Avatar, AvatarImage } from "../ui/avatar";
-import { Separator } from "../ui/separator";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Button } from "./ui/button";
+import { Avatar, AvatarImage } from "./ui/avatar";
+import { Separator } from "./ui/separator";
 import { LinkIcon, MapPinIcon } from "lucide-react";
 import { fetchUser } from "@/controllers/userController";
 import { auth } from "@/auth";
@@ -108,12 +108,16 @@ function UnAuthenticatedSidebar() {
                     <p className="text-center text-muted-foreground mb-4">
                         Login to access your profile and connect with others.
                     </p>
-                    <Button variant="outline" className="w-full">
-                        <Link href="/sign-in">Login</Link>
-                    </Button>
-                    <Button variant="default" className="w-full mt-2">
-                        <Link href="/sign-up">Login</Link>
-                    </Button>
+                    <Link href="/sign-in">
+                        <Button variant="outline" className="w-full">
+                            Login
+                        </Button>
+                    </Link>
+                    <Link href="/sign-up">
+                        <Button variant="default" className="w-full mt-2">
+                            Register
+                        </Button>
+                    </Link>
                 </CardContent>
             </Card>
         </div>

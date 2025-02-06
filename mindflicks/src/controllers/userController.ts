@@ -74,4 +74,99 @@ async function fetchUser() {
     return dbUser;
 }
 
-export { register, login, fetchAllUsers, fetchUser };
+async function getRandomUsers() {
+    try {
+        await connectDB();
+        const user = await fetchUser();
+        const randomUsers = await User.aggregate([
+            {
+                $match: {
+                    _id: { $ne: user._id },
+                    followers: { $not: { $elemMatch: { $eq: user._id } } },
+                },
+            },
+            {
+                $project: {
+                    name: 1,
+                    username: 1,
+                    image: 1,
+                    followersCount: { $size: "$followers" },
+                },
+            },
+            { $sample: { size: 5 } },
+        ]);
+
+        return randomUsers;
+    } catch (error) {
+        console.error("Failed to get random users", error);
+        return null;
+    }
+}
+
+async function toggleFollow(targetUserId: string) {
+    try {
+        const authUser = await fetchUser();
+
+        if (!authUser) throw new Error("Authentication required");
+
+        if (authUser._id.toString() === targetUserId)
+            throw new Error("You cannot follow yourself");
+
+        const targetUser = await User.findById(targetUserId);
+
+        if (!targetUser) throw new Error("Target user not found");
+
+        const isFollowing = authUser.following.includes(targetUserId);
+
+        if (isFollowing) {
+            await User.findByIdAndUpdate(authUser._id, {
+                $pull: { following: targetUserId },
+            });
+
+            await User.findByIdAndUpdate(targetUserId, {
+                $pull: { followers: authUser._id },
+            });
+            await User.findByIdAndUpdate(targetUserId, {
+                $pull: {
+                    notifications: { creator: authUser._id, type: "FOLLOW" },
+                },
+            });
+        } else {
+            await User.findByIdAndUpdate(authUser._id, {
+                $push: { following: targetUserId },
+            });
+
+            await User.findByIdAndUpdate(targetUserId, {
+                $push: { followers: authUser._id },
+            });
+
+            await User.findByIdAndUpdate(targetUserId, {
+                $push: {
+                    notifications: {
+                        creator: authUser._id,
+                        type: "FOLLOW",
+                        read: false,
+                        createdAt: new Date(),
+                    },
+                },
+            });
+        }
+
+        return { success: true };
+    } catch (error) {
+        console.error("Error in toggleFollow:", error);
+        return {
+            success: false,
+            error: (error as Error).message || "Error toggling follow",
+        };
+    }
+}
+
+export {
+    register,
+    login,
+    fetchAllUsers,
+    fetchUser,
+    getRandomUsers,
+    toggleFollow,
+};

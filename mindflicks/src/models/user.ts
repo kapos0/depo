@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema(
             enum: ["credentials", "google", "github"],
             required: true,
         },
-        password: { type: String, select: false },
+        password: { type: String },
         name: { type: String },
         bio: { type: String },
         image: { type: String },

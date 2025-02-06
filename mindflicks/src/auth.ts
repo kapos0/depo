@@ -48,6 +48,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     username,
                     provider: "credentials",
                 });
+                console.log(
+                    await User.findOne({
+                        username,
+                        provider: "credentials",
+                    })
+                );
 
                 if (!user || !user.password)
                     throw new Error("Invalid username or password");
