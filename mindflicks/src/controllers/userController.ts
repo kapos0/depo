@@ -2,7 +2,7 @@
 
 import { connectDB } from "@/lib/conntectDB";
 import User from "@/models/user";
-import { signIn } from "@/auth";
+import { auth, signIn } from "@/auth";
 import { CredentialsSignin } from "next-auth";
 import { hash } from "bcryptjs";
 import { redirect } from "next/navigation";
@@ -40,7 +40,21 @@ async function register(formData: FormData): Promise<any> {
 
     const hashedPassword = await hash(password, 12);
 
-    await User.create({ username, provider, email, password: hashedPassword });
+    await User.create({
+        username,
+        provider,
+        email,
+        password: hashedPassword,
+        bio: "",
+        image: "",
+        location: "",
+        website: "",
+        isVerified: false,
+        posts: [],
+        notifications: [],
+        followers: [],
+        following: [],
+    });
     console.log(`User created successfully 🥂`);
     redirect("/sign-in");
 }
@@ -51,8 +65,13 @@ async function fetchAllUsers() {
     return users;
 }
 
-async function getUserByid(id: string) {
-    return true;
+async function fetchUser() {
+    const user = await auth();
+    if (!user) throw new Error("User not found");
+    const userEmail = user.user?.email;
+    await connectDB();
+    const dbUser = await User.findOne({ email: userEmail });
+    return dbUser;
 }
 
-export { register, login, fetchAllUsers, getUserByid };
+export { register, login, fetchAllUsers, fetchUser };

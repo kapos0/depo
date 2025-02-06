@@ -1,20 +1,18 @@
-import { currentUser } from "@clerk/nextjs/server";
-import { SignInButton, SignUpButton } from "@clerk/nextjs";
+import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
-import { getUserByid } from "@/controllers/userController";
-import Link from "next/link";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { Separator } from "../ui/separator";
 import { LinkIcon, MapPinIcon } from "lucide-react";
+import { fetchUser } from "@/controllers/userController";
+import { auth } from "@/auth";
 
 export default async function Sidebar() {
-    const authUser = await currentUser();
+    const authUser = await auth();
     if (!authUser) return <UnAuthenticatedSidebar />;
 
-    const user = await getUserByid(authUser.id);
+    const user = await fetchUser();
     if (!user) return null;
-
     return (
         <div className="sticky top-20">
             <Card>
@@ -31,9 +29,11 @@ export default async function Sidebar() {
                             </Avatar>
 
                             <div className="mt-4 space-y-1">
-                                <h3 className="font-semibold">{user.name}</h3>
-                                <p className="text-sm text-muted-foreground">
+                                <h3 className="font-semibold">
                                     {user.username}
+                                </h3>
+                                <p className="text-sm text-muted-foreground">
+                                    {user.email}
                                 </p>
                             </div>
                         </Link>
@@ -49,7 +49,7 @@ export default async function Sidebar() {
                             <div className="flex justify-between">
                                 <div>
                                     <p className="font-medium">
-                                        {user._count.following}
+                                        {user.following.legnth || 0}
                                     </p>
                                     <p className="text-xs text-muted-foreground">
                                         Following
@@ -58,7 +58,7 @@ export default async function Sidebar() {
                                 <Separator orientation="vertical" />
                                 <div>
                                     <p className="font-medium">
-                                        {user._count.followers}
+                                        {user.followers.legnth || 0}
                                     </p>
                                     <p className="text-xs text-muted-foreground">
                                         Followers

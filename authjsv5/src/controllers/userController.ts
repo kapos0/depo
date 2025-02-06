@@ -2,7 +2,7 @@
 
 import { connectDB } from "@/lib/conntectDB";
 import User from "@/models/user";
-import { signIn } from "@/auth";
+import { auth, signIn } from "@/auth";
 import { CredentialsSignin } from "next-auth";
 import { hash } from "bcryptjs";
 import { redirect } from "next/navigation";
@@ -51,4 +51,13 @@ async function fetchAllUsers() {
     return users;
 }
 
-export { register, login, fetchAllUsers };
+async function fetchUser() {
+    const user = await auth();
+    if (!user) throw new Error("User not found");
+    const userEmail = user.user?.email;
+    await connectDB();
+    const dbUser = await User.findOne({ email: userEmail });
+    return dbUser;
+}
+
+export { register, login, fetchAllUsers, fetchUser };

@@ -1,17 +1,44 @@
 import mongoose, { Schema } from "mongoose";
 
-const userSchema = new Schema(
+const UserSchema = new mongoose.Schema(
     {
-        provider: { type: String, required: true },
-        email: { type: String, required: true, unique: true },
-        username: { type: String, required: true, unique: true },
-        password: { type: String },
-        avatar: { type: String },
-        role: { type: String, default: "user" },
+        email: { type: String, unique: true, required: true },
+        username: { type: String, unique: true, required: true },
+        provider: {
+            type: String,
+            enum: ["credentials", "google", "github"],
+            required: true,
+        },
+        password: { type: String, select: false },
+        name: { type: String },
+        bio: { type: String },
+        image: { type: String },
+        location: { type: String },
+        website: { type: String },
         isVerified: { type: Boolean, default: false },
+        posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+        notifications: [
+            {
+                creator: { type: Schema.Types.ObjectId, ref: "User" },
+                type: {
+                    type: String,
+                    enum: ["LIKE", "COMMENT", "FOLLOW"],
+                    required: true,
+                },
+                read: { type: Boolean, default: false },
+                post: { type: Schema.Types.ObjectId, ref: "Post" },
+                comment: {
+                    type: Schema.Types.ObjectId,
+                    ref: "Comment",
+                },
+                createdAt: { type: Date, default: Date.now },
+            },
+        ],
+        followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
+        following: [{ type: Schema.Types.ObjectId, ref: "User" }],
     },
     { timestamps: true }
 );
 
-const User = mongoose.models?.User || mongoose.model("User", userSchema);
+const User = mongoose.models?.User || mongoose.model("User", UserSchema);
 export default User;
