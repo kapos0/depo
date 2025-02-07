@@ -199,7 +199,8 @@ export async function createComment(postId: string, content: string) {
 
 export async function deletePost(postId: string) {
     try {
-        const userId = await auth().then((session) => session?.user?.id);
+        const user = await fetchUser();
+        const userId = user._id.toString();
         if (!userId) return;
 
         const post = await Post.findById(postId).select("author");

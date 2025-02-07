@@ -126,7 +126,7 @@ export default function PostCard({
                                     </div>
                                 </div>
                                 {/* Check if current user is the post author */}
-                                {dbUserId === post.author.id && (
+                                {dbUserId === post.author._id && (
                                     <DeleteAlertDialog
                                         isDeleting={isDeleting}
                                         onDelete={handleDeletePost}
