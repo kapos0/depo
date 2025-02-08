@@ -8,7 +8,6 @@ export async function connectDB() {
     mongoose.set("strictQuery", true);
 
     if (isConnected) {
-        console.log("MongoDB is already connected");
         return mongoose.connection.getClient();
     }
 

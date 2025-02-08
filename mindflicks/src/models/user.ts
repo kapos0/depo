@@ -27,10 +27,7 @@ const UserSchema = new mongoose.Schema(
                 },
                 read: { type: Boolean, default: false },
                 post: { type: Schema.Types.ObjectId, ref: "Post" },
-                comment: {
-                    type: Schema.Types.ObjectId,
-                    ref: "Comment",
-                },
+                commentId: { type: String },
                 createdAt: { type: Date, default: Date.now },
             },
         ],

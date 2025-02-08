@@ -18,7 +18,6 @@ export default function CreatePost() {
 
     async function handleSubmit() {
         if (!content.trim()) return;
-        console.log("🚀 ~ CreatePost ~ showImageUpload:", showImageUpload);
         setIsPosting(true);
         try {
             const result = await createUserPost(content, imageUrl);

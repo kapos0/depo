@@ -34,7 +34,7 @@ export default function SignUpPage() {
                     <div>
                         <Link
                             href="/sign-in"
-                            className="rounded-2xl border-b-2 border-b-gray-300 bg-white px-4 py-3 font-bold text-blue-500 ring-2 ring-gray-300 hover:bg-gray-200 active:translate-y-[0.125rem] active:border-b-gray-200"
+                            className="lg:hidden rounded-2xl border-b-2 border-b-gray-300 bg-white px-4 py-3 font-bold text-black ring-2 ring-gray-300 hover:bg-gray-200 active:translate-y-[0.125rem] active:border-b-gray-200"
                         >
                             LOGIN
                         </Link>
@@ -42,11 +42,11 @@ export default function SignUpPage() {
                 </header>
                 <div className="absolute left-1/2 top-1/2 mx-auto max-w-sm -translate-x-1/2 -translate-y-1/2 transform space-y-4 text-center w-full">
                     <div className="space-y-4">
-                        <header className="mb-3 text-4xl font-bold">
+                        <header className="mb-3 text-4xl font-bold text-black">
                             Create your profile
                         </header>
                         <form action={register}>
-                            <div className="w-full rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 my-4 focus-within:ring-blue-400">
+                            <div className="w-full rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 my-4 ">
                                 <input
                                     type="text"
                                     name="username"
@@ -54,7 +54,7 @@ export default function SignUpPage() {
                                     className="my-3 w-full border-none bg-transparent outline-hidden focus:outline-hidden"
                                 />
                             </div>
-                            <div className="w-full my-4 rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-blue-400">
+                            <div className="w-full my-4 rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200">
                                 <input
                                     type="email"
                                     name="email"
@@ -62,7 +62,7 @@ export default function SignUpPage() {
                                     className="my-3 w-full border-none bg-transparent outline-hidden focus:outline-hidden"
                                 />
                             </div>
-                            <div className="w-full my-4 rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-blue-400">
+                            <div className="w-full my-4 rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200">
                                 <input
                                     type="password"
                                     name="password"
@@ -72,7 +72,7 @@ export default function SignUpPage() {
                             </div>
                             <button
                                 type="submit"
-                                className="w-full rounded-2xl border-b-4 border-b-blue-600 bg-blue-500 py-3 font-bold text-white hover:bg-blue-400 active:translate-y-[0.125rem] active:border-b-blue-400"
+                                className="w-full rounded-2xl border-b-4 bg-black py-3 font-bold text-white active:translate-y-[0.125rem]"
                             >
                                 CREATE ACCOUNT
                             </button>
@@ -87,13 +87,13 @@ export default function SignUpPage() {
                         <div className="grid grid-cols-2 gap-4">
                             <button
                                 onClick={handleGoogleFastLogin}
-                                className="rounded-2xl border-b-2 border-b-gray-300 bg-white px-4 py-2.5 font-bold text-blue-700 ring-2 ring-gray-300 hover:bg-gray-200 active:translate-y-[0.125rem] active:border-b-gray-200"
+                                className="rounded-2xl border-b-2 border-b-gray-300 bg-white px-4 py-2.5 font-bold text-black ring-2 ring-gray-300 hover:bg-gray-200 active:translate-y-[0.125rem] active:border-b-gray-200"
                             >
                                 GOOGLE
                             </button>
                             <button
                                 onClick={handleGithubFastLogin}
-                                className="rounded-2xl border-b-2 border-b-gray-300 bg-white px-4 py-2.5 font-bold text-blue-500 ring-2 ring-gray-300 hover:bg-gray-200 active:translate-y-[0.125rem] active:border-b-gray-200"
+                                className="rounded-2xl border-b-2 border-b-gray-300 bg-white px-4 py-2.5 font-bold text-black ring-2 ring-gray-300 hover:bg-gray-200 active:translate-y-[0.125rem] active:border-b-gray-200"
                             >
                                 GITHUB
                             </button>
