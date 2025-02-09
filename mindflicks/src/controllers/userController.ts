@@ -24,6 +24,7 @@ async function login(formData: FormData): Promise<any> {
         const someError = error as CredentialsSignin;
         return someError.cause;
     }
+    revalidatePath("/");
     redirect("/");
 }
 
@@ -58,6 +59,7 @@ async function register(formData: FormData): Promise<any> {
         following: [],
     });
     console.log(`User created successfully 🥂`);
+    revalidatePath("/");
     redirect("/sign-in");
 }
 

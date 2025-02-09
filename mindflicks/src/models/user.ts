@@ -17,6 +17,7 @@ const UserSchema = new mongoose.Schema(
         website: { type: String },
         isVerified: { type: Boolean, default: false },
         posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+        likes: [{ type: Schema.Types.ObjectId, ref: "Post" }],
         notifications: [
             {
                 creator: { type: Schema.Types.ObjectId, ref: "User" },

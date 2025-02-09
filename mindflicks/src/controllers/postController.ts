@@ -5,7 +5,6 @@ import { fetchUser } from "./userController";
 import Post from "@/models/post";
 import User from "@/models/user";
 import { connectDB } from "@/lib/conntectDB";
-import { auth } from "@/auth";
 
 export async function createUserPost(content: string, image: string) {
     try {
@@ -106,6 +105,7 @@ export async function toggleLike(postId: string) {
         if (alreadyLiked) {
             // Beğeniyi kaldır
             await Post.updateOne({ _id: postId }, { $pull: { likes: userId } });
+            await User.updateOne({ _id: userId }, { $pull: { likes: postId } });
 
             // Bildirimi kaldır (kendi gönderisi değilse)
             await User.updateOne(
@@ -123,6 +123,7 @@ export async function toggleLike(postId: string) {
         } else {
             // Beğeni ekle
             await Post.updateOne({ _id: postId }, { $push: { likes: userId } });
+            await User.updateOne({ _id: userId }, { $push: { likes: postId } });
 
             // Bildirim oluştur (eğer kişi kendi gönderisini beğenmiyorsa)
             if (post.author.toString() !== userId) {

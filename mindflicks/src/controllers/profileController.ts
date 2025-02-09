@@ -1,80 +1,29 @@
-import Post from "@/models/post";
+"use server";
 import User from "@/models/user";
 import { fetchUser } from "./userController";
 import { revalidatePath } from "next/cache";
+import Post from "@/models/post";
 
 export async function getProfileByUsername(username: string) {
     try {
-        const user = await User.findOne({ username })
-            .populate("_id followers following")
-            .select("_id username posts createdAt");
-        return user;
+        const user = await User.findOne({ username });
+        if (!user) throw new Error("User not found");
+        const plainUser = JSON.parse(JSON.stringify(user));
+        return plainUser;
     } catch (error) {
         console.error("Error fetching profile:", error);
         throw new Error("Failed to fetch profile");
     }
 }
 
-export async function getUserPosts(userId: string) {
+export async function getPostsByAuthor(authorId: string) {
     try {
-        const posts = await Post.find({ author: userId })
-            .populate({
-                path: "author",
-                select: "_id name username image",
-            })
-            .populate({
-                path: "comments.author",
-                select: "_id name username image",
-            })
-            .populate({
-                path: "likes",
-                select: "_id",
-            })
-            .sort({ createdAt: -1 })
-            .lean();
-        const formattedPosts = posts.map((post: any) => ({
-            ...post,
-            _count: {
-                likes: post.likes.length,
-                comments: post.comments.length,
-            },
-        }));
-
-        return formattedPosts;
+        const posts = await Post.find({ author: authorId }).lean();
+        const plainPosts = JSON.parse(JSON.stringify(posts));
+        return plainPosts;
     } catch (error) {
-        console.error("Error fetching user posts:", error);
-        throw new Error("Failed to fetch user posts");
-    }
-}
-
-export async function getUserLikedPosts(userId: string) {
-    try {
-        const likedPosts = await Post.find({ likes: userId })
-            .populate({
-                path: "author",
-                select: "_id name username image",
-            })
-            .populate({
-                path: "comments.author",
-                select: "_id name username image",
-            })
-            .populate({
-                path: "likes",
-                select: "_id",
-            })
-            .sort({ createdAt: -1 })
-            .lean();
-        const formattedPosts = likedPosts.map((post) => ({
-            ...post,
-            _count: {
-                likes: post.likes.length,
-                comments: post.comments.length,
-            },
-        }));
-        return formattedPosts;
-    } catch (error) {
-        console.error("Error fetching liked posts:", error);
-        throw new Error("Failed to fetch liked posts");
+        console.error("Error fetching posts by author:", error);
+        throw new Error("Failed to fetch posts");
     }
 }
 
@@ -84,21 +33,21 @@ export async function updateProfile(formData: FormData) {
         const userId = authUser?._id;
         if (!userId) throw new Error("Unauthorized");
 
-        const name = formData.get("name") as string;
+        const username = formData.get("username") as string;
         const bio = formData.get("bio") as string;
         const location = formData.get("location") as string;
         const website = formData.get("website") as string;
 
         const user = await User.findOneAndUpdate(
             { _id: userId },
-            { name, bio, location, website },
+            { username, bio, location, website },
             { new: true }
-        ).lean();
+        );
 
         if (!user) throw new Error("User not found");
 
         revalidatePath("/profile");
-        return { success: true, user };
+        return { success: true };
     } catch (error) {
         console.error("Error updating profile:", error);
         return { success: false, error: "Failed to update profile" };
@@ -116,7 +65,7 @@ export async function isFollowing(userId: string) {
 
         const isFollowing = user.following.includes(userId);
 
-        return isFollowing;
+        return isFollowing ? true : false;
     } catch (error) {
         console.error("Error checking follow status:", error);
         return false;

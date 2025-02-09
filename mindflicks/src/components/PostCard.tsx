@@ -38,10 +38,10 @@ export default function PostCard({
     const [isDeleting, setIsDeleting] = useState(false);
     const [showComments, setShowComments] = useState(false);
     const [hasLiked, setHasLiked] = useState(
-        post.likes.some((like: any) => like === dbUserId)
+        post?.likes?.some((like: any) => like === dbUserId)
     );
     const [optimisticLikes, setOptimisticLikes] = useState<number>(
-        post._count.likes
+        post?._count?.likes
     );
     async function handleLike() {
         if (isLiking) return;

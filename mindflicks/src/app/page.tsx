@@ -11,7 +11,7 @@ export default async function HomePage() {
     if (!session) redirect("/sign-in");
     const posts = await getPosts();
     const dbUser = await fetchUser();
-    const dbUserId = dbUser._id.toString();
+    const dbUserId = dbUser?._id.toString();
     return (
         <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
             <div className="lg:col-span-6">
