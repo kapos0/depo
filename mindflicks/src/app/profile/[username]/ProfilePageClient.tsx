@@ -12,22 +12,21 @@ import {
     updateProfile,
 } from "@/controllers/profileController";
 import { toggleFollow } from "@/controllers/userController";
-import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
     Dialog,
     DialogClose,
     DialogContent,
     DialogTitle,
-} from "@radix-ui/react-dialog";
-import { Label } from "@radix-ui/react-dropdown-menu";
-import { Separator } from "@radix-ui/react-separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { format } from "date-fns";
 import {
     CalendarIcon,
     EditIcon,
     FileTextIcon,
-    HeartIcon,
     LinkIcon,
     MapPinIcon,
 } from "lucide-react";
@@ -39,9 +38,11 @@ export default function ProfilePageClient({
     user,
     following,
     posts,
+    isItVisit,
 }: {
     user: Awaited<ReturnType<typeof getProfileByUsername>>;
     posts: Awaited<ReturnType<typeof getPostsByAuthor>>;
+    isItVisit: boolean;
     following: boolean;
 }) {
     const [showEditDialog, setShowEditDialog] = useState(false);
@@ -78,14 +79,7 @@ export default function ProfilePageClient({
         }
     }
 
-    const isOwnProfile =
-        user?.username === user.username ||
-        user?.emailAddresses[0].emailAddress.split("@")[0] === user.username;
-
     const formattedDate = format(new Date(user.createdAt), "MMMM yyyy");
-    console.log("🚀 ~ user:", user);
-    console.log("🚀 ~ formattedDate:", formattedDate);
-    console.log("🚀 ~ isOwnProfile:", isOwnProfile);
     return (
         <div className="max-w-3xl mx-auto">
             <div className="grid grid-cols-1 gap-6">
@@ -145,7 +139,7 @@ export default function ProfilePageClient({
                                             Follow
                                         </Button>
                                     </Link>
-                                ) : isOwnProfile ? (
+                                ) : isItVisit ? (
                                     <Button
                                         className="w-full mt-4"
                                         onClick={() => setShowEditDialog(true)}
@@ -213,14 +207,6 @@ export default function ProfilePageClient({
                             <FileTextIcon className="size-4" />
                             Posts
                         </TabsTrigger>
-                        <TabsTrigger
-                            value="likes"
-                            className="flex items-center gap-2 rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary
-                                data-[state=active]:bg-transparent px-6 font-semibold"
-                        >
-                            <HeartIcon className="size-4" />
-                            Likes
-                        </TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="posts" className="mt-6">
@@ -230,30 +216,13 @@ export default function ProfilePageClient({
                                     <PostCard
                                         key={Math.random()}
                                         post={post}
-                                        dbUserId={user.id}
+                                        dbUserId={user._id}
+                                        isInProfilePage={true}
                                     />
                                 ))
                             ) : (
                                 <div className="text-center py-8 text-muted-foreground">
                                     No posts yet
-                                </div>
-                            )}
-                        </div>
-                    </TabsContent>
-
-                    <TabsContent value="likes" className="mt-6">
-                        <div className="space-y-6">
-                            {user.likes.length > 0 ? (
-                                user.likes.map((post: any) => (
-                                    <PostCard
-                                        key={Math.random()}
-                                        post={post}
-                                        dbUserId={user.id}
-                                    />
-                                ))
-                            ) : (
-                                <div className="text-center py-8 text-muted-foreground">
-                                    No liked posts to show
                                 </div>
                             )}
                         </div>

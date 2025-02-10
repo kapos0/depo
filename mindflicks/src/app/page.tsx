@@ -22,6 +22,7 @@ export default async function HomePage() {
                             key={post._id.toString()}
                             post={{ ...post, _id: post._id.toString() }}
                             dbUserId={dbUserId as string}
+                            isInProfilePage={false}
                         />
                     ))}
                 </div>

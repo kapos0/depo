@@ -26,9 +26,11 @@ type Posts = Awaited<ReturnType<typeof getPosts>>;
 type Post = Posts[number];
 export default function PostCard({
     post,
+    isInProfilePage,
     dbUserId,
 }: {
     post: Post & { _id: string };
+    isInProfilePage: boolean;
     dbUserId: string | null;
 }) {
     let user = useSession().data?.user;
@@ -41,7 +43,7 @@ export default function PostCard({
         post?.likes?.some((like: any) => like === dbUserId)
     );
     const [optimisticLikes, setOptimisticLikes] = useState<number>(
-        post?._count?.likes
+        isInProfilePage ? post?.likes?.length : post._count?.likes
     );
     async function handleLike() {
         if (isLiking) return;
@@ -91,14 +93,18 @@ export default function PostCard({
             <CardContent className="p-4 sm:p-6">
                 <div className="space-y-4">
                     <div className="flex space-x-3 sm:space-x-4">
-                        <Link href={`/profile/${post.author.username}`}>
-                            <Avatar>
-                                <AvatarImage
-                                    className="size-8 sm:w-10 sm:h-10"
-                                    src={post.author.image ?? "/avatar.png"}
-                                />
-                            </Avatar>
-                        </Link>
+                        {!isInProfilePage && (
+                            <Link href={`/profile/${post.author.username}`}>
+                                <Avatar>
+                                    <AvatarImage
+                                        className="size-8 sm:w-10 sm:h-10"
+                                        src={
+                                            post.author?.image ?? "/avatar.png"
+                                        }
+                                    />
+                                </Avatar>
+                            </Link>
+                        )}
 
                         {/* POST HEADER & TEXT CONTENT */}
                         <div className="flex-1 min-w-0">
@@ -111,12 +117,16 @@ export default function PostCard({
                                         {post.author.name}
                                     </Link>
                                     <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                                        <Link
-                                            href={`/profile/${post.author.username}`}
-                                        >
-                                            @{post.author.username}
-                                        </Link>
-                                        <span>•</span>
+                                        {!isInProfilePage && (
+                                            <>
+                                                <Link
+                                                    href={`/profile/${post.author.username}`}
+                                                >
+                                                    @{post.author.username}
+                                                </Link>
+                                                <span>•</span>
+                                            </>
+                                        )}
                                         <span>
                                             {formatDistanceToNow(
                                                 new Date(post.createdAt)
@@ -140,10 +150,10 @@ export default function PostCard({
                     </div>
 
                     {/* POST IMAGE */}
-                    {post.image && (
+                    {post?.image && (
                         <div className="rounded-lg overflow-hidden">
                             <img
-                                src={post.image}
+                                src={post?.image}
                                 alt="Post content"
                                 className="w-full h-auto object-cover"
                             />
@@ -213,8 +223,7 @@ export default function PostCard({
                                         <Avatar className="size-8 flex-shrink-0">
                                             <AvatarImage
                                                 src={
-                                                    comment.author.image ??
-                                                    "/avatar.png"
+                                                    user?.image ?? "/avatar.png"
                                                 }
                                             />
                                         </Avatar>
@@ -223,12 +232,20 @@ export default function PostCard({
                                                 <span className="font-medium text-sm">
                                                     {comment.author.name}
                                                 </span>
-                                                <span className="text-sm text-muted-foreground">
-                                                    @{comment.author.username}
-                                                </span>
-                                                <span className="text-sm text-muted-foreground">
-                                                    ·
-                                                </span>
+                                                {!isInProfilePage && (
+                                                    <>
+                                                        <span className="text-sm text-muted-foreground">
+                                                            @
+                                                            {
+                                                                comment.author
+                                                                    .username
+                                                            }
+                                                        </span>
+                                                        <span className="text-sm text-muted-foreground">
+                                                            ·
+                                                        </span>
+                                                    </>
+                                                )}
                                                 <span className="text-sm text-muted-foreground">
                                                     {formatDistanceToNow(
                                                         new Date(

@@ -16,7 +16,6 @@ async function login(formData: FormData): Promise<any> {
     try {
         await signIn("credentials", {
             redirect: false,
-            callbackUrl: "/",
             username,
             password,
         });
@@ -49,7 +48,6 @@ async function register(formData: FormData): Promise<any> {
         email,
         password: hashedPassword,
         bio: "",
-        image: "",
         location: "",
         website: "",
         isVerified: false,

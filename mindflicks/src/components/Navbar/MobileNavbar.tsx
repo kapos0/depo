@@ -22,11 +22,10 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 
-export default function MobileNavbar() {
+export default function MobileNavbar({ userName }: { userName: string }) {
     const session = useSession();
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const { theme, setTheme } = useTheme();
-
     return (
         <div className="flex md:hidden items-center space-x-2">
             <Button
@@ -79,7 +78,7 @@ export default function MobileNavbar() {
                                     className="flex items-center gap-3 justify-start"
                                     asChild
                                 >
-                                    <Link href="/profile">
+                                    <Link href={`/profile/${userName}`}>
                                         <UserIcon className="w-4 h-4" />
                                         Profile
                                     </Link>
