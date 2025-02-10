@@ -15,7 +15,6 @@ async function login(formData: FormData): Promise<any> {
     if (!username || !password) return "Please fill all fields";
     try {
         await signIn("credentials", {
-            redirect: false,
             username,
             password,
         });

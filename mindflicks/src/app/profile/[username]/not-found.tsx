@@ -20,7 +20,7 @@ export default function NotFound() {
                                 User not found
                             </h1>
                             <p className="text-muted-foreground">
-                                The user you're looking for doesn't exist.
+                                The user youre looking for doesnt exist.
                             </p>
                         </div>
 

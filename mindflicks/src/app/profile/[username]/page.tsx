@@ -7,11 +7,7 @@ import {
 import ProfilePageClient from "./ProfilePageClient";
 import { fetchUser } from "@/controllers/userController";
 
-export default async function ProfilePageServer({
-    params,
-}: {
-    params: { username: string };
-}) {
+export default async function ProfilePageServer({ params }) {
     const session = await fetchUser();
     if (!session) return redirect("/sign-in");
     const { username } = await params;

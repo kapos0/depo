@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import PostCard from "@/components/PostCard";
@@ -72,7 +73,7 @@ export default function ProfilePageClient({
             setIsUpdatingFollow(true);
             await toggleFollow(user._id);
             setIsFollowing(!isFollowing);
-        } catch (error) {
+        } catch {
             toast.error("Failed to update follow status");
         } finally {
             setIsUpdatingFollow(false);

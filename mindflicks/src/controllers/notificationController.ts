@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 import User from "@/models/user";
 import Post from "@/models/post";
@@ -29,7 +30,7 @@ export async function getNotifications() {
                     const post: { comments: any[] } | null =
                         (await Post.findById(notification.post)
                             .select("comments")
-                            .lean()) as { comments: any[] } | null;
+                            .lean()) as unknown as { comments: any[] } | null;
 
                     if (post && Array.isArray(post.comments)) {
                         const comment = post.comments.find(

@@ -7,7 +7,7 @@ import Post from "@/models/post";
 export async function getProfileByUsername(username: string) {
     try {
         const user = await User.findOne({ username });
-        if (!user) throw new Error("User not found");
+        if (!user) return null;
         const plainUser = JSON.parse(JSON.stringify(user));
         return plainUser;
     } catch (error) {

@@ -8,9 +8,8 @@ import { useEffect } from "react";
 export default function SignInPage() {
     const user = useSession();
     useEffect(() => {
-        if (user.status !== "unauthenticated") {
-            redirect("/");
-        }
+        if (user.status === "authenticated") window.location.href = "/";
+        if (user.status !== "unauthenticated") redirect("/");
     }, [user.status]);
     async function handleGoogleFastLogin() {
         try {
@@ -44,7 +43,13 @@ export default function SignInPage() {
                         <header className="mb-3 text-4xl font-bold text-black">
                             Log in
                         </header>
-                        <form action={login}>
+                        <form
+                            action={(formData) =>
+                                login(formData).then(() =>
+                                    window.location.reload()
+                                )
+                            }
+                        >
                             <div className="w-full rounded-2xl px-4 ring-2 ring-gray-200 my-4 ">
                                 <input
                                     type="text"

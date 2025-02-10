@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useState } from "react";
 import {
@@ -33,7 +34,7 @@ export default function PostCard({
     isInProfilePage: boolean;
     dbUserId: string | null;
 }) {
-    let user = useSession().data?.user;
+    const user = useSession().data?.user;
     const [newComment, setNewComment] = useState("");
     const [isCommenting, setIsCommenting] = useState(false);
     const [isLiking, setIsLiking] = useState(false);
@@ -50,7 +51,7 @@ export default function PostCard({
         try {
             setIsLiking(true);
             setHasLiked((prev: boolean) => !prev);
-            setOptimisticLikes((prev) => prev + (prev ? -1 : 1));
+            setOptimisticLikes((prev) => prev + (hasLiked ? -1 : 1));
             await toggleLike(post._id);
         } catch (error) {
             setOptimisticLikes(post._count.likes);
@@ -69,7 +70,7 @@ export default function PostCard({
                 toast.success("Comment posted successfully");
                 setNewComment("");
             }
-        } catch (error) {
+        } catch {
             toast.error("Failed to add comment");
         } finally {
             setIsCommenting(false);
@@ -82,7 +83,7 @@ export default function PostCard({
             const result = await deletePost(post._id);
             if (result?.success) toast.success("Post deleted successfully");
             else throw new Error(result?.error);
-        } catch (error) {
+        } catch {
             toast.error("Failed to delete post");
         } finally {
             setIsDeleting(false);

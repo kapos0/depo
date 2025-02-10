@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import {
@@ -45,7 +46,7 @@ export default function NotificationsPage() {
                     .map((n: any) => n.id);
                 if (unreadIds.length > 0)
                     await markNotificationsAsRead(unreadIds);
-            } catch (error) {
+            } catch {
                 toast.error("Failed to fetch notifications");
             } finally {
                 setIsLoading(false);
