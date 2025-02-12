@@ -18,6 +18,7 @@ export const aj = arcjet({
             ],
         }),
         // rate limiting
+        // Sliding Window Rate Limiter also available but we'ra using tokenBucket here
         tokenBucket({
             mode: "LIVE",
             refillRate: 30,
