@@ -6,7 +6,7 @@ type ThemeState = {
 };
 
 export const useThemeStore = create<ThemeState>((set) => ({
-    theme: localStorage.getItem("preferred-theme") || "night",
+    theme: localStorage.getItem("preferred-theme") || "business",
     setTheme: (theme: string) => {
         localStorage.setItem("preferred-theme", theme);
         set({ theme });
