@@ -74,7 +74,7 @@
     },
     {
         "title": "MindFlicks",
-        "imageSrc": "projects/mindflicks.jpeg",
+        "imageSrc": "projects/mindflicks.png",
         "description": "Basic bir twitter like uygulamasıdır.",
         "skills": [
             "NextJS",
