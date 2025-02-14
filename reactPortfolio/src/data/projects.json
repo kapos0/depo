@@ -55,6 +55,62 @@
         "source": "https://github.com/kapos0/projeler"
     },
     {
+        "title": "Things App",
+        "imageSrc": "projects/thingsapp.jpeg",
+        "description": "Bu kullanıcıların IMDB veritabanından istediği filmleri inceleyebileceği ve favorileyeceği bir uygulamadır.",
+        "skills": [
+            "NextJS",
+            "React",
+            "TailwindCSS",
+            "MongoDB",
+            "AUTHJS5",
+            "TypeScript"
+        ],
+        "demo": {
+            "source": "https://things-app-three.vercel.app/",
+            "download": ""
+        },
+        "source": "https://github.com/kapos0/projeler"
+    },
+    {
+        "title": "MindFlicks",
+        "imageSrc": "projects/mindflicks.jpeg",
+        "description": "Basic bir twitter like uygulamasıdır.",
+        "skills": [
+            "NextJS",
+            "React",
+            "TailwindCSS",
+            "MongoDB",
+            "AUTHJS5",
+            "TypeScript",
+            "Shadcn"
+        ],
+        "demo": {
+            "source": "https://mindflicks.vercel.app/",
+            "download": ""
+        },
+        "source": "https://github.com/kapos0/projeler"
+    },
+    {
+        "title": "MernStore",
+        "imageSrc": "projects/mernstore.jpeg",
+        "description": "Mern Stack ile yapılmış bir store uygulamasıdır.",
+        "skills": [
+            "NodeJS",
+            "Express",
+            "React",
+            "TailwindCSS",
+            "daisyUI",
+            "MongoDB",
+            "TypeScript"
+        ],
+        "demo": {
+            "source": "https://mernstore-m6ht.onrender.com/",
+            "download": ""
+        },
+        "source": "https://github.com/kapos0/projeler"
+    },
+    {
         "title": "AoraView ilkel bir sosyal medya uygulaması",
         "imageSrc": "projects/aoraview/home.png",
         "description": "AoraView, kullanıcıların fotoğraf ve video paylaşabileceği, beğenebileceği bir sosyal medya uygulamasıdır.",
