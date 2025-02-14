@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 const BASE_URL =
     import.meta.env.NODE_ENV === "development"
         ? "http://localhost:3000"
-        : "https://mernstore-tcbx.onrender.com" + "/api/products";
+        : "https://mernstore-m6ht.onrender.com" + "/api/products";
 
 export type ProductType = {
     _id: string;
