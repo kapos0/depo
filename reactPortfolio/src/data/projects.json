@@ -46,8 +46,8 @@
     {
         "title": "Ticketin App (Geri bildirim/destek uygulaması)",
         "imageSrc": "projects/ticketsite.jpeg",
-        "description": "Ticket yönetimi için geliştirilen bu uygulama, kullanıcıların şikayetlerini kategorize edip geri bildirim almasına ve güncel sorunların takibini yapmasına olanak tanır. Sorunlar öncelik derecelerine ve sorumlu kişilere göre sınıflandırılabilir, böylece gerektiğinde hızlıca e-posta yoluyla bilgilendirme yapılabilir.",
-        "skills": ["NextJS", "React", "TailwindCSS", "MongoDB"],
+        "description": "Ticket yönetimi için geliştirilen bu uygulama, kullanıcıların hesap oluşturup şikayetlerini kategorize etmelerine, geri bildirim almalarına ve güncel sorunların takibini yapmalarına olanak tanır. Sorunlar, öncelik derecelerine ve sorumlu kişilere göre sınıflandırılabilir, böylece gerektiğinde hızlı bir şekilde e-posta yoluyla bilgilendirme yapılabilir.",
+        "skills": ["NextJS", "React", "TailwindCSS", "MongoDB, AUTHJS5"],
         "demo": {
             "source": "https://ticketingsite.vercel.app/",
             "download": ""
@@ -57,7 +57,7 @@
     {
         "title": "Things App",
         "imageSrc": "projects/thingsapp.jpeg",
-        "description": "Bu kullanıcıların IMDB veritabanından istediği filmleri inceleyebileceği ve favorileyeceği bir uygulamadır.",
+        "description": "Bu uygulama, kullanıcıların IMDB veritabanından istedikleri filmleri inceleyip favorilerine ekleyebileceği bir platformdur. Kullanıcı girişi, Auth.js v5 kütüphanesi ile sağlanmaktadır; bu sayede kullanıcılar e-posta ve şifre ile hesap oluşturabilir veya hızlı giriş seçenekleri olarak Google ya da GitHub ile giriş yapabilirler.",
         "skills": [
             "NextJS",
             "React",
@@ -75,7 +75,7 @@
     {
         "title": "MindFlicks",
         "imageSrc": "projects/mindflicks.png",
-        "description": "Basic bir twitter like uygulamasıdır.",
+        "description": "Bu, temel bir Twitter benzeri uygulamadır. Diğer kullanıcıları takip edebilir, takip edilebilirsiniz. Gönderi paylaşabilir, gönderilere yorum yapabilir ve beğenebilirsiniz. Beyaz ve siyah temalar arasında geçiş yapabilirsiniz. Başka kullanıcıların profillerini ve beğendikleri gönderileri görebilirsiniz. Kendi profilinizi yönetebilir ve profil sayfanızdan etkileşimde bulunduğunuz içerikleri görüntüleyebilirsiniz. Bildirim merkezi sayesinde gönderilerinize ve profilinizdeki etkileşimlere dair bildirim alabilirsiniz.",
         "skills": [
             "NextJS",
             "React",
@@ -94,7 +94,7 @@
     {
         "title": "MernStore",
         "imageSrc": "projects/mernstore.jpeg",
-        "description": "Mern Stack ile yapılmış bir store uygulamasıdır.",
+        "description": "Bu, MERN Stack ile geliştirilmiş basit bir e-ticaret uygulamasıdır. Uygulama sayesinde ürün ekleyebilir ve görüntüleyebilirsiniz. DaisyUI kullanarak 9 farklı temadan birini seçebilirsiniz. Eklenen ürünleri düzenleyebilir veya silebilirsiniz. Backend kısmı Node.js ve Express ile yazılmıştır, frontend ise TypeScript ve React kullanılarak geliştirilmiştir. Veritabanı olarak MongoDB kullanılmaktadır.",
         "skills": [
             "NodeJS",
             "Express",
@@ -113,7 +113,7 @@
     {
         "title": "AoraView ilkel bir sosyal medya uygulaması",
         "imageSrc": "projects/aoraview/home.png",
-        "description": "AoraView, kullanıcıların fotoğraf ve video paylaşabileceği, beğenebileceği bir sosyal medya uygulamasıdır.",
+        "description": "AoraView, kullanıcıların hesap oluşturup fotoğraf ve video paylaşabileceği, beğenebileceği bir sosyal medya uygulamasıdır. Uygulamanın backend kısmında Appwrite servisi kullanılmaktadır.",
         "skills": ["React-Native", "TypeScript", "TailwindCSS", "AppWrite"],
         "demo": {
             "source": "/projects/aoraview/aoraViewSunum.pdf",
