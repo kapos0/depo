@@ -30,6 +30,9 @@ export const useProductStore = create<{
     resetForm: () => void;
 
     fetchProducts: () => Promise<void>;
+    fetchProduct: (id: string) => Promise<void>;
+    updateProduct: (id: string) => Promise<void>;
+    lengthOfProducts: () => number;
     addProduct: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
     deleteProduct: (id: string) => Promise<void>;
 }>((set, get) => ({
@@ -57,6 +60,7 @@ export const useProductStore = create<{
             formData: { name: "", description: "", price: 0.0, image: "" },
         });
     },
+    lengthOfProducts: () => get().products.length,
     fetchProducts: async () => {
         set({ loading: true, error: null });
         try {
@@ -87,6 +91,29 @@ export const useProductStore = create<{
             set({ loading: false });
         }
     },
+    fetchProduct: async (id: string) => {
+        if (id === "") return;
+        set({ loading: true, error: null });
+        try {
+            const response = await axios.get(`${BASE_URL}/${id}`);
+            set({
+                currentProduct: response.data.data,
+                formData: {
+                    name: response.data.data.name,
+                    image: response.data.data.image,
+                    description: response.data.data.description,
+                    price: response.data.data.price,
+                },
+                loading: false,
+                error: null,
+            });
+        } catch (error) {
+            set({ error: (error as Error).message, loading: false });
+            toast.error("Bir şeyler ters gitti daha sonra tekrar deneyiniz");
+        } finally {
+            set({ loading: false });
+        }
+    },
     addProduct: async (e) => {
         e.preventDefault();
         set({ loading: true, error: null });
@@ -109,7 +136,27 @@ export const useProductStore = create<{
             set({ loading: false });
         }
     },
+    updateProduct: async (id) => {
+        if (id === "") return;
+        set({ loading: true, error: null });
+        try {
+            const { formData } = get();
+            const response = await axios.put(`${BASE_URL}/${id}`, formData);
+            set({
+                currentProduct: response.data.data,
+                loading: false,
+                error: null,
+            });
+            toast.success("Ürün Başarıyla Güncellendi");
+        } catch (error) {
+            set({ error: (error as Error).message, loading: false });
+            toast.error("Bir şeyler ters gitti daha sonra tekrar deneyiniz");
+        } finally {
+            set({ loading: false });
+        }
+    },
     deleteProduct: async (id) => {
+        if (id === "") return;
         set({ loading: true, error: null });
         try {
             await axios.delete(`${BASE_URL}/${id}`);

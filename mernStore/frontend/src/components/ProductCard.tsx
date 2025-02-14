@@ -18,6 +18,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
                 <h2 className="card-title text-lg font-semibold">
                     {product.name}
                 </h2>
+                <h5>{product.description}</h5>
                 <p className="text-2xl font-bold text-primary">
                     ${Number(product.price).toFixed(2)}
                 </p>
