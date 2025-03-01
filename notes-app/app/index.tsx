@@ -29,7 +29,7 @@ export default function Index() {
 
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => router.push("/notes/index")}
+                onPress={() => router.push("/notes")}
             >
                 <Text style={styles.buttonText}>Get Started</Text>
             </TouchableOpacity>
