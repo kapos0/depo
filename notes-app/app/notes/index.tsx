@@ -1,12 +1,7 @@
 import { useState } from "react";
-import {
-    View,
-    Text,
-    Image,
-    StyleSheet,
-    TouchableOpacity,
-    FlatList,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import AddNoteModal from "@/components/AddNoteModal";
+import NoteList from "@/components/NoteList";
 
 export default function NotesPage() {
     const [notes, setNotes] = useState([
@@ -14,21 +9,39 @@ export default function NotesPage() {
         { id: 2, content: "This is the second note" },
         { id: 3, content: "This is the third note" },
     ]);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [newNote, setNewNote] = useState("");
+
+    function addNote() {
+        if (newNote.trim() === "") return;
+
+        setNotes((prev) => [
+            ...prev,
+            {
+                id: notes.length + 1,
+                content: newNote.trim(),
+            },
+        ]);
+        setNewNote("");
+        setModalVisible(false);
+    }
 
     return (
         <View style={styles.container}>
-            <FlatList
-                data={notes}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (
-                    <View style={stylesTemp.noteItem}>
-                        <Text style={stylesTemp.noteText}>{item.content}</Text>
-                    </View>
-                )}
-            />
-            <TouchableOpacity style={styles.addButton}>
+            <NoteList notes={notes} />
+            <TouchableOpacity
+                style={styles.addButton}
+                onPress={() => setModalVisible(true)}
+            >
                 <Text style={styles.addButtonText}>+ Add a note</Text>
             </TouchableOpacity>
+            <AddNoteModal
+                modalVisible={modalVisible}
+                addNote={addNote}
+                setModalVisible={setModalVisible}
+                newNote={newNote}
+                setNewNote={setNewNote}
+            />
         </View>
     );
 }
@@ -66,30 +79,5 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "#555",
         marginTop: 15,
-    },
-});
-const stylesTemp = StyleSheet.create({
-    noteItem: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        backgroundColor: "#f5f5f5",
-        padding: 15,
-        borderRadius: 5,
-        marginVertical: 5,
-    },
-    noteText: {
-        fontSize: 18,
-    },
-    delete: {
-        fontSize: 18,
-        color: "red",
-    },
-    actions: {
-        flexDirection: "row",
-    },
-    edit: {
-        fontSize: 18,
-        marginRight: 10,
-        color: "blue",
     },
 });
