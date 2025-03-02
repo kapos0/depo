@@ -1,24 +1,50 @@
-import { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useState, useEffect } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import AddNoteModal from "@/components/AddNoteModal";
 import NoteList from "@/components/NoteList";
+import notesService from "@/services/notesService";
+
+export type NoteType = {
+    $id: number;
+    content: string;
+};
 
 export default function NotesPage() {
-    const [notes, setNotes] = useState([
-        { id: 1, content: "This is the first note" },
-        { id: 2, content: "This is the second note" },
-        { id: 3, content: "This is the third note" },
-    ]);
+    const [notes, setNotes] = useState<NoteType[]>([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [newNote, setNewNote] = useState("");
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    async function fetchNotes() {
+        setLoading(true);
+        const response = await notesService.getNotes();
+        if (!response.error) {
+            // Sadece gerekli alanları içeren yeni bir dizi oluşturur
+            const simplifiedNotes =
+                response.data?.map((note: any) => ({
+                    $id: note.$id,
+                    content: note.content,
+                })) ?? [];
+            setNotes(simplifiedNotes);
+        } else {
+            setError(response.error);
+            Alert.alert("Error", response.error);
+        }
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        fetchNotes();
+    }, []);
 
     function addNote() {
         if (newNote.trim() === "") return;
 
-        setNotes((prev) => [
+        setNotes((prev: NoteType[]) => [
             ...prev,
             {
-                id: notes.length + 1,
+                $id: Math.floor(Math.random() * 1000),
                 content: newNote.trim(),
             },
         ]);
