@@ -1,5 +1,5 @@
 import { FlatList } from "react-native";
-import NoteItem from "./NoteItem";
+import NoteItem from "@/components/NoteItem";
 import { NoteType } from "@/app/notes";
 
 export default function NoteList({

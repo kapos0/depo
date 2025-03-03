@@ -7,6 +7,9 @@ import {
     Alert,
     ActivityIndicator,
 } from "react-native";
+import { useRouter } from "expo-router";
+import { useAuth } from "@/context/authContext";
+
 import AddNoteModal from "@/components/AddNoteModal";
 import NoteList from "@/components/NoteList";
 import notesService from "@/services/notesService";
@@ -17,6 +20,9 @@ export type NoteType = {
 };
 
 export default function NotesPage() {
+    const router = useRouter();
+    const { user, loading: authLoading } = useAuth();
+
     const [notes, setNotes] = useState<NoteType[]>([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [newNote, setNewNote] = useState("");
@@ -42,8 +48,12 @@ export default function NotesPage() {
     }
 
     useEffect(() => {
-        fetchNotes();
-    }, []);
+        if (!user && !authLoading) router.replace("/auth");
+    }, [user, authLoading]);
+
+    useEffect(() => {
+        if (user) fetchNotes();
+    }, [user]);
 
     async function addNote() {
         if (newNote.trim() === "") return;
@@ -102,7 +112,6 @@ export default function NotesPage() {
 
         const response = await notesService.updateNote(noteId, newContent);
         if (!response.error) {
-            console.log(response);
             setNotes((prevNotes: NoteType[]) =>
                 prevNotes.map((note: NoteType) =>
                     note.$id === noteId
