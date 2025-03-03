@@ -1,11 +1,18 @@
 import { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    Alert,
+    ActivityIndicator,
+} from "react-native";
 import AddNoteModal from "@/components/AddNoteModal";
 import NoteList from "@/components/NoteList";
 import notesService from "@/services/notesService";
 
 export type NoteType = {
-    $id: number;
+    $id: string;
     content: string;
 };
 
@@ -38,23 +45,91 @@ export default function NotesPage() {
         fetchNotes();
     }, []);
 
-    function addNote() {
+    async function addNote() {
         if (newNote.trim() === "") return;
-
-        setNotes((prev: NoteType[]) => [
-            ...prev,
-            {
-                $id: Math.floor(Math.random() * 1000),
-                content: newNote.trim(),
-            },
-        ]);
+        setLoading(true);
+        const response = await notesService.addNewNote(newNote);
+        if (!response.error) {
+            setNotes((prev: NoteType[]) => [
+                ...prev,
+                response.data as unknown as NoteType,
+            ]);
+            setLoading(false);
+        } else {
+            Alert.alert("Error", response.error);
+            setError(response.error);
+        }
+        setLoading(false);
         setNewNote("");
         setModalVisible(false);
     }
 
+    async function deleteNote(noteId: string) {
+        Alert.alert(
+            "Delete Note",
+            "Are you sure you want to delete this note?",
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel",
+                },
+                {
+                    text: "Delete",
+                    style: "destructive",
+                    onPress: async () => {
+                        setLoading(true);
+                        const response = await notesService.deleteNote(noteId);
+                        if (response.success) {
+                            setNotes((prev: NoteType[]) =>
+                                prev.filter((note) => note.$id !== noteId)
+                            );
+                        } else {
+                            Alert.alert("Error", response.error);
+                            setError(response.error);
+                        }
+                        setLoading(false);
+                    },
+                },
+            ]
+        );
+    }
+
+    async function editNote(noteId: string, newContent: string) {
+        if (!newContent.trim()) {
+            Alert.alert("Error", "Note text cannot be empty");
+            return;
+        }
+
+        const response = await notesService.updateNote(noteId, newContent);
+        if (!response.error) {
+            console.log(response);
+            setNotes((prevNotes: NoteType[]) =>
+                prevNotes.map((note: NoteType) =>
+                    note.$id === noteId
+                        ? {
+                              ...note,
+                              content: (response.data as unknown as NoteType)
+                                  .content,
+                          }
+                        : note
+                )
+            );
+        } else Alert.alert("Error", response.error);
+    }
+
     return (
         <View style={styles.container}>
-            <NoteList notes={notes} />
+            {loading && <ActivityIndicator size="large" color="#007bff" />}
+            {error && <Text style={styles.errorText}>{error}</Text>}
+            {notes.length === 0 ? (
+                <Text style={styles.noNotesText}>You have no notes</Text>
+            ) : (
+                <NoteList
+                    notes={notes}
+                    onDelete={deleteNote}
+                    onEdit={editNote}
+                />
+            )}
             <TouchableOpacity
                 style={styles.addButton}
                 onPress={() => setModalVisible(true)}
