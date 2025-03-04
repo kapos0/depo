@@ -21,7 +21,10 @@ export type NoteType = {
 
 export default function NotesPage() {
     const router = useRouter();
-    const { user, loading: authLoading } = useAuth();
+    const { user, loading: authLoading } = useAuth() as {
+        user: { $id: string } | null;
+        loading: boolean;
+    };
 
     const [notes, setNotes] = useState<NoteType[]>([]);
     const [modalVisible, setModalVisible] = useState(false);
@@ -31,7 +34,7 @@ export default function NotesPage() {
 
     async function fetchNotes() {
         setLoading(true);
-        const response = await notesService.getNotes();
+        const response = await notesService.getNotes(user?.$id!);
         if (!response.error) {
             // Sadece gerekli alanları içeren yeni bir dizi oluşturur
             const simplifiedNotes =
@@ -58,7 +61,7 @@ export default function NotesPage() {
     async function addNote() {
         if (newNote.trim() === "") return;
         setLoading(true);
-        const response = await notesService.addNewNote(newNote);
+        const response = await notesService.addNewNote(newNote, user?.$id!);
         if (!response.error) {
             setNotes((prev: NoteType[]) => [
                 ...prev,
@@ -130,14 +133,14 @@ export default function NotesPage() {
         <View style={styles.container}>
             {loading && <ActivityIndicator size="large" color="#007bff" />}
             {error && <Text style={styles.errorText}>{error}</Text>}
-            {notes.length === 0 ? (
-                <Text style={styles.noNotesText}>You have no notes</Text>
-            ) : (
+            {notes.length !== 0 ? (
                 <NoteList
                     notes={notes}
                     onDelete={deleteNote}
                     onEdit={editNote}
                 />
+            ) : (
+                <Text style={styles.noNotesText}>You have no notes</Text>
             )}
             <TouchableOpacity
                 style={styles.addButton}

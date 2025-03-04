@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
     Text,
     View,
@@ -7,11 +8,18 @@ import {
     TouchableOpacity,
 } from "react-native";
 import { useRouter } from "expo-router";
+import { useAuth } from "@/context/authContext";
 import PostItImage from "@/assets/images/post-it.png";
 
 export default function Index() {
+    const { user, loading } = useAuth();
     const router = useRouter();
-    if (false) {
+
+    useEffect(() => {
+        if (!loading && user) router.replace("/notes");
+    }, [user, loading]);
+
+    if (loading) {
         return (
             <View style={styles.centeredContainter}>
                 <ActivityIndicator size="large" color="#007bff" />
