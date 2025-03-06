@@ -1,35 +1,41 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+    SafeAreaView,
+    View,
+    Text,
+    TouchableOpacity,
+    Image,
+    StyleSheet,
+} from "react-native";
+import { useRouter } from "expo-router";
 
 import Colors from "@/assets/constant/Colors";
 import landingImg from "@/assets/images/landing.png";
 
 export default function Index() {
+    const router = useRouter();
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Image style={styles.image} source={landingImg} />
             <View style={styles.innerContainer}>
                 <Text style={styles.innerContainerText}>
                     Welcome to EDU-VOYAGE
                 </Text>
                 <Text style={styles.innerContainerSubText}>
-                    Your journey to learning starts here
+                    Transform your ideas into engaging educational content,
+                    effortlessly with AI! 📚🤖
                 </Text>
                 <TouchableOpacity
-                    style={[styles.button, { backgroundColor: Colors.WHITE }]}
+                    onPress={() => router.push("/auth/signUp")}
+                    style={styles.button}
                 >
                     <Text
-                        style={[
-                            styles.buttonText,
-                            {
-                                color: Colors.PRIMARY,
-                                fontFamily: "outfit-bold",
-                            },
-                        ]}
+                        style={[styles.buttonText, { color: Colors.PRIMARY }]}
                     >
                         Get Started
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
+                    onPress={() => router.push("/auth/signIn")}
                     style={[
                         styles.button,
                         {
@@ -44,7 +50,7 @@ export default function Index() {
                     </Text>
                 </TouchableOpacity>
             </View>
-        </View>
+        </SafeAreaView>
     );
 }
 
@@ -70,14 +76,12 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         textAlign: "center",
         color: Colors.WHITE,
-        fontFamily: "outfit-bold",
     },
     innerContainerSubText: {
         fontSize: 20,
         textAlign: "center",
         color: Colors.WHITE,
         marginTop: 20,
-        fontFamily: "outfit",
     },
     button: {
         padding: 20,
@@ -88,6 +92,5 @@ const styles = StyleSheet.create({
     buttonText: {
         textAlign: "center",
         fontSize: 18,
-        fontFamily: "outfit",
     },
 });
