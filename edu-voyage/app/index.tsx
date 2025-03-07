@@ -1,3 +1,4 @@
+import { useContext, useState } from "react";
 import {
     SafeAreaView,
     View,
@@ -5,14 +6,31 @@ import {
     TouchableOpacity,
     Image,
     StyleSheet,
+    ActivityIndicator,
 } from "react-native";
 import { useRouter } from "expo-router";
+
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { UserContext } from "@/lib/UserContext";
 
 import Colors from "@/assets/constant/Colors";
 import landingImg from "@/assets/images/landing.png";
 
 export default function Index() {
     const router = useRouter();
+    const [loading, setLoading] = useState(false);
+    const { setUser } = useContext(UserContext);
+    onAuthStateChanged(auth, async (user) => {
+        if (user?.email) {
+            setLoading(true);
+            const response = await getDoc(doc(db, "users", user.email));
+            setLoading(false);
+            setUser(user);
+            router.replace("/(tabs)/home");
+        }
+    });
     return (
         <SafeAreaView style={styles.container}>
             <Image style={styles.image} source={landingImg} />
@@ -24,6 +42,9 @@ export default function Index() {
                     Transform your ideas into engaging educational content,
                     effortlessly with AI! 📚🤖
                 </Text>
+                {loading ? (
+                    <ActivityIndicator size="large" color={Colors.WHITE} />
+                ) : null}
                 <TouchableOpacity
                     onPress={() => router.push("/auth/signUp")}
                     style={styles.button}

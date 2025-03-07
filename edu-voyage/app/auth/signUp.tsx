@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import {
+    ActivityIndicator,
+    Alert,
     Image,
     Pressable,
     SafeAreaView,
@@ -9,29 +11,106 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "@/lib/firebase";
+import { doc, setDoc } from "firebase/firestore";
+
+import { UserContext } from "@/lib/UserContext";
+
 import styles from "./authStyles";
 import logoImg from "@/assets/images/logo.png";
+import Colors from "@/assets/constant/Colors";
 
 export default function SignUpPage() {
     const router = useRouter();
+    const [userName, setUserName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+    const { setUser } = useContext(UserContext);
+
+    function createAccount() {
+        if (
+            !userName.trim() ||
+            !email.trim() ||
+            !password.trim() ||
+            !confirmPassword.trim()
+        ) {
+            setError("All fields are required");
+            return;
+        }
+        if (password !== confirmPassword) {
+            Alert.alert("Passwords do not match");
+            return;
+        }
+        setLoading(true);
+        createUserWithEmailAndPassword(auth, email, password)
+            .then(async (response) => {
+                const user = response.user;
+                await saveUserToDB(user?.uid);
+                setUserName("");
+                setEmail("");
+                setPassword("");
+                setConfirmPassword("");
+                setUser(user);
+                setLoading(false);
+                router.replace("/(tabs)/home");
+            })
+            .catch((error) => {
+                console.error((error as Error).message);
+                setLoading(false);
+                setError((error as Error).message);
+            });
+        async function saveUserToDB(user_uid: string) {
+            await setDoc(doc(db, "users", email), {
+                username: userName,
+                email: email,
+                password: password,
+                member: false,
+                uid: user_uid,
+            });
+        }
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <Image source={logoImg} style={styles.logo} />
             <Text style={styles.containerHeaderText}>Create New Account</Text>
-            <TextInput style={styles.input} placeholder="User Name" />
-            <TextInput style={styles.input} placeholder="Email" />
+            {error ? <Text>{error}</Text> : null}
+            <TextInput
+                style={styles.input}
+                placeholder="User Name"
+                onChangeText={(value) => setUserName(value)}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Email"
+                onChangeText={(value) => setEmail(value)}
+            />
             <TextInput
                 style={styles.input}
                 placeholder="Password"
                 secureTextEntry
+                onChangeText={(value) => setPassword(value)}
             />
             <TextInput
                 style={styles.input}
                 placeholder="Confirm Password"
                 secureTextEntry
+                onChangeText={(value) => setConfirmPassword(value)}
             />
-            <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Create Account</Text>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={createAccount}
+                disabled={loading}
+            >
+                {!loading ? (
+                    <Text style={styles.buttonText}>Create Account</Text>
+                ) : (
+                    <ActivityIndicator size="large" color={Colors.WHITE} />
+                )}
             </TouchableOpacity>
             <Pressable
                 onPress={() => router.push("/auth/signIn")}
