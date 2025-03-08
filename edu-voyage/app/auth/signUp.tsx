@@ -15,7 +15,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "@/lib/firebase";
 import { doc, setDoc } from "firebase/firestore";
 
-import { UserContext } from "@/lib/UserContext";
+import { UserContext, userType } from "@/lib/UserContext";
 
 import styles from "./authStyles";
 import logoImg from "@/assets/images/logo.png";
@@ -54,7 +54,6 @@ export default function SignUpPage() {
                 setEmail("");
                 setPassword("");
                 setConfirmPassword("");
-                setUser(user);
                 setLoading(false);
                 router.replace("/(tabs)/home");
             })
@@ -64,13 +63,17 @@ export default function SignUpPage() {
                 setError((error as Error).message);
             });
         async function saveUserToDB(user_uid: string) {
-            await setDoc(doc(db, "users", email), {
+            const userData = {
                 username: userName,
                 email: email,
                 password: password,
                 member: false,
                 uid: user_uid,
-            });
+            };
+            if (userData) {
+                await setDoc(doc(db, "users", email), userData);
+                setUser(userData as userType);
+            }
         }
     }
 

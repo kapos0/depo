@@ -13,7 +13,7 @@ import { useRouter } from "expo-router";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "@/lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
-import { UserContext } from "@/lib/UserContext";
+import { UserContext, userType } from "@/lib/UserContext";
 
 import Colors from "@/assets/constant/Colors";
 import landingImg from "@/assets/images/landing.png";
@@ -26,9 +26,12 @@ export default function Index() {
         if (user?.email) {
             setLoading(true);
             const response = await getDoc(doc(db, "users", user.email));
-            setLoading(false);
-            setUser(user);
-            router.replace("/(tabs)/home");
+            const userData = response.data();
+            if (userData) {
+                setLoading(false);
+                setUser(userData as userType); //! is this correct?
+                router.replace("/(tabs)/home");
+            }
         }
     });
     return (
@@ -102,7 +105,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: "center",
         color: Colors.WHITE,
-        marginTop: 20,
+        marginVertical: 20,
     },
     button: {
         padding: 20,

@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Stack } from "expo-router";
-import { UserContext } from "@/lib/UserContext";
-import { User } from "firebase/auth";
+import { UserContext, userType } from "@/lib/UserContext";
 
 export default function RootLayout() {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<userType | null>(null);
 
     return (
         <UserContext.Provider value={{ user, setUser }}>

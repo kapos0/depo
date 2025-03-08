@@ -15,7 +15,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "@/lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
 
-import { UserContext } from "@/lib/UserContext";
+import { UserContext, userType } from "@/lib/UserContext";
 
 import styles from "./authStyles";
 import logoImg from "@/assets/images/logo.png";
@@ -27,14 +27,12 @@ export default function SignInPage() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-    const { user, setUser } = useContext(UserContext);
+    const { setUser } = useContext(UserContext);
 
     async function handleSignIn() {
         setLoading(true);
         await signInWithEmailAndPassword(auth, email, password)
-            .then(async (response) => {
-                const user = response.user;
-                setUser(user);
+            .then(async (_) => {
                 await getUserFromDB();
                 setLoading(false);
                 router.replace("/(tabs)/home");
@@ -49,6 +47,8 @@ export default function SignInPage() {
 
     async function getUserFromDB() {
         const response = await getDoc(doc(db, "users", email));
+        const userData = response?.data();
+        if (userData) setUser(userData as userType);
     }
 
     return (
