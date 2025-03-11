@@ -1,10 +1,12 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
 
 import Button from "./Button";
 import bookImage from "@/assets/images/book.png";
 
 export default function NoContent() {
+    const router = useRouter();
     return (
         <View style={styles.container}>
             <Image source={bookImage} style={styles.image} />
@@ -12,7 +14,7 @@ export default function NoContent() {
             <Button
                 text="+ Create New Content"
                 type="fill"
-                onPress={() => {}}
+                onPress={() => router.push("/add-course")}
             />
             <Button
                 text="Explore existing content"

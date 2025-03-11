@@ -1,5 +1,10 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+    ActivityIndicator,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+} from "react-native";
 
 import Colors from "@/assets/constant/Colors";
 
@@ -7,22 +12,34 @@ type ButtonProps = {
     text: string;
     type: "fill" | "outline";
     onPress: () => void;
+    loading?: boolean;
 };
 
-export default function Button({ text, type, onPress }: ButtonProps) {
+export default function Button({ text, type, onPress, loading }: ButtonProps) {
     return (
         <TouchableOpacity
             onPress={onPress}
+            disabled={loading}
             style={[styles.button, styles[type]]}
         >
-            <Text
-                style={[
-                    styles.buttonText,
-                    { color: type === "fill" ? Colors.WHITE : Colors.PRIMARY },
-                ]}
-            >
-                {text}
-            </Text>
+            {!loading ? (
+                <Text
+                    style={[
+                        styles.buttonText,
+                        {
+                            color:
+                                type === "fill" ? Colors.WHITE : Colors.PRIMARY,
+                        },
+                    ]}
+                >
+                    {text}
+                </Text>
+            ) : (
+                <ActivityIndicator
+                    size="small"
+                    color={type === "fill" ? Colors.WHITE : Colors.PRIMARY}
+                />
+            )}
         </TouchableOpacity>
     );
 }
