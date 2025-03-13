@@ -1,15 +1,24 @@
 import React from "react";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import {
+    FlatList,
+    Image,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 
 import { imageAssets } from "@/assets/constant/Option";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Colors from "@/assets/constant/Colors";
+import { useRouter } from "expo-router";
 
 export default function CourseList({
     courses,
 }: {
     courses: Record<string, unknown>[];
 }) {
+    const router = useRouter();
     return (
         <View style={styles.container}>
             <Text style={styles.headingText}>Courses</Text>
@@ -19,7 +28,17 @@ export default function CourseList({
                 data={courses}
                 keyExtractor={(_, index) => index.toString()}
                 renderItem={({ item }) => (
-                    <View style={styles.courseContainer}>
+                    <TouchableOpacity
+                        style={styles.courseContainer}
+                        onPress={() =>
+                            router.push({
+                                pathname: "/course-view",
+                                params: {
+                                    courseParam: JSON.stringify(item),
+                                },
+                            })
+                        }
+                    >
                         <Image
                             source={
                                 imageAssets[
@@ -42,7 +61,7 @@ export default function CourseList({
                                 Chapters
                             </Text>
                         </View>
-                    </View>
+                    </TouchableOpacity>
                 )}
             />
         </View>
