@@ -53,7 +53,7 @@ export default function AddCoursePage() {
             const aiResponse = await GenerateCourseAI.sendMessage(PROMPT);
             const data = aiResponse.response.text();
             const courses = JSON.parse(data);
-            courses.forEach(async (course: any) => {
+            courses.forEach(async (course: Record<string, unknown>) => {
                 // Save the courses to the firabase database
                 await setDoc(
                     doc(

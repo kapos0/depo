@@ -29,7 +29,7 @@ export default function Index() {
             const userData = response.data();
             if (userData) {
                 setLoading(false);
-                setUser(userData as userType); //! is this correct?
+                setUser(userData as userType);
                 router.replace("/(tabs)/home");
             }
         }
