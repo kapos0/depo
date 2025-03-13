@@ -20,7 +20,11 @@ export default function CourseViewPage() {
                 ListHeaderComponent={
                     <View>
                         <CourseIntro course={course} />
-                        <CourseChapters courseChapters={course?.chapters} />
+                        <CourseChapters
+                            courseChapters={course?.chapters}
+                            completedChapters={course?.completedChapters}
+                            docId={course?.docId}
+                        />
                     </View>
                 }
             />

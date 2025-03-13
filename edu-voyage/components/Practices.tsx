@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     practiceContainer: {
         flex: 1,
         margin: 5,
+        marginLeft: 10,
         aspectRatio: 1,
     },
     practiceImage: {

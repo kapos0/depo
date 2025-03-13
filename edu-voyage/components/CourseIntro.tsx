@@ -29,8 +29,12 @@ export default function CourseIntro({
                     {course?.courseTitle as string}
                 </Text>
                 <View style={styles.courseChapters}>
-                    <Ionicons name="book-outline" size={20} color="black" />
-                    <Text>
+                    <Ionicons
+                        name="book-outline"
+                        size={20}
+                        color={Colors.PRIMARY}
+                    />
+                    <Text style={{ color: Colors.PRIMARY }}>
                         {(course?.chapters as { length: number })?.length}{" "}
                         Chapters
                     </Text>

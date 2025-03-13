@@ -1,14 +1,33 @@
 import React from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import {
+    FlatList,
+    TouchableOpacity,
+    StyleSheet,
+    Text,
+    View,
+} from "react-native";
+import { useRouter } from "expo-router";
 
 import Colors from "@/assets/constant/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function CourseChapters({
     courseChapters,
+    completedChapters,
+    docId,
 }: {
     courseChapters: Record<string, unknown>[];
+    completedChapters: number[];
+    docId: string;
 }) {
+    const router = useRouter();
+    function isChapterCompleted(chapterIndex: number): boolean {
+        const isCompleted = completedChapters.find(
+            (item) => item === chapterIndex
+        );
+        return isCompleted ? true : false;
+    }
+
     return (
         <View style={styles.container}>
             <Text style={styles.chaptersText}>CourseChapters</Text>
@@ -23,11 +42,32 @@ export default function CourseChapters({
                                 {item.chapterName as string}
                             </Text>
                         </View>
-                        <Ionicons
-                            name="play"
-                            size={24}
-                            color={Colors.PRIMARY}
-                        />
+                        <TouchableOpacity
+                            onPress={() =>
+                                router.push({
+                                    pathname: "/chapter-view",
+                                    params: {
+                                        chapterParams: JSON.stringify(item),
+                                        docId: docId,
+                                        chapterIndex: index,
+                                    },
+                                })
+                            }
+                        >
+                            {isChapterCompleted(index) ? (
+                                <Ionicons
+                                    name="play"
+                                    size={24}
+                                    color={Colors.PRIMARY}
+                                />
+                            ) : (
+                                <Ionicons
+                                    name="checkmark-done"
+                                    size={24}
+                                    color={Colors.GREEN}
+                                />
+                            )}
+                        </TouchableOpacity>
                     </View>
                 )}
             />
