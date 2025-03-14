@@ -22,8 +22,8 @@ export default function CourseChapters({
 }) {
     const router = useRouter();
     function isChapterCompleted(chapterIndex: number): boolean {
-        const isCompleted = completedChapters.find(
-            (item) => item === chapterIndex
+        const isCompleted = completedChapters?.find(
+            (item) => item == chapterIndex
         );
         return isCompleted ? true : false;
     }
@@ -56,15 +56,15 @@ export default function CourseChapters({
                         >
                             {isChapterCompleted(index) ? (
                                 <Ionicons
-                                    name="play"
-                                    size={24}
-                                    color={Colors.PRIMARY}
-                                />
-                            ) : (
-                                <Ionicons
                                     name="checkmark-done"
                                     size={24}
                                     color={Colors.GREEN}
+                                />
+                            ) : (
+                                <Ionicons
+                                    name="play"
+                                    size={24}
+                                    color={Colors.PRIMARY}
                                 />
                             )}
                         </TouchableOpacity>

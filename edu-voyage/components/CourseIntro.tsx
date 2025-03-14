@@ -11,9 +11,10 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 export default function CourseIntro({
     course,
 }: {
-    course: Record<string, unknown>;
+    course?: Record<string, unknown>;
 }) {
     const router = useRouter();
+    if (!course) return null;
     return (
         <View>
             <Image

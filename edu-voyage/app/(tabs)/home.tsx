@@ -15,26 +15,28 @@ import {
     where,
 } from "firebase/firestore";
 
-import Colors from "@/assets/constant/Colors";
 import CourseList from "@/components/CourseList";
 import Practices from "@/components/Practices";
 import CourseProgress from "@/components/CourseProgress";
+
+import Colors from "@/assets/constant/Colors";
 
 export default function HomePage() {
     const { user } = useContext(UserContext);
     const [courses, setCourses] = useState<Record<string, unknown>[]>([]);
 
     async function getCourses() {
-        setCourses([]);
         const coursesQuery = query(
             collection(db, "courses"),
             where("createdBy", "==", user?.email)
         );
         const coursesSnapshot = await getDocs(coursesQuery);
+        const newCourses: Record<string, unknown>[] = [];
         coursesSnapshot.forEach((course: DocumentSnapshot) => {
             const courseData = course.data();
-            if (courseData) setCourses((prev) => [...(prev || []), courseData]);
+            if (courseData) newCourses.push(courseData);
         });
+        setCourses(newCourses);
     }
 
     useEffect(() => {

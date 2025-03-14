@@ -32,8 +32,9 @@ export default function CourseList({
                         style={styles.courseContainer}
                         onPress={() =>
                             router.push({
-                                pathname: "/course-view",
+                                pathname: `/course-view/[courseId]`,
                                 params: {
+                                    courseId: item?.docId as string,
                                     courseParam: JSON.stringify(item),
                                 },
                             })

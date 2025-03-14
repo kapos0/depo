@@ -49,37 +49,28 @@ export default function AddCoursePage() {
         if (selectedTopics.length === 0) return;
         setLoading(true);
         const PROMPT = selectedTopics + Prompt.COURSE;
-        try {
-            const aiResponse = await GenerateCourseAI.sendMessage(PROMPT);
-            const data = aiResponse.response.text();
-            const courses = JSON.parse(data);
-            const docId = Date.now().toString();
-            courses.forEach(async (course: Record<string, unknown>) => {
-                // Save the courses to the firabase database
-                await setDoc(doc(db, "courses", user?.email + " " + docId), {
-                    ...course,
-                    topics: selectedTopics,
-                    createdBy: user?.email,
-                    createdAt: Date.now(),
-                    docId: docId,
-                });
+        const aiResponse = await GenerateCourseAI.sendMessage(PROMPT);
+        const data = aiResponse.response.text();
+        const courses = JSON.parse(data);
+        const docId = Date.now().toString();
+        courses.forEach(async (course: Record<string, unknown>) => {
+            // Save the courses to the firabase database
+            await setDoc(doc(db, "courses", user?.email + " " + docId), {
+                ...course,
+                topics: selectedTopics,
+                createdBy: user?.email,
+                createdAt: Date.now(),
+                docId: docId,
             });
-            setLoading(false);
-            setResultText("Courses Created Successfully!");
-            Alert.alert("Courses Created Successfully!", "", [
-                {
-                    text: "OK",
-                    onPress: () => router.push("/(tabs)/home"),
-                },
-            ]);
-        } catch (error) {
-            setLoading(false);
-            Alert.alert("Error", "Something went wrong! Please try again.");
-            console.error(error);
-        } finally {
-            setLoading(false);
-            setSelectedTopics([]);
-        }
+        });
+        setLoading(false);
+        setResultText("Courses Created Successfully!");
+        Alert.alert("Courses Created Successfully!", "", [
+            {
+                text: "OK",
+                onPress: () => router.push("/(tabs)/home"),
+            },
+        ]);
     }
 
     function handleSelection(topic: string) {

@@ -28,19 +28,12 @@ export default function ChapterViewPage() {
 
     async function handlePageFinish() {
         setLoading(true);
-        try {
-            await updateDoc(
-                doc(db, "courses", userEmail + " " + String(docId)),
-                {
-                    completedChapters: arrayUnion(chapterIndex),
-                }
-            );
-            setLoading(false);
-            router.back();
-        } catch (error) {
-            console.error("Error updating document: ", error);
-            setLoading(false);
-        }
+        await updateDoc(doc(db, "courses", userEmail + " " + String(docId)), {
+            completedChapters: arrayUnion(chapterIndex),
+        });
+        setLoading(false);
+        console.log(docId);
+        router.replace(`/course-view/${docId}`);
     }
 
     return (
