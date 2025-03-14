@@ -10,6 +10,17 @@ export default function CourseProgress({
 }: {
     courses: Record<string, unknown>[];
 }) {
+    function getProgress(course: {
+        completedChapters?: { length: number }[];
+        chapters?: { length: number }[];
+    }): number | undefined {
+        const completedChapters = course?.completedChapters?.length;
+        const totalChapters = course?.chapters?.length;
+        if (completedChapters && totalChapters)
+            return completedChapters / totalChapters;
+        else return undefined;
+    }
+
     return (
         <View style={styles.container}>
             <Text style={styles.headingText}>Progress</Text>
@@ -39,9 +50,19 @@ export default function CourseProgress({
                                 {(item?.chapters as { length: number })?.length}{" "}
                                 Chapters
                             </Text>
-                            <Progress.Bar progress={0.3} width={250} />
+                            <Progress.Bar
+                                progress={getProgress(item) || 0}
+                                width={250}
+                            />
                             <Text style={styles.proggressBarText}>
-                                3 of 5 Chapters Completed
+                                {Array.isArray(item?.completedChapters)
+                                    ? item.completedChapters.length
+                                    : 0}{" "}
+                                of{" "}
+                                {Array.isArray(item?.chapters)
+                                    ? item.chapters.length
+                                    : 0}{" "}
+                                Chapters Completed
                             </Text>
                         </View>
                     </View>

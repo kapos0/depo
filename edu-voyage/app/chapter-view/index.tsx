@@ -32,7 +32,6 @@ export default function ChapterViewPage() {
             completedChapters: arrayUnion(chapterIndex),
         });
         setLoading(false);
-        console.log(docId);
         router.replace(`/course-view/${docId}`);
     }
 

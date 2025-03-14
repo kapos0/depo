@@ -24,8 +24,10 @@ import Colors from "@/assets/constant/Colors";
 export default function HomePage() {
     const { user } = useContext(UserContext);
     const [courses, setCourses] = useState<Record<string, unknown>[]>([]);
+    const [refreshing, setRefreshing] = useState(false);
 
     async function getCourses() {
+        setRefreshing(true);
         const coursesQuery = query(
             collection(db, "courses"),
             where("createdBy", "==", user?.email)
@@ -37,10 +39,12 @@ export default function HomePage() {
             if (courseData) newCourses.push(courseData);
         });
         setCourses(newCourses);
+        setRefreshing(false);
     }
 
     useEffect(() => {
         user && getCourses();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
 
     return (
@@ -60,6 +64,8 @@ export default function HomePage() {
                         </View>
                     )
                 }
+                onRefresh={getCourses}
+                refreshing={refreshing}
             />
         </SafeAreaView>
     );

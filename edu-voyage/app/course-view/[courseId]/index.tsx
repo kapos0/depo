@@ -32,6 +32,7 @@ export default function CourseViewPage() {
                     ? JSON.parse(courseParam[0])
                     : JSON.parse(courseParam)
             );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [courseId]);
 
     return (

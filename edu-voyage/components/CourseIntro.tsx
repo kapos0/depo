@@ -46,7 +46,10 @@ export default function CourseIntro({
                 </Text>
                 <Button text="Start Now" type="fill" onPress={() => {}} />
             </View>
-            <Pressable style={styles.backButton} onPress={() => router.back()}>
+            <Pressable
+                style={styles.backButton}
+                onPress={() => router.push("/(tabs)/home")}
+            >
                 <Ionicons name="arrow-back" size={24} color="black" />
             </Pressable>
         </View>

@@ -23,8 +23,9 @@ export default function CourseChapters({
     const router = useRouter();
     function isChapterCompleted(chapterIndex: number): boolean {
         const isCompleted = completedChapters?.find(
-            (item) => item == chapterIndex
+            (item) => Number(item) === chapterIndex
         );
+
         return isCompleted ? true : false;
     }
 
