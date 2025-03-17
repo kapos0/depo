@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { FlatList, SafeAreaView, StyleSheet, View } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 
@@ -17,12 +17,12 @@ export default function CourseViewPage() {
     const { courseParam, courseId } = useLocalSearchParams();
     const [course, setCourse] = useState<DocumentData>();
 
-    async function getCourseById() {
+    const getCourseById = useCallback(async () => {
         const docRef = await getDoc(
             doc(db, "courses", userEmail + " " + String(courseId))
         );
         setCourse(docRef.data());
-    }
+    }, [courseId, userEmail]);
 
     useEffect(() => {
         if (!courseParam) getCourseById();
@@ -32,8 +32,7 @@ export default function CourseViewPage() {
                     ? JSON.parse(courseParam[0])
                     : JSON.parse(courseParam)
             );
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [courseId]);
+    }, [courseId, getCourseById, courseParam]);
 
     return (
         <SafeAreaView style={styles.container}>

@@ -1,10 +1,19 @@
 import React from "react";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import {
+    FlatList,
+    Image,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 
 import { PraticeOption } from "@/assets/constant/Option";
 import Colors from "@/assets/constant/Colors";
+import { useRouter } from "expo-router";
 
 export default function Practices() {
+    const router = useRouter();
     return (
         <View style={styles.container}>
             <Text style={styles.headingText}>Practices</Text>
@@ -13,13 +22,18 @@ export default function Practices() {
                 numColumns={3}
                 keyExtractor={(_, index) => index.toString()}
                 renderItem={({ item }) => (
-                    <View style={styles.practiceContainer}>
+                    <TouchableOpacity
+                        style={styles.practiceContainer}
+                        onPress={() =>
+                            router.push(`/practice-view/${item?.name}/`)
+                        }
+                    >
                         <Image
                             source={item?.image}
                             style={styles.practiceImage}
                         />
                         <Text style={styles.practiceText}>{item.name}</Text>
-                    </View>
+                    </TouchableOpacity>
                 )}
             />
         </View>

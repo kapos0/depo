@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { StyleSheet, SafeAreaView, View, FlatList } from "react-native";
 
 import Header from "@/components/Header";
@@ -26,7 +26,7 @@ export default function HomePage() {
     const [courses, setCourses] = useState<Record<string, unknown>[]>([]);
     const [refreshing, setRefreshing] = useState(false);
 
-    async function getCourses() {
+    const getCourses = useCallback(async () => {
         setRefreshing(true);
         const coursesQuery = query(
             collection(db, "courses"),
@@ -40,12 +40,11 @@ export default function HomePage() {
         });
         setCourses(newCourses);
         setRefreshing(false);
-    }
+    }, [user]);
 
     useEffect(() => {
         user && getCourses();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user]);
+    }, [user, getCourses]);
 
     return (
         <SafeAreaView style={styles.container}>
