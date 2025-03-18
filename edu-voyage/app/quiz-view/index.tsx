@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
     Dimensions,
     Pressable,
@@ -9,6 +9,8 @@ import {
     View,
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
+
+import { UserContext } from "@/lib/UserContext";
 
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
@@ -21,6 +23,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function QuicPage() {
     const router = useRouter();
+    const { user } = useContext(UserContext);
     const { courseParam } = useLocalSearchParams();
     const course = Array.isArray(courseParam)
         ? JSON.parse(courseParam[0])
@@ -36,30 +39,37 @@ export default function QuicPage() {
         return (currentPage + 1) / course?.quiz?.length;
     }
     function handleOptionSelect(selectedChoice: string) {
-        const updatedResult = {
-            ...result,
-            [currentPage]: {
-                selectedChoice,
-                isCorrect: selectedChoice === currentQuiz?.correctAns,
-                question: currentQuiz?.question,
-                correctAns: currentQuiz?.correctAns,
-            },
-        };
-        setResult(updatedResult);
+        setResult((prevResult) => {
+            const updatedResult = {
+                ...prevResult,
+                [currentPage]: {
+                    selectedChoice,
+                    isCorrect: selectedChoice === currentQuiz?.correctAns,
+                    question: currentQuiz?.question,
+                    correctAns: currentQuiz?.correctAns,
+                },
+            };
+            return updatedResult;
+        });
     }
     async function handleQuizSubmit() {
         setLoading(true);
-        const res = await updateDoc(doc(db, "courses", course.docId), {
-            quizResult: result,
-        });
-        console.log(res);
-        setLoading(false);
-        router.push({
-            pathname: "/quiz-result-view",
-            params: {
-                resultParam: JSON.stringify(result),
-            },
-        });
+        try {
+            const documentRef = user?.email + " " + course?.docId;
+            await updateDoc(doc(db, "courses", documentRef), {
+                quizResult: result,
+            });
+            router.push({
+                pathname: "/quiz-result-view",
+                params: {
+                    resultParam: JSON.stringify(result),
+                },
+            });
+        } catch (error) {
+            console.error("Error updating document: ", error);
+        } finally {
+            setLoading(false);
+        }
     }
     return (
         <SafeAreaView style={styles.container}>
