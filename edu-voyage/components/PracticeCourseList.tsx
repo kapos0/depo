@@ -53,12 +53,21 @@ export default function PracticeCourseList({
                         style={styles.innerContainer}
                         onPress={() => handlePress(item)}
                     >
-                        <Ionicons
-                            name="checkmark-circle"
-                            size={24}
-                            color={Colors.GRAY}
-                            style={styles.checkIcon}
-                        />
+                        {item?.quizResult ? (
+                            <Ionicons
+                                name="checkmark-circle"
+                                size={24}
+                                color={Colors.GREEN}
+                                style={styles.checkIcon}
+                            />
+                        ) : (
+                            <Ionicons
+                                name="checkmark-circle"
+                                size={24}
+                                color={Colors.GRAY}
+                                style={styles.checkIcon}
+                            />
+                        )}
                         <Image source={option?.icon} style={styles.image} />
                         <Text style={styles.courseTitle}>
                             {item?.courseTitle as string}

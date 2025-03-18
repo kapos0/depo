@@ -59,7 +59,7 @@ export default function QuicPage() {
             await updateDoc(doc(db, "courses", documentRef), {
                 quizResult: result,
             });
-            router.push({
+            router.replace({
                 pathname: "/quiz-result-view",
                 params: {
                     resultParam: JSON.stringify(result),
