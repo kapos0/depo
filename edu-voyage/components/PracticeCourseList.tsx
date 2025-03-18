@@ -1,5 +1,14 @@
 import React from "react";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import {
+    FlatList,
+    Image,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
+
+import { useRouter } from "expo-router";
 
 import Colors from "@/assets/constant/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -18,6 +27,21 @@ export default function PracticeCourseList({
           }
         | undefined;
 }) {
+    const router = useRouter();
+    async function handlePress(course: Record<string, unknown>) {
+        if (!course) return;
+        switch (option?.name) {
+            case "Quiz":
+                router.push({
+                    pathname: `/quiz-view`,
+                    params: {
+                        courseParam: JSON.stringify(course),
+                    },
+                });
+                break;
+        }
+    }
+
     return (
         <View style={styles.container}>
             <FlatList
@@ -25,7 +49,10 @@ export default function PracticeCourseList({
                 numColumns={2}
                 keyExtractor={(_, index) => index.toString()}
                 renderItem={({ item }) => (
-                    <View style={styles.innerContainer}>
+                    <TouchableOpacity
+                        style={styles.innerContainer}
+                        onPress={() => handlePress(item)}
+                    >
                         <Ionicons
                             name="checkmark-circle"
                             size={24}
@@ -36,7 +63,7 @@ export default function PracticeCourseList({
                         <Text style={styles.courseTitle}>
                             {item?.courseTitle as string}
                         </Text>
-                    </View>
+                    </TouchableOpacity>
                 )}
             />
         </View>
