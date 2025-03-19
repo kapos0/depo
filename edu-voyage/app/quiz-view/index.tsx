@@ -174,7 +174,6 @@ const styles = StyleSheet.create({
         width: "92%",
         alignSelf: "center",
         backgroundColor: Colors.WHITE,
-
         borderRadius: 20,
         elevation: 1,
     },

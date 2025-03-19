@@ -8,7 +8,7 @@ import {
     View,
 } from "react-native";
 
-import { useRouter } from "expo-router";
+import { RelativePathString, useRouter } from "expo-router";
 
 import Colors from "@/assets/constant/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -30,16 +30,12 @@ export default function PracticeCourseList({
     const router = useRouter();
     async function handlePress(course: Record<string, unknown>) {
         if (!course) return;
-        switch (option?.name) {
-            case "Quiz":
-                router.push({
-                    pathname: `/quiz-view`,
-                    params: {
-                        courseParam: JSON.stringify(course),
-                    },
-                });
-                break;
-        }
+        router.push({
+            pathname: option?.path as RelativePathString,
+            params: {
+                courseParam: JSON.stringify(course),
+            },
+        });
     }
 
     return (
@@ -53,21 +49,22 @@ export default function PracticeCourseList({
                         style={styles.innerContainer}
                         onPress={() => handlePress(item)}
                     >
-                        {item?.quizResult ? (
-                            <Ionicons
-                                name="checkmark-circle"
-                                size={24}
-                                color={Colors.GREEN}
-                                style={styles.checkIcon}
-                            />
-                        ) : (
-                            <Ionicons
-                                name="checkmark-circle"
-                                size={24}
-                                color={Colors.GRAY}
-                                style={styles.checkIcon}
-                            />
-                        )}
+                        {option?.path !== "/flashcards-view" &&
+                            (item?.quizResult ? (
+                                <Ionicons
+                                    name="checkmark-circle"
+                                    size={24}
+                                    color={Colors.GREEN}
+                                    style={styles.checkIcon}
+                                />
+                            ) : (
+                                <Ionicons
+                                    name="checkmark-circle"
+                                    size={24}
+                                    color={Colors.GRAY}
+                                    style={styles.checkIcon}
+                                />
+                            ))}
                         <Image source={option?.icon} style={styles.image} />
                         <Text style={styles.courseTitle}>
                             {item?.courseTitle as string}
