@@ -15,7 +15,7 @@ export const PraticeOption = [
         name: "Question & Ans",
         image: require("@/assets/images/notes.png"),
         icon: require("@/assets/images/qa.png"),
-        path: "/questionAnswer-view",
+        path: "/qa-view",
     },
 ];
 

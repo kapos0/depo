@@ -49,7 +49,7 @@ export default function PracticeCourseList({
                         style={styles.innerContainer}
                         onPress={() => handlePress(item)}
                     >
-                        {option?.path !== "/flashcards-view" &&
+                        {option?.path === "/quiz-view" &&
                             (item?.quizResult ? (
                                 <Ionicons
                                     name="checkmark-circle"
