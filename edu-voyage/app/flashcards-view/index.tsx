@@ -8,8 +8,8 @@ import {
     StyleSheet,
     Text,
     View,
+    SafeAreaView,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
 import FlipCard from "react-native-flip-card";

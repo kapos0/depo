@@ -21,6 +21,21 @@ export default function TabsLayout() {
                     tabBarLabel: "Home",
                 }}
             />
+            <Tabs.Screen
+                name="progress"
+                options={{
+                    tabBarIcon: ({ size, color }) => {
+                        return (
+                            <Ionicons
+                                name="trending-up"
+                                size={size}
+                                color={color}
+                            />
+                        );
+                    },
+                    tabBarLabel: "Progress",
+                }}
+            />
         </Tabs>
     );
 }
