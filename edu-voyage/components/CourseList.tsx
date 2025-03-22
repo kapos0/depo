@@ -15,13 +15,18 @@ import { useRouter } from "expo-router";
 
 export default function CourseList({
     courses,
+    title,
 }: {
     courses: Record<string, unknown>[];
+    title?: string;
 }) {
     const router = useRouter();
+    console.log(courses);
     return (
         <View style={styles.container}>
-            <Text style={styles.headingText}>Courses</Text>
+            <Text style={styles.headingText}>
+                {title ? title : "Your Courses"}
+            </Text>
             <FlatList
                 horizontal
                 showsHorizontalScrollIndicator={false}

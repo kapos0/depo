@@ -22,6 +22,21 @@ export default function TabsLayout() {
                 }}
             />
             <Tabs.Screen
+                name="explore"
+                options={{
+                    tabBarIcon: ({ size, color }) => {
+                        return (
+                            <Ionicons
+                                name="search-outline"
+                                size={size}
+                                color={color}
+                            />
+                        );
+                    },
+                    tabBarLabel: "Explore",
+                }}
+            />
+            <Tabs.Screen
                 name="progress"
                 options={{
                     tabBarIcon: ({ size, color }) => {
