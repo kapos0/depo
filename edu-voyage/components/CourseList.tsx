@@ -16,12 +16,13 @@ import { useRouter } from "expo-router";
 export default function CourseList({
     courses,
     title,
+    enroll = false,
 }: {
     courses: Record<string, unknown>[];
     title?: string;
+    enroll?: boolean;
 }) {
     const router = useRouter();
-    console.log(courses);
     return (
         <View style={styles.container}>
             <Text style={styles.headingText}>
@@ -41,6 +42,7 @@ export default function CourseList({
                                 params: {
                                     courseId: item?.docId as string,
                                     courseParam: JSON.stringify(item),
+                                    enrollParam: JSON.stringify(enroll),
                                 },
                             })
                         }

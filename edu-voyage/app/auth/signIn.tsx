@@ -29,6 +29,12 @@ export default function SignInPage() {
     const [error, setError] = useState("");
     const { setUser } = useContext(UserContext);
 
+    async function getUserFromDB() {
+        const response = await getDoc(doc(db, "users", email));
+        const userData = response?.data();
+        if (userData) setUser(userData as userType);
+    }
+
     async function handleSignIn() {
         setLoading(true);
         await signInWithEmailAndPassword(auth, email, password)
@@ -43,12 +49,6 @@ export default function SignInPage() {
                 setError((error as Error).message);
                 Alert.alert("Error", (error as Error).message);
             });
-    }
-
-    async function getUserFromDB() {
-        const response = await getDoc(doc(db, "users", email));
-        const userData = response?.data();
-        if (userData) setUser(userData as userType);
     }
 
     return (

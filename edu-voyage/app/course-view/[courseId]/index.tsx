@@ -14,16 +14,16 @@ import { Colors } from "react-native/Libraries/NewAppScreen";
 
 export default function CourseViewPage() {
     const userEmail = useContext(UserContext).user?.email;
-    const { courseParam, courseId } = useLocalSearchParams();
+    const { courseParam, courseId, enrollParam } = useLocalSearchParams();
     const [course, setCourse] = useState<DocumentData>();
-
     const getCourseById = useCallback(async () => {
         const docRef = await getDoc(
             doc(db, "courses", userEmail + " " + String(courseId))
         );
         setCourse(docRef.data());
     }, [courseId, userEmail]);
-
+    let enroll = false;
+    if (enrollParam === "true") enroll = true;
     useEffect(() => {
         if (!courseParam) getCourseById();
         else
@@ -32,7 +32,7 @@ export default function CourseViewPage() {
                     ? JSON.parse(courseParam[0])
                     : JSON.parse(courseParam)
             );
-    }, [courseId, getCourseById, courseParam]);
+    }, [courseId, getCourseById, courseParam, enroll]);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -41,7 +41,7 @@ export default function CourseViewPage() {
                 renderItem={() => null}
                 ListHeaderComponent={
                     <View>
-                        <CourseIntro course={course} />
+                        <CourseIntro course={course} enroll={enroll} />
                         <CourseChapters
                             courseChapters={course?.chapters}
                             completedChapters={course?.completedChapters}

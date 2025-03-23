@@ -50,6 +50,7 @@ export default function ExploreCourseList({ category }: { category: string }) {
                                 <CourseList
                                     courses={courseList}
                                     title={category}
+                                    enroll={true}
                                 />
                             )
                         )}

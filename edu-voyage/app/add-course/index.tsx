@@ -54,7 +54,6 @@ export default function AddCoursePage() {
         const courses = JSON.parse(data);
         const docId = Date.now().toString();
         courses.forEach(async (course: Record<string, unknown>) => {
-            // Save the courses to the firabase database
             await setDoc(doc(db, "courses", user?.email + " " + docId), {
                 ...course,
                 topics: selectedTopics,
