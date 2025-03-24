@@ -30,9 +30,13 @@ export default function SignInPage() {
     const { setUser } = useContext(UserContext);
 
     async function getUserFromDB() {
-        const response = await getDoc(doc(db, "users", email));
-        const userData = response?.data();
-        if (userData) setUser(userData as userType);
+        try {
+            const response = await getDoc(doc(db, "users", email));
+            const userData = response?.data();
+            if (userData) setUser(userData as userType);
+        } catch (error) {
+            console.error("Error fetching user from database:", error);
+        }
     }
 
     async function handleSignIn() {

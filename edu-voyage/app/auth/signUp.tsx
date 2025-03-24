@@ -68,16 +68,20 @@ export default function SignUpPage() {
     }
 
     async function saveUserToDB(user_uid: string) {
-        const userData = {
-            username: userName,
-            email: email,
-            password: password,
-            member: false,
-            uid: user_uid,
-        };
-        if (userData) {
-            await setDoc(doc(db, "users", email), userData);
-            setUser(userData as userType);
+        try {
+            const userData = {
+                username: userName,
+                email: email,
+                password: password,
+                member: false,
+                uid: user_uid,
+            };
+            if (userData) {
+                await setDoc(doc(db, "users", email), userData);
+                setUser(userData as userType);
+            }
+        } catch (error) {
+            console.error("Error saving user to database:", error);
         }
     }
 

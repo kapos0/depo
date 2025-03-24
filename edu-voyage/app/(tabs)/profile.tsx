@@ -15,10 +15,15 @@ export default function ProfilePage() {
     if (!user) auth.currentUser && router.push("/auth/signIn");
 
     async function handleLogOut() {
-        setLoading(true);
-        await auth.signOut();
-        setLoading(false);
-        router.push("/auth/signIn");
+        try {
+            setLoading(true);
+            await auth.signOut();
+            router.push("/auth/signIn");
+        } catch (error) {
+            console.error("Error during logout:", error);
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (

@@ -18,18 +18,23 @@ export default function ExploreCourseList({ category }: { category: string }) {
 
     const fetchCourseListByCategory = useCallback(async () => {
         setLoading(true);
-        const newCourses: Record<string, unknown>[] = [];
-        const coursesQuery = query(
-            collection(db, "courses"),
-            where("category", "==", category)
-        );
-        const querySnapShot = await getDocs(coursesQuery);
-        querySnapShot.forEach((course: DocumentSnapshot) => {
-            const courseData = course.data();
-            if (courseData) newCourses.push(courseData);
-        });
-        setCourseList(newCourses);
-        setLoading(false);
+        try {
+            const newCourses: Record<string, unknown>[] = [];
+            const coursesQuery = query(
+                collection(db, "courses"),
+                where("category", "==", category)
+            );
+            const querySnapShot = await getDocs(coursesQuery);
+            querySnapShot.forEach((course: DocumentSnapshot) => {
+                const courseData = course.data();
+                if (courseData) newCourses.push(courseData);
+            });
+            setCourseList(newCourses);
+        } catch (error) {
+            console.error("Error fetching course list:", error);
+        } finally {
+            setLoading(false);
+        }
     }, [category]);
 
     useEffect(() => {

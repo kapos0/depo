@@ -27,12 +27,19 @@ export default function Index() {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user?.email) {
                 setLoading(true);
-                const response = await getDoc(doc(db, "users", user?.email));
-                const userData = response.data();
-                if (userData) {
-                    setUser(userData as userType);
+                try {
+                    const response = await getDoc(
+                        doc(db, "users", user?.email)
+                    );
+                    const userData = response.data();
+                    if (userData) {
+                        setUser(userData as userType);
+                        router.replace("/(tabs)/home");
+                    }
+                } catch (error) {
+                    console.error("Error fetching user data:", error);
+                } finally {
                     setLoading(false);
-                    router.replace("/(tabs)/home");
                 }
             }
         });

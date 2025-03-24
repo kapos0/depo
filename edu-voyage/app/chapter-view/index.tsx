@@ -35,10 +35,10 @@ export default function ChapterViewPage() {
                     completedChapters: arrayUnion(chapterIndex),
                 }
             );
-            setLoading(false);
             router.replace(`/course-view/${docId}`);
         } catch (error) {
-            console.error(error);
+            console.error("Error updating completed chapters:", error);
+        } finally {
             setLoading(false);
         }
     }

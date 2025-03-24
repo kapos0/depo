@@ -30,23 +30,28 @@ export default function PracticeViewPage() {
 
     const getCourseList = useCallback(async () => {
         setLoading(true);
-        setCourses([]);
-        const coursesQuery = query(
-            collection(db, "courses"),
-            where("createdBy", "==", user?.email)
-        );
-        const querySnapshot = await getDocs(coursesQuery);
-        querySnapshot.forEach((doc) => {
-            setCourses((prev) => [...prev, doc.data()]);
-        });
-        setCourses((prev) =>
-            prev.sort(
-                (a, b) =>
-                    new Date(a.createdAt as string).getTime() -
-                    new Date(b.createdAt as string).getTime()
-            )
-        );
-        setLoading(false);
+        try {
+            setCourses([]);
+            const coursesQuery = query(
+                collection(db, "courses"),
+                where("createdBy", "==", user?.email)
+            );
+            const querySnapshot = await getDocs(coursesQuery);
+            querySnapshot.forEach((doc) => {
+                setCourses((prev) => [...prev, doc.data()]);
+            });
+            setCourses((prev) =>
+                prev.sort(
+                    (a, b) =>
+                        new Date(a.createdAt as string).getTime() -
+                        new Date(b.createdAt as string).getTime()
+                )
+            );
+        } catch (error) {
+            console.error("Error fetching course list:", error);
+        } finally {
+            setLoading(false);
+        }
     }, [user]);
 
     useEffect(() => {

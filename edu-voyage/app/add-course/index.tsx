@@ -33,43 +33,57 @@ export default function AddCoursePage() {
     async function generateTopic() {
         if (userInput.trim() === "") return;
         setLoading(true);
-        const PROMPT = userInput + Prompt.IDEA;
-        const aiResponse = await GenerateTopicsAI.sendMessage(PROMPT);
-        const data = aiResponse.response.text();
-        // array is array check that if coming response is not an
-        // array then convert it to array
-        // or it will explode
-        setTopics(JSON.parse(data));
-        setUserInput("");
-        setResultText("Select all topics which you are interested in");
-        setLoading(false);
+        try {
+            const PROMPT = userInput + Prompt.IDEA;
+            const aiResponse = await GenerateTopicsAI.sendMessage(PROMPT);
+            const data = aiResponse.response.text();
+            setTopics(JSON.parse(data));
+            setUserInput("");
+            setResultText("Select all topics which you are interested in");
+        } catch (error) {
+            console.error("Error generating topics:", error);
+        } finally {
+            setLoading(false);
+        }
     }
 
     async function generateCourse() {
         if (selectedTopics.length === 0) return;
         setLoading(true);
-        const PROMPT = selectedTopics + Prompt.COURSE;
-        const aiResponse = await GenerateCourseAI.sendMessage(PROMPT);
-        const data = aiResponse.response.text();
-        const courses = JSON.parse(data);
-        const docId = Date.now().toString();
-        courses.forEach(async (course: Record<string, unknown>) => {
-            await setDoc(doc(db, "courses", user?.email + " " + docId), {
-                ...course,
-                topics: selectedTopics,
-                createdBy: user?.email,
-                createdAt: Date.now(),
-                docId: docId,
+        try {
+            const PROMPT = selectedTopics + Prompt.COURSE;
+            const aiResponse = await GenerateCourseAI.sendMessage(PROMPT);
+            const data = aiResponse.response.text();
+            const courses = JSON.parse(data);
+            const docId = Date.now().toString();
+            courses.forEach(async (course: Record<string, unknown>) => {
+                try {
+                    await setDoc(
+                        doc(db, "courses", user?.email + " " + docId),
+                        {
+                            ...course,
+                            topics: selectedTopics,
+                            createdBy: user?.email,
+                            createdAt: Date.now(),
+                            docId: docId,
+                        }
+                    );
+                } catch (error) {
+                    console.error("Error saving course:", error);
+                }
             });
-        });
-        setLoading(false);
-        setResultText("Courses Created Successfully!");
-        Alert.alert("Courses Created Successfully!", "", [
-            {
-                text: "OK",
-                onPress: () => router.push("/(tabs)/home"),
-            },
-        ]);
+            setResultText("Courses Created Successfully!");
+            Alert.alert("Courses Created Successfully!", "", [
+                {
+                    text: "OK",
+                    onPress: () => router.push("/(tabs)/home"),
+                },
+            ]);
+        } catch (error) {
+            console.error("Error generating courses:", error);
+        } finally {
+            setLoading(false);
+        }
     }
 
     function handleSelection(topic: string) {

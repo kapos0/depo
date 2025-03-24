@@ -35,18 +35,22 @@ export default function CourseIntro({
     const [isRegistered, setIsRegistered] = useState(false);
 
     const checkIfRegistered = useCallback(async () => {
-        if (!user) return;
+        if (!user || !course?.docId) return; // Ensure course.docId is defined
         setLoading(true);
-        const coursesRef = collection(db, "courses");
-        const q = query(
-            coursesRef,
-            where("docId", "==", course?.docId),
-            where("createdBy", "==", user?.email)
-        );
-        const querySnapshot = await getDocs(q);
-
-        setIsRegistered(querySnapshot.empty ? false : true);
-        setLoading(false);
+        try {
+            const coursesRef = collection(db, "courses");
+            const q = query(
+                coursesRef,
+                where("docId", "==", course.docId),
+                where("createdBy", "==", user.email)
+            );
+            const querySnapshot = await getDocs(q);
+            setIsRegistered(querySnapshot.empty ? false : true);
+        } catch (error) {
+            console.error("Error checking registration:", error);
+        } finally {
+            setLoading(false);
+        }
     }, [user, course]);
 
     useEffect(() => {
@@ -59,50 +63,61 @@ export default function CourseIntro({
     if (!course) return null;
 
     async function handleRegister() {
-        const timeStamp = Date.now().toString();
-        const docId = user?.email + " " + timeStamp;
-        const data = {
-            ...Object.fromEntries(
-                Object.entries(course || {}).filter(
-                    ([key]) =>
-                        key !== "docId" &&
-                        key !== "completedChapters" &&
-                        key !== "quizResults"
-                )
-            ),
-            docId: timeStamp,
-            createdBy: user?.email,
-            createdAt: timeStamp,
-            enrolled: true,
-        };
-        await setDoc(doc(db, "courses", docId), data);
-        setLoading(false);
-        router.push({
-            pathname: `/course-view/[courseId]`,
-            params: {
-                courseId: docId,
-                courseParam: JSON.stringify(data),
-                enrollParam: JSON.stringify(enroll),
-            },
-        });
+        setLoading(true);
+        try {
+            const timeStamp = Date.now().toString();
+            const docId = user?.email + " " + timeStamp;
+            const data = {
+                ...Object.fromEntries(
+                    Object.entries(course || {}).filter(
+                        ([key]) =>
+                            key !== "docId" &&
+                            key !== "completedChapters" &&
+                            key !== "quizResults"
+                    )
+                ),
+                docId: timeStamp,
+                createdBy: user?.email,
+                createdAt: timeStamp,
+                enrolled: true,
+            };
+            await setDoc(doc(db, "courses", docId), data);
+            router.push({
+                pathname: `/course-view/[courseId]`,
+                params: {
+                    courseId: docId,
+                    courseParam: JSON.stringify(data),
+                    enrollParam: JSON.stringify(enroll),
+                },
+            });
+        } catch (error) {
+            console.error("Error registering course:", error);
+        } finally {
+            setLoading(false);
+        }
     }
 
     async function enrollCourse() {
         setLoading(true);
-        const coursesRef = collection(db, "courses");
-        const q = query(
-            coursesRef,
-            where("createdBy", "==", user?.email),
-            where("courseTitle", "==", course?.courseTitle)
-        );
-        const querySnapshot = await getDocs(q);
+        try {
+            const coursesRef = collection(db, "courses");
+            const q = query(
+                coursesRef,
+                where("createdBy", "==", user?.email),
+                where("courseTitle", "==", course?.courseTitle)
+            );
+            const querySnapshot = await getDocs(q);
 
-        if (!querySnapshot.empty) {
+            if (!querySnapshot.empty) {
+                alert("You are already enrolled in this course.");
+                return;
+            }
+            await handleRegister();
+        } catch (error) {
+            console.error("Error enrolling in course:", error);
+        } finally {
             setLoading(false);
-            alert("You are already enrolled in this course.");
-            return;
         }
-        await handleRegister();
     }
 
     async function handleUnRegister() {
@@ -113,7 +128,7 @@ export default function CourseIntro({
             setIsRegistered(false);
             router.push("/(tabs)/home");
         } catch (error) {
-            console.error("Error deleting document:", error);
+            console.error("Error unregistering course:", error);
             alert("Failed to unregister. Please try again.");
         } finally {
             setLoading(false);

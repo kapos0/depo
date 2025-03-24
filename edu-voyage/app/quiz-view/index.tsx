@@ -66,7 +66,7 @@ export default function QuicPage() {
                 },
             });
         } catch (error) {
-            console.error("Error updating document: ", error);
+            console.error("Error submitting quiz:", error);
         } finally {
             setLoading(false);
         }

@@ -17,10 +17,14 @@ export default function CourseViewPage() {
     const { courseParam, courseId, enrollParam } = useLocalSearchParams();
     const [course, setCourse] = useState<DocumentData>();
     const getCourseById = useCallback(async () => {
-        const docRef = await getDoc(
-            doc(db, "courses", userEmail + " " + String(courseId))
-        );
-        setCourse(docRef.data());
+        try {
+            const docRef = await getDoc(
+                doc(db, "courses", userEmail + " " + String(courseId))
+            );
+            setCourse(docRef.data());
+        } catch (error) {
+            console.error("Error fetching course by ID:", error);
+        }
     }, [courseId, userEmail]);
     let enroll = false;
     if (enrollParam === "true") enroll = true;
