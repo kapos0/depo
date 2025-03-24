@@ -11,16 +11,23 @@ import Colors from "@/assets/constant/Colors";
 type ButtonProps = {
     text: string;
     type: "fill" | "outline";
+    isDanger?: boolean;
     onPress: () => void;
     loading?: boolean;
 };
 
-export default function Button({ text, type, onPress, loading }: ButtonProps) {
+export default function Button({
+    text,
+    type,
+    onPress,
+    loading,
+    isDanger,
+}: ButtonProps) {
     return (
         <TouchableOpacity
             onPress={onPress}
             disabled={loading}
-            style={[styles.button, styles[type]]}
+            style={[styles.button, styles[type], isDanger && styles.danger]}
         >
             {!loading ? (
                 <Text
@@ -30,6 +37,7 @@ export default function Button({ text, type, onPress, loading }: ButtonProps) {
                             color:
                                 type === "fill" ? Colors.WHITE : Colors.PRIMARY,
                         },
+                        isDanger && { color: Colors.WHITE },
                     ]}
                 >
                     {text}
@@ -58,6 +66,10 @@ const styles = StyleSheet.create({
         borderColor: Colors.PRIMARY,
         backgroundColor: Colors.WHITE,
         borderWidth: 1,
+    },
+    danger: {
+        backgroundColor: Colors.RED,
+        borderColor: Colors.WHITE,
     },
     buttonText: {
         textAlign: "center",

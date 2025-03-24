@@ -52,11 +52,6 @@ export const ProfileMenu = [
         path: "/(tabs)/progress",
     },
     {
-        name: "My Subscription",
-        icon: "shield-checkmark", //Ionic Icons
-        path: "",
-    },
-    {
         name: "Logout",
         icon: "log-out", //Ionic Icons
         path: "/login",

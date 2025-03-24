@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { useRouter } from "expo-router";
 
@@ -7,11 +7,11 @@ import { UserContext } from "@/lib/UserContext";
 import {
     doc,
     setDoc,
-    getDoc,
     query,
     where,
     collection,
     getDocs,
+    deleteDoc,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
@@ -32,7 +32,60 @@ export default function CourseIntro({
     const { user } = useContext(UserContext);
     const [loading, setLoading] = useState(false);
 
+    const [isRegistered, setIsRegistered] = useState(false);
+
+    const checkIfRegistered = useCallback(async () => {
+        if (!user) return;
+        setLoading(true);
+        const coursesRef = collection(db, "courses");
+        const q = query(
+            coursesRef,
+            where("docId", "==", course?.docId),
+            where("createdBy", "==", user?.email)
+        );
+        const querySnapshot = await getDocs(q);
+
+        setIsRegistered(querySnapshot.empty ? false : true);
+        setLoading(false);
+    }, [user, course]);
+
+    useEffect(() => {
+        async function check() {
+            await checkIfRegistered();
+        }
+        check();
+    }, [user, checkIfRegistered]);
+
     if (!course) return null;
+
+    async function handleRegister() {
+        const timeStamp = Date.now().toString();
+        const docId = user?.email + " " + timeStamp;
+        const data = {
+            ...Object.fromEntries(
+                Object.entries(course || {}).filter(
+                    ([key]) =>
+                        key !== "docId" &&
+                        key !== "completedChapters" &&
+                        key !== "quizResults"
+                )
+            ),
+            docId: timeStamp,
+            createdBy: user?.email,
+            createdAt: timeStamp,
+            enrolled: true,
+        };
+        await setDoc(doc(db, "courses", docId), data);
+        setLoading(false);
+        router.push({
+            pathname: `/course-view/[courseId]`,
+            params: {
+                courseId: docId,
+                courseParam: JSON.stringify(data),
+                enrollParam: JSON.stringify(enroll),
+            },
+        });
+    }
 
     async function enrollCourse() {
         setLoading(true);
@@ -49,29 +102,22 @@ export default function CourseIntro({
             alert("You are already enrolled in this course.");
             return;
         }
+        await handleRegister();
+    }
 
-        const docId = user?.email + " " + Date.now().toString();
-        const data = {
-            ...Object.fromEntries(
-                Object.entries(course || {}).filter(
-                    ([key]) =>
-                        key !== "completedChapters" && key !== "quizResults"
-                )
-            ),
-            createdBy: user?.email,
-            createdAt: Date.now(),
-            enrolled: true,
-        };
-        await setDoc(doc(db, "courses", docId), data);
-        setLoading(false);
-        router.push({
-            pathname: `/course-view/[courseId]`,
-            params: {
-                courseId: docId,
-                courseParam: JSON.stringify(data),
-                enrollParam: JSON.stringify(enroll),
-            },
-        });
+    async function handleUnRegister() {
+        setLoading(true);
+        try {
+            const docRef = user?.email + " " + course?.docId;
+            await deleteDoc(doc(db, "courses", docRef));
+            setIsRegistered(false);
+            router.push("/(tabs)/home");
+        } catch (error) {
+            console.error("Error deleting document:", error);
+            alert("Failed to unregister. Please try again.");
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -103,7 +149,7 @@ export default function CourseIntro({
                 <Text style={styles.courseDescText}>
                     {course?.description as string}
                 </Text>
-                {enroll ? (
+                {enroll && !isRegistered ? (
                     <Button
                         text="Enroll Now"
                         type="fill"
@@ -111,7 +157,22 @@ export default function CourseIntro({
                         onPress={enrollCourse}
                     />
                 ) : (
-                    <Button text="Start Now" type="fill" onPress={() => {}} />
+                    <View>
+                        {isRegistered ? (
+                            <Button
+                                text="Delete"
+                                type="outline"
+                                isDanger
+                                onPress={handleUnRegister}
+                            />
+                        ) : (
+                            <Button
+                                text="Start Now"
+                                type="fill"
+                                onPress={handleRegister}
+                            />
+                        )}
+                    </View>
                 )}
             </View>
             <Pressable

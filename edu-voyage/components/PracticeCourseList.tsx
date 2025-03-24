@@ -79,6 +79,7 @@ export default function PracticeCourseList({
 const styles = StyleSheet.create({
     container: {
         padding: 20,
+        margin: 20,
     },
     image: {
         objectFit: "contain",

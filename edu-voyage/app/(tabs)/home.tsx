@@ -25,7 +25,6 @@ export default function HomePage() {
     const { user } = useContext(UserContext);
     const [courses, setCourses] = useState<Record<string, unknown>[]>([]);
     const [refreshing, setRefreshing] = useState(false);
-
     const getCourses = useCallback(async () => {
         setRefreshing(true);
         const coursesQuery = query(

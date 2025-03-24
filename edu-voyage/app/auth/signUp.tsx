@@ -31,7 +31,7 @@ export default function SignUpPage() {
     const [loading, setLoading] = useState(false);
     const { setUser } = useContext(UserContext);
 
-    function createAccount() {
+    async function createAccount() {
         if (
             !userName.trim() ||
             !email.trim() ||
@@ -46,34 +46,38 @@ export default function SignUpPage() {
             return;
         }
         setLoading(true);
-        createUserWithEmailAndPassword(auth, email, password)
-            .then(async (response) => {
-                const user = response.user;
-                await saveUserToDB(user?.uid);
-                setUserName("");
-                setEmail("");
-                setPassword("");
-                setConfirmPassword("");
-                setLoading(false);
-                router.replace("/(tabs)/home");
-            })
-            .catch((error) => {
-                console.error((error as Error).message);
-                setLoading(false);
-                setError((error as Error).message);
-            });
-        async function saveUserToDB(user_uid: string) {
-            const userData = {
-                username: userName,
-                email: email,
-                password: password,
-                member: false,
-                uid: user_uid,
-            };
-            if (userData) {
-                await setDoc(doc(db, "users", email), userData);
-                setUser(userData as userType);
-            }
+        try {
+            const response = await createUserWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+            const user = response.user;
+            await saveUserToDB(user?.uid);
+            setUserName("");
+            setEmail("");
+            setPassword("");
+            setConfirmPassword("");
+            router.replace("/(tabs)/home");
+        } catch (error) {
+            console.error((error as Error).message);
+            setError((error as Error).message);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    async function saveUserToDB(user_uid: string) {
+        const userData = {
+            username: userName,
+            email: email,
+            password: password,
+            member: false,
+            uid: user_uid,
+        };
+        if (userData) {
+            await setDoc(doc(db, "users", email), userData);
+            setUser(userData as userType);
         }
     }
 

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import {
     SafeAreaView,
     View,
@@ -22,18 +22,23 @@ export default function Index() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const { setUser } = useContext(UserContext);
-    onAuthStateChanged(auth, async (user) => {
-        if (user?.email) {
-            setLoading(true);
-            const response = await getDoc(doc(db, "users", user.email));
-            const userData = response.data();
-            if (userData) {
-                setLoading(false);
-                setUser(userData as userType);
-                router.replace("/(tabs)/home");
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (user?.email) {
+                setLoading(true);
+                const response = await getDoc(doc(db, "users", user?.email));
+                const userData = response.data();
+                if (userData) {
+                    setUser(userData as userType);
+                    setLoading(false);
+                    router.replace("/(tabs)/home");
+                }
             }
-        }
-    });
+        });
+        return () => unsubscribe();
+    }, [router, setUser]);
+
     return (
         <SafeAreaView style={styles.container}>
             <Image style={styles.image} source={landingImg} />

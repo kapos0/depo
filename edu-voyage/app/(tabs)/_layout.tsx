@@ -51,6 +51,21 @@ export default function TabsLayout() {
                     tabBarLabel: "Progress",
                 }}
             />
+            <Tabs.Screen
+                name="profile"
+                options={{
+                    tabBarIcon: ({ size, color }) => {
+                        return (
+                            <Ionicons
+                                name="person-outline"
+                                size={size}
+                                color={color}
+                            />
+                        );
+                    },
+                    tabBarLabel: "Profile",
+                }}
+            />
         </Tabs>
     );
 }

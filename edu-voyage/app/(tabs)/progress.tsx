@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
-import { RelativePathString, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 
 import { UserContext } from "@/lib/UserContext";
 

@@ -37,18 +37,17 @@ export default function SignInPage() {
 
     async function handleSignIn() {
         setLoading(true);
-        await signInWithEmailAndPassword(auth, email, password)
-            .then(async (_) => {
-                await getUserFromDB();
-                setLoading(false);
-                router.replace("/(tabs)/home");
-            })
-            .catch((error) => {
-                console.error((error as Error).message);
-                setLoading(false);
-                setError((error as Error).message);
-                Alert.alert("Error", (error as Error).message);
-            });
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            await getUserFromDB();
+            router.replace("/(tabs)/home");
+        } catch (error) {
+            console.error((error as Error).message);
+            setError((error as Error).message);
+            Alert.alert("Error", (error as Error).message);
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
