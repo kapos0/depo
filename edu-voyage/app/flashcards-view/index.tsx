@@ -30,14 +30,14 @@ export default function FlashCardsPage() {
     const screenWidth = Dimensions.get("screen").width;
 
     function getProgress(currentCard: number) {
-        return (currentCard + 1) / (flashCards?.length - 1);
+        return (currentCard + 1) / flashCards?.length;
     }
 
     function handleScroll(event: NativeSyntheticEvent<NativeScrollEvent>) {
-        const index = Math.round(
-            event?.nativeEvent?.contentOffset?.x / screenWidth
-        );
-        setCurrentCardIndex(index + 1);
+        const offset = event?.nativeEvent?.contentOffset.x;
+        const cardWidth = screenWidth * 0.9;
+        const index = Math.round(offset / cardWidth);
+        setCurrentCardIndex(index);
     }
     return (
         <SafeAreaView style={styles.container}>

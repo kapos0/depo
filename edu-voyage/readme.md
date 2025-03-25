@@ -10,3 +10,7 @@ EXPO_PUBLIC_FIRABASE_APP_ID=
 EXPO_PUBLIC_FIRABASE_MEASUREMENT_ID=
 EXPO_PUBLIC_GEMINI_API_KEY=
 ```
+
+## then
+
+install the node_modules `pnpm install` and `pnpm start`

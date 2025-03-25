@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { useRouter } from "expo-router";
 
 import { UserContext } from "@/lib/UserContext";
@@ -178,7 +178,19 @@ export default function CourseIntro({
                                 text="Delete"
                                 type="outline"
                                 isDanger
-                                onPress={handleUnRegister}
+                                onPress={() =>
+                                    Alert.alert(
+                                        "Log out",
+                                        "Are you sure you want to log out?",
+                                        [
+                                            { text: "Cancel", style: "cancel" },
+                                            {
+                                                text: "OK",
+                                                onPress: handleUnRegister,
+                                            },
+                                        ]
+                                    )
+                                }
                             />
                         ) : (
                             <Button

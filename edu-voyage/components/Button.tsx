@@ -27,7 +27,12 @@ export default function Button({
         <TouchableOpacity
             onPress={onPress}
             disabled={loading}
-            style={[styles.button, styles[type], isDanger && styles.danger]}
+            style={[
+                styles.button,
+                styles[type],
+                isDanger && styles.danger,
+                loading && { opacity: 0.7 },
+            ]}
         >
             {!loading ? (
                 <Text

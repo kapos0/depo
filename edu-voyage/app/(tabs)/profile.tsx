@@ -1,12 +1,20 @@
 import React, { useContext, useState } from "react";
-import { Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import {
+    Alert,
+    Image,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    View,
+} from "react-native";
 import { useRouter } from "expo-router";
 
 import { auth } from "@/lib/firebase";
 import { UserContext } from "@/lib/UserContext";
 
-import Colors from "@/assets/constant/Colors";
 import Button from "@/components/Button";
+
+import Colors from "@/assets/constant/Colors";
 
 export default function ProfilePage() {
     const { user } = useContext(UserContext);
@@ -43,10 +51,19 @@ export default function ProfilePage() {
                     loading={loading}
                 />
                 <Button
-                    text="Log-Out"
-                    type="outline"
+                    text="Log out"
+                    type="fill"
                     isDanger
-                    onPress={handleLogOut}
+                    onPress={() =>
+                        Alert.alert(
+                            "Log out",
+                            "Are you sure you want to log out?",
+                            [
+                                { text: "Cancel", style: "cancel" },
+                                { text: "OK", onPress: handleLogOut },
+                            ]
+                        )
+                    }
                     loading={loading}
                 />
             </View>
