@@ -1,3 +1,4 @@
+import { Platform } from "react-native";
 import { initializeApp, getApps } from "firebase/app";
 import {
     initializeAuth,
@@ -32,7 +33,10 @@ let app;
 if (!getApps().length) {
     app = initializeApp(firebaseConfig);
     initializeAuth(app, {
-        persistence: getReactNativePersistence(ReactNativeAsyncStorage),
+        persistence:
+            Platform.OS !== "web"
+                ? getReactNativePersistence(ReactNativeAsyncStorage)
+                : undefined,
     });
 } else app = getApps()[0];
 

@@ -10,7 +10,7 @@ import { db } from "@/lib/firebase";
 import CourseIntro from "@/components/CourseIntro";
 import CourseChapters from "@/components/CourseChapters";
 
-import { Colors } from "react-native/Libraries/NewAppScreen";
+import Colors from "@/assets/constant/Colors";
 
 export default function CourseViewPage() {
     const userEmail = useContext(UserContext).user?.email;
