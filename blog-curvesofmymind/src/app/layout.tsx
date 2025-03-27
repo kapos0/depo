@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "@/assets/globals.css";
+import Header from "@/components/Header";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
     title: "Blog app",
@@ -12,7 +14,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <head>
                 <link
                     rel="shortcut icon"
@@ -20,7 +22,17 @@ export default function RootLayout({
                     type="image/x-icon"
                 />
             </head>
-            <body>{children}</body>
+            <body>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    <Header />
+                    {children}
+                </ThemeProvider>
+            </body>
         </html>
     );
 }
