@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "@/assets/globals.css";
 import Header from "@/components/Header";
 import { ThemeProvider } from "@/components/theme-provider";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
     title: "Blog app",
@@ -31,6 +32,7 @@ export default function RootLayout({
                 >
                     <Header />
                     {children}
+                    <Footer />
                 </ThemeProvider>
             </body>
         </html>

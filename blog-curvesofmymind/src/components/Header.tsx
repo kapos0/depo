@@ -1,12 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export default function Header() {
+    const pathname = usePathname();
+
     return (
         <header className="border-b border-gray-200 bg-background">
             <div className="container flex items-center justify-between h-16 px-4 mx-auto">
@@ -34,19 +37,31 @@ export default function Header() {
                     <nav className="hidden md:flex items-center space-x-6">
                         <Link
                             href="/"
-                            className="text-blue-600 font-medium dark:text-blue-400"
+                            className={`${
+                                pathname === "/"
+                                    ? "text-blue-600 font-bold"
+                                    : "text-muted-foreground hover:text-foreground"
+                            }`}
                         >
                             Home
                         </Link>
                         <Link
                             href="/about"
-                            className="text-muted-foreground hover:text-foreground"
+                            className={`${
+                                pathname === "/about"
+                                    ? "text-blue-600 font-bold"
+                                    : "text-muted-foreground hover:text-foreground"
+                            }`}
                         >
                             About
                         </Link>
                         <Link
                             href="/projects"
-                            className="text-muted-foreground hover:text-foreground"
+                            className={`${
+                                pathname === "/projects"
+                                    ? "text-blue-600 font-bold"
+                                    : "text-muted-foreground hover:text-foreground"
+                            }`}
                         >
                             Projects
                         </Link>
