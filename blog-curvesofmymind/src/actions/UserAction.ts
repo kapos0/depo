@@ -19,13 +19,13 @@ async function login(formData: FormData): Promise<any> {
             username,
             password,
         });
+        revalidatePath("/");
         return;
+        redirect("/");
     } catch (error) {
         const someError = error as CredentialsSignin;
         return someError.cause;
     }
-    revalidatePath("/");
-    redirect("/");
 }
 
 async function fastLogin(service: "google") {

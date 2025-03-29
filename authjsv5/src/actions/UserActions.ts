@@ -1,13 +1,14 @@
 "use server";
 
 import { connectDB } from "@/lib/conntectDB";
-import User from "@/models/user";
+import User from "@/models/UserModel";
 import { auth, signIn } from "@/auth";
 import { CredentialsSignin } from "next-auth";
 import { hash } from "bcryptjs";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
-async function login(formData: FormData): Promise<any> {
+async function login(formData: FormData): Promise<unknown> {
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
     if (!username || !password) return "Please fill all fields";
@@ -18,14 +19,16 @@ async function login(formData: FormData): Promise<any> {
             username,
             password,
         });
+        revalidatePath("/");
+        return;
+        redirect("/");
     } catch (error) {
         const someError = error as CredentialsSignin;
         return someError.cause;
     }
-    redirect("/");
 }
 
-async function fastLogin(service: "github" | "google") {
+async function fastLogin(service: "google") {
     try {
         await signIn(service, { callbackUrl: "/" });
     } catch (error) {
@@ -34,7 +37,7 @@ async function fastLogin(service: "github" | "google") {
     }
 }
 
-async function register(formData: FormData): Promise<any> {
+async function register(formData: FormData): Promise<unknown> {
     const username = formData.get("username") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
@@ -51,6 +54,7 @@ async function register(formData: FormData): Promise<any> {
 
     await User.create({ username, provider, email, password: hashedPassword });
     console.log(`User created successfully 🥂`);
+    revalidatePath("/");
     redirect("/sign-in");
 }
 
@@ -69,4 +73,13 @@ async function fetchUser() {
     return dbUser;
 }
 
-export { fastLogin, register, login, fetchAllUsers, fetchUser };
+async function deleteUser(_id: string) {
+    try {
+        await connectDB();
+        await User.findByIdAndDelete(_id);
+    } catch (error) {
+        console.error("Error deleting user:", error);
+    }
+}
+
+export { fastLogin, register, login, fetchAllUsers, fetchUser, deleteUser };
