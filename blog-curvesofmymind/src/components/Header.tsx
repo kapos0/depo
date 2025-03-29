@@ -6,10 +6,13 @@ import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { signOut, useSession } from "next-auth/react";
 
 export default function Header() {
     const pathname = usePathname();
-
+    const sessions = useSession();
+    const user = sessions?.data?.user;
+    console.log("🚀 ~ Header ~ user:", user);
     return (
         <header className="border-b border-gray-200 bg-background">
             <div className="container flex items-center justify-between h-16 px-4 mx-auto">
@@ -68,9 +71,27 @@ export default function Header() {
                     </nav>
                     <div>
                         <ThemeToggle />
-                        <Button variant="outline" className="rounded-full ms-5">
-                            Sign In
-                        </Button>
+                        {user ? (
+                            <Button
+                                variant="outline"
+                                className="rounded-full ms-5"
+                                onClick={async () => {
+                                    await signOut();
+                                    window.location.reload(); // Ensure header updates after sign out
+                                }}
+                                style={{ cursor: "pointer" }}
+                            >
+                                Log Out
+                            </Button>
+                        ) : (
+                            <Button
+                                variant="outline"
+                                className="rounded-full ms-5"
+                                style={{ cursor: "pointer" }}
+                            >
+                                <Link href="/sign-in">Sign In</Link>
+                            </Button>
+                        )}
                     </div>
                 </div>
             </div>

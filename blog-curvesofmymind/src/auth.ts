@@ -5,6 +5,42 @@ import Credentials from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
 import Google from "next-auth/providers/google";
 
+import "next-auth";
+
+declare module "next-auth" {
+    interface User {
+        id?: string;
+        username?: string;
+        role?: string;
+        isVerified?: boolean;
+        avatar?: string;
+        provider?: string;
+    }
+
+    interface Session {
+        user: {
+            id?: string;
+            username?: string;
+            email?: string;
+            role?: string;
+            isVerified?: boolean;
+            avatar?: string;
+            provider?: string;
+        };
+    }
+}
+
+declare module "next-auth" {
+    interface JWT {
+        id?: string;
+        username?: string;
+        role?: string;
+        isVerified?: boolean;
+        avatar?: string;
+        provider?: string;
+    }
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
         Credentials({
@@ -27,7 +63,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 },
                 provider: {
                     type: "hidden",
-                    accept: "credentials, google, github",
+                    accept: "credentials, google",
+                },
+                avatar: {
+                    type: "text",
                 },
                 role: {
                     type: "hidden",
@@ -57,7 +96,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
                 const userData = {
                     username: user?.username,
-                    lastName: user?.lastName,
                     email: user?.email,
                     role: user?.role,
                     id: user?._id,
@@ -92,6 +130,31 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 }
             }
             return true;
+        },
+        async session({ session, token }) {
+            session.user = {
+                id: token.id as string,
+                username: token.username as string,
+                email: token.email as string,
+                role: token.role as string,
+                isVerified: token.isVerified as boolean,
+                avatar: token.avatar as string,
+                provider: token.provider as string,
+                emailVerified: null, // Add this property to satisfy the AdapterUser type
+            };
+            return session;
+        },
+        async jwt({ token, user }) {
+            if (user) {
+                token.id = user.id as string;
+                token.username = user.username ?? "";
+                token.email = user.email ?? "";
+                token.role = user.role ?? "user";
+                token.isVerified = user.isVerified ?? false;
+                token.avatar = user.avatar ?? "";
+                token.provider = user.provider ?? "credentials";
+            }
+            return token;
         },
     },
 });

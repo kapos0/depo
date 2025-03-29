@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { SessionProvider } from "next-auth/react";
 import "@/assets/globals.css";
 import Header from "@/components/Header";
-import { ThemeProvider } from "@/components/theme-provider";
 import Footer from "@/components/Footer";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
     title: "Blog app",
@@ -15,26 +16,28 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" suppressHydrationWarning>
-            <head>
-                <link
-                    rel="shortcut icon"
-                    href="/favicon.ico"
-                    type="image/x-icon"
-                />
-            </head>
-            <body>
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                    disableTransitionOnChange
-                >
-                    <Header />
-                    {children}
-                    <Footer />
-                </ThemeProvider>
-            </body>
-        </html>
+        <SessionProvider>
+            <html lang="en" suppressHydrationWarning>
+                <head>
+                    <link
+                        rel="shortcut icon"
+                        href="/favicon.ico"
+                        type="image/x-icon"
+                    />
+                </head>
+                <body>
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+                        <Header />
+                        {children}
+                        <Footer />
+                    </ThemeProvider>
+                </body>
+            </html>
+        </SessionProvider>
     );
 }
