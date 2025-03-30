@@ -8,6 +8,8 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
+    KeyboardAvoidingView,
+    ScrollView,
 } from "react-native";
 import { useRouter } from "expo-router";
 
@@ -86,51 +88,66 @@ export default function SignUpPage() {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <Image source={logoImg} style={styles.logo} />
-            <Text style={styles.containerHeaderText}>Create New Account</Text>
-            {error ? <Text>{error}</Text> : null}
-            <TextInput
-                style={styles.input}
-                placeholder="User Name"
-                onChangeText={(value) => setUserName(value)}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Email"
-                onChangeText={(value) => setEmail(value)}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Password"
-                secureTextEntry
-                onChangeText={(value) => setPassword(value)}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Confirm Password"
-                secureTextEntry
-                onChangeText={(value) => setConfirmPassword(value)}
-            />
-            <TouchableOpacity
-                style={styles.button}
-                onPress={createAccount}
-                disabled={loading}
-            >
-                {!loading ? (
-                    <Text style={styles.buttonText}>Create Account</Text>
-                ) : (
-                    <ActivityIndicator size="large" color={Colors.WHITE} />
-                )}
-            </TouchableOpacity>
-            <Pressable
-                onPress={() => router.push("/auth/signIn")}
-                style={{ marginTop: 25 }}
-            >
-                <Text style={{ textDecorationLine: "underline" }}>
-                    Already have an account?
-                </Text>
-            </Pressable>
-        </SafeAreaView>
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior="padding"
+            keyboardVerticalOffset={80}
+        >
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                <SafeAreaView style={styles.container}>
+                    <Image source={logoImg} style={styles.logo} />
+                    <Text style={styles.containerHeaderText}>
+                        Create New Account
+                    </Text>
+                    {error ? <Text>{error}</Text> : null}
+                    <TextInput
+                        style={styles.input}
+                        placeholder="User Name"
+                        onChangeText={(value) => setUserName(value)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Email"
+                        onChangeText={(value) => setEmail(value)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Password"
+                        secureTextEntry
+                        onChangeText={(value) => setPassword(value)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Confirm Password"
+                        secureTextEntry
+                        onChangeText={(value) => setConfirmPassword(value)}
+                    />
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={createAccount}
+                        disabled={loading}
+                    >
+                        {!loading ? (
+                            <Text style={styles.buttonText}>
+                                Create Account
+                            </Text>
+                        ) : (
+                            <ActivityIndicator
+                                size="large"
+                                color={Colors.WHITE}
+                            />
+                        )}
+                    </TouchableOpacity>
+                    <Pressable
+                        onPress={() => router.push("/auth/signIn")}
+                        style={{ marginTop: 25 }}
+                    >
+                        <Text style={{ textDecorationLine: "underline" }}>
+                            Already have an account?
+                        </Text>
+                    </Pressable>
+                </SafeAreaView>
+            </ScrollView>
+        </KeyboardAvoidingView>
     );
 }

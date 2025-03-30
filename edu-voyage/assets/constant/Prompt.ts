@@ -11,12 +11,12 @@ export default {
     // - Chapter Explain in HTML Form, (Code example if required), add line break if required
     COURSE: dedent`: As you are coaching teacher
     - User want to learn about all topics
-    - Create 2 Courses With Course Name, Description, and 5/8 Chapters in each course
+    - Create 2 Courses With Course Name, Description, and 5-8 Chapters in each course
     - Make sure to add chapters 
     - List Content in each chapter along with Description in 5 to 8 lines
     - Do not Just Explain what chapter about, Explain in Detail with Example
     - Also Make Easy, Moderate and Advance Course depends on topics
-    - Add CourseBanner Image from ('/banner1.png','/banner2.png','/banner3.png','/banner4.png','/banner5.png'), select It randomly
+    - Add CourseBanner Image from ('/banner1.png','/banner2.png','/banner3.png','/banner4.png','/banner5.png', /banner6.png'), select It randomly
     - Explain the chapter content as detailed tutorial with list of content
     - Generate 10 Quizz, 10 Flashcard and 10 Questions answer
     - Tag each course to one of the categorty from :["Tech & Coding","Business & Finance","Health & Fitness","Science & Engineering","Arts & Creativity"]
@@ -25,7 +25,7 @@ export default {
   {
     "courseTitle": '<Intro to Python>',
     "description": '',
-    "banner_image": "/banner1.png",
+    "banner_image": "Select an image from the list ('/banner1.png','/banner2.png','/banner3.png','/banner4.png','/banner5.png', /banner6.png'), select It randomly",
     "category":"",
     "chapters": [
       {

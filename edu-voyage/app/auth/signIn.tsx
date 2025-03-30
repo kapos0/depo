@@ -8,6 +8,8 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
+    KeyboardAvoidingView,
+    ScrollView,
 } from "react-native";
 import { useRouter } from "expo-router";
 
@@ -55,40 +57,53 @@ export default function SignInPage() {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <Image source={logoImg} style={styles.logo} />
-            <Text style={styles.containerHeaderText}>Welcome, Log In</Text>
-            {error ? <Text>{error}</Text> : null}
-            <TextInput
-                style={styles.input}
-                placeholder="Email"
-                onChangeText={(value) => setEmail(value)}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Password"
-                secureTextEntry
-                onChangeText={(value) => setPassword(value)}
-            />
-            <TouchableOpacity
-                style={styles.button}
-                onPress={handleSignIn}
-                disabled={loading}
-            >
-                {!loading ? (
-                    <Text style={styles.buttonText}>Sign In</Text>
-                ) : (
-                    <ActivityIndicator size="large" color={Colors.WHITE} />
-                )}
-            </TouchableOpacity>
-            <Pressable
-                onPress={() => router.push("/auth/signUp")}
-                style={{ marginTop: 25 }}
-            >
-                <Text style={{ textDecorationLine: "underline" }}>
-                    Don't have an account?
-                </Text>
-            </Pressable>
-        </SafeAreaView>
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior="padding"
+            keyboardVerticalOffset={80}
+        >
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                <SafeAreaView style={styles.container}>
+                    <Image source={logoImg} style={styles.logo} />
+                    <Text style={styles.containerHeaderText}>
+                        Welcome, Log In
+                    </Text>
+                    {error ? <Text>{error}</Text> : null}
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Email"
+                        onChangeText={(value) => setEmail(value)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Password"
+                        secureTextEntry
+                        onChangeText={(value) => setPassword(value)}
+                    />
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={handleSignIn}
+                        disabled={loading}
+                    >
+                        {!loading ? (
+                            <Text style={styles.buttonText}>Sign In</Text>
+                        ) : (
+                            <ActivityIndicator
+                                size="large"
+                                color={Colors.WHITE}
+                            />
+                        )}
+                    </TouchableOpacity>
+                    <Pressable
+                        onPress={() => router.push("/auth/signUp")}
+                        style={{ marginTop: 25 }}
+                    >
+                        <Text style={{ textDecorationLine: "underline" }}>
+                            Don't have an account?
+                        </Text>
+                    </Pressable>
+                </SafeAreaView>
+            </ScrollView>
+        </KeyboardAvoidingView>
     );
 }
