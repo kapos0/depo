@@ -1,5 +1,5 @@
 # Mehmet Enes Turhan
 
-Saklamak istediğim uygulamalar işte
+Saklamak istediğim uygulamalar ve geliştirme sürecinde olanlar
 
 ## Notes & Todos
