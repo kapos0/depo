@@ -9,9 +9,8 @@ import ImageUpload from "@/components/ImageUpload";
 export default function SignUpPage() {
     const user = useSession();
     const [imageUrl, setImageUrl] = useState("");
-    console.log(user);
     useEffect(() => {
-        if (user.status === "unauthenticated") {
+        if (user.status !== "unauthenticated") {
             redirect("/");
         }
     }, [user.status]);

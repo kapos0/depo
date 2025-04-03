@@ -1,13 +1,16 @@
 import NextAuth from "next-auth";
 import type { NextAuthConfig } from "next-auth";
+import { auth } from "./auth";
 
 const authConfig = {
     providers: [],
     callbacks: {
-        authorized({ request, auth }) {
-            const protectedPaths = [/\/dash-board/];
+        async authorized({ request }) {
+            const user = await auth();
+            const protectedPaths = [/\/dashboard/];
             const { pathname } = request.nextUrl;
-            if (protectedPaths.some((p) => p.test(pathname))) return !!auth;
+            if (protectedPaths.some((p) => p.test(pathname)))
+                return user?.user?.role === "admin";
             return true;
         },
     },

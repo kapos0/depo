@@ -133,6 +133,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
         async session({ session, token }) {
             session.user = {
+                ...session.user,
                 id: token.id as string,
                 username: token.username as string,
                 email: token.email as string,
@@ -140,7 +141,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 isVerified: token.isVerified as boolean,
                 avatar: token.avatar as string,
                 provider: token.provider as string,
-                emailVerified: null, // Add this property to satisfy the AdapterUser type
             };
             return session;
         },
