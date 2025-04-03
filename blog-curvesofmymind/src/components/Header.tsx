@@ -12,7 +12,6 @@ export default function Header() {
     const pathname = usePathname();
     const sessions = useSession();
     const user = sessions?.data?.user;
-    console.log("🚀 ~ Header ~ user:", user);
     return (
         <header className="border-b border-gray-200 bg-background">
             <div className="container flex items-center justify-between h-16 px-4 mx-auto">
