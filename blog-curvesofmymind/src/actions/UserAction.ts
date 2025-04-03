@@ -21,7 +21,6 @@ async function login(formData: FormData): Promise<any> {
         });
         revalidatePath("/");
         return;
-        redirect("/");
     } catch (error) {
         const someError = error as CredentialsSignin;
         return someError.cause;
