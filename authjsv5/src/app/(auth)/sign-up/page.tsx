@@ -45,7 +45,13 @@ export default function SignUpPage() {
                         <header className="mb-3 text-4xl font-bold text-gray-900 dark:text-gray-100">
                             Create your profile
                         </header>
-                        <form action={register}>
+                        <form
+                            action={(formData) =>
+                                register(formData).then((res) =>
+                                    console.error(res)
+                                )
+                            }
+                        >
                             <div className="w-full rounded-2xl bg-gray-50 dark:bg-gray-800 px-4 ring-2 ring-gray-200 dark:ring-gray-700 my-4 focus-within:ring-blue-400 dark:focus-within:ring-blue-500">
                                 <input
                                     type="text"

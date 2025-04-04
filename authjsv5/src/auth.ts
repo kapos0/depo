@@ -1,5 +1,5 @@
 import NextAuth, { CredentialsSignin } from "next-auth";
-import { connectDB } from "@/lib/conntectDB";
+import { connectDB } from "@/lib/connectDB";
 import User from "@/models/UserModel";
 import Credentials from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";

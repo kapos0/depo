@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { getPostById, publishPost, updatePost } from "@/actions/PostAction";
 import Loading from "@/components/ui/loading";
 import { Button } from "@/components/ui/button";
 import MDEditor from "@uiw/react-md-editor";
@@ -15,18 +16,95 @@ import {
 } from "@/components/ui/select";
 import ImageUpload from "@/components/ImageUpload";
 
-export default function CreatePostPage() {
+export default function CreatePostPage({
+    params: paramsPromise,
+}: {
+    params: Promise<{ postId: string }>;
+}) {
+    const params = React.use(paramsPromise);
+    const [loading, setLoading] = useState(false);
     const { data } = useSession();
+    useEffect(() => {
+        async function woa() {
+            try {
+                if (params.postId === "create") {
+                    setLoading(true);
+                    setFormData({
+                        title: "",
+                        category: "",
+                        content: "",
+                        image_url: "",
+                        slug: "",
+                    });
+                } else if (params.postId === "update") {
+                    setLoading(true);
+                    const postId = params.postId;
+                    const post = await getPostById(postId);
+                    setLoading(false);
+                    if (!post) return;
+                    setFormData({
+                        title: post.title,
+                        category: post.category,
+                        content: post.content,
+                        image_url: post.image_url,
+                        slug: post.slug,
+                    });
+                    const formDataToSend = new FormData();
+                    formDataToSend.append("title", formData.title);
+                    formDataToSend.append("category", formData.category);
+                    formDataToSend.append("content", formData.content);
+                    formDataToSend.append("image_url", formData.image_url);
+                    formDataToSend.append("slug", formData.slug);
+                    setLoading(true);
+                    await updatePost(postId, formDataToSend);
+                    setLoading(false);
+                    setFormData({
+                        title: "",
+                        category: "",
+                        content: "",
+                        image_url: "",
+                        slug: "",
+                    });
+                }
+            } catch (error) {
+                console.error("Error in useEffect:", error);
+                setLoading(false);
+            }
+        }
+        woa();
+    }, [params, data]);
     const [formData, setFormData] = useState({
         title: "",
         category: "",
         content: "",
         image_url: "",
+        slug: "",
     });
-
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         if (!formData.title || !formData.content || !formData.category) return;
+        const formDataToSend = new FormData();
+        formDataToSend.append("title", formData.title);
+        formDataToSend.append("category", formData.category);
+        formDataToSend.append("content", formData.content);
+        formDataToSend.append("image_url", formData.image_url);
+        formDataToSend.append("slug", formData.title.replace(/\s+/g, "-")); //replace spaces with -
+        try {
+            setLoading(true);
+            await publishPost(formDataToSend);
+            setLoading(false);
+            setFormData({
+                title: "",
+                category: "",
+                content: "",
+                image_url: "",
+                slug: "",
+            });
+        } catch (err) {
+            console.error("Error in handleSubmit:", err);
+        } finally {
+            setLoading(false);
+        }
     }
 
     if (!data?.user) return <Loading />;
@@ -57,6 +135,7 @@ export default function CreatePostPage() {
                         placeholder="Title"
                         required
                         id="title"
+                        value={formData.title}
                         className="flex-1"
                         onChange={(e) =>
                             setFormData({ ...formData, title: e.target.value })
@@ -67,7 +146,10 @@ export default function CreatePostPage() {
                             setFormData({ ...formData, category: value })
                         }
                     >
-                        <SelectTrigger className="w-full sm:w-[200px]">
+                        <SelectTrigger
+                            value={formData.category}
+                            className="w-full sm:w-[200px]"
+                        >
                             <SelectValue placeholder="Select a category" />
                         </SelectTrigger>
                         <SelectContent>

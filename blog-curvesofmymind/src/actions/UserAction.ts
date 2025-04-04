@@ -1,6 +1,6 @@
 "use server";
 
-import { connectDB } from "@/lib/conntectDB";
+import { connectDB } from "@/lib/connectDB";
 import User from "@/models/UserModel";
 import { auth, signIn } from "@/auth";
 import { CredentialsSignin } from "next-auth";
@@ -8,7 +8,7 @@ import { hash } from "bcryptjs";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
-async function login(formData: FormData): Promise<any> {
+async function login(formData: FormData) {
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
     if (!username || !password) return "Please fill all fields";
@@ -36,7 +36,7 @@ async function fastLogin(service: "google") {
     }
 }
 
-async function register(formData: FormData): Promise<any> {
+async function register(formData: FormData) {
     const username = formData.get("username") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
