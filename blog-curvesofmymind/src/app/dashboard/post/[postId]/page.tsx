@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { getPostById, publishPost, updatePost } from "@/actions/PostAction";
@@ -23,81 +23,71 @@ export default function CreatePostPage({
 }) {
     const params = React.use(paramsPromise);
     const [loading, setLoading] = useState(false);
-    const { data } = useSession();
-    useEffect(() => {
-        async function woa() {
-            try {
-                if (params.postId === "create") {
-                    setLoading(true);
-                    setFormData({
-                        title: "",
-                        category: "",
-                        content: "",
-                        image_url: "",
-                        slug: "",
-                    });
-                } else if (params.postId === "update") {
-                    setLoading(true);
-                    const postId = params.postId;
-                    const post = await getPostById(postId);
-                    setLoading(false);
-                    if (!post) return;
-                    setFormData({
-                        title: post.title,
-                        category: post.category,
-                        content: post.content,
-                        image_url: post.image_url,
-                        slug: post.slug,
-                    });
-                    const formDataToSend = new FormData();
-                    formDataToSend.append("title", formData.title);
-                    formDataToSend.append("category", formData.category);
-                    formDataToSend.append("content", formData.content);
-                    formDataToSend.append("image_url", formData.image_url);
-                    formDataToSend.append("slug", formData.slug);
-                    setLoading(true);
-                    await updatePost(postId, formDataToSend);
-                    setLoading(false);
-                    setFormData({
-                        title: "",
-                        category: "",
-                        content: "",
-                        image_url: "",
-                        slug: "",
-                    });
-                }
-            } catch (error) {
-                console.error("Error in useEffect:", error);
-                setLoading(false);
-            }
-        }
-        woa();
-    }, [params, data]);
     const [formData, setFormData] = useState({
         title: "",
         category: "",
         content: "",
-        image_url: "",
+        image: "",
         slug: "",
     });
+    const { data } = useSession();
+    const initializeForm = useCallback(async () => {
+        try {
+            setLoading(true);
+            if (params.postId === "create") {
+                setFormData({
+                    title: "",
+                    category: "",
+                    content: "",
+                    image: "",
+                    slug: "",
+                });
+            } else {
+                const post = await getPostById(params.postId);
+                if (post) {
+                    setFormData({
+                        title: post.title,
+                        category: post.category,
+                        content: post.content,
+                        image: post.image,
+                        slug: post.slug,
+                    });
+                }
+            }
+        } catch (error) {
+            console.error("Error initializing form:", error);
+        } finally {
+            setLoading(false);
+        }
+    }, [params.postId]);
+
+    useEffect(() => {
+        initializeForm();
+    }, [initializeForm]);
+
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         if (!formData.title || !formData.content || !formData.category) return;
+
         const formDataToSend = new FormData();
         formDataToSend.append("title", formData.title);
         formDataToSend.append("category", formData.category);
         formDataToSend.append("content", formData.content);
-        formDataToSend.append("image_url", formData.image_url);
-        formDataToSend.append("slug", formData.title.replace(/\s+/g, "-")); //replace spaces with -
+        formDataToSend.append("image", formData.image);
+        formDataToSend.append("slug", formData.title.replace(/\s+/g, "-"));
+
         try {
             setLoading(true);
-            await publishPost(formDataToSend);
-            setLoading(false);
+            if (params.postId === "create") {
+                await publishPost(formDataToSend);
+            } else {
+                await updatePost(params.postId, formDataToSend);
+            }
             setFormData({
                 title: "",
                 category: "",
                 content: "",
-                image_url: "",
+                image: "",
                 slug: "",
             });
         } catch (err) {
@@ -123,10 +113,11 @@ export default function CreatePostPage({
                 </Link>
             </div>
         );
+
     return (
         <div className="p-3 max-w-3xl mx-auto min-h-screen">
             <h1 className="text-center text-3xl my-7 font-semibold">
-                Create a post
+                {params.postId === "create" ? "Create a post" : "Update post"}
             </h1>
             <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-4 sm:flex-row justify-between">
@@ -145,30 +136,26 @@ export default function CreatePostPage({
                         onValueChange={(value) =>
                             setFormData({ ...formData, category: value })
                         }
+                        value={formData.category}
                     >
-                        <SelectTrigger
-                            value={formData.category}
-                            className="w-full sm:w-[200px]"
-                        >
+                        <SelectTrigger className="w-full sm:w-[200px]">
                             <SelectValue placeholder="Select a category" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="uncategorized">
                                 Uncategorized
                             </SelectItem>
-                            <SelectItem value="javascript">News</SelectItem>
-                            <SelectItem value="reactjs">Thoughts</SelectItem>
-                            <SelectItem value="nextjs">Fun</SelectItem>
+                            <SelectItem value="news">News</SelectItem>
+                            <SelectItem value="thoughts">Thoughts</SelectItem>
+                            <SelectItem value="fun">Fun</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
 
                 <ImageUpload
                     endpoint="imageUploader"
-                    value={formData.image_url}
-                    onChange={(url) =>
-                        setFormData({ ...formData, image_url: url })
-                    }
+                    value={formData.image}
+                    onChange={(url) => setFormData({ ...formData, image: url })}
                 />
                 <MDEditor
                     value={formData.content}
@@ -181,7 +168,7 @@ export default function CreatePostPage({
                     type="submit"
                     className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
                 >
-                    Publish
+                    {params.postId === "create" ? "Publish" : "Update"}
                 </Button>
             </form>
         </div>

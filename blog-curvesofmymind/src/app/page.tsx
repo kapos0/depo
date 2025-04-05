@@ -1,7 +1,10 @@
+import React from "react";
+import RecentPosts from "@/components/RecentPosts";
+
 export default function Index() {
     return (
-        <div>
-            <h1>Hello</h1>
+        <div className="flex flex-col justify-center items-center mb-5">
+            <RecentPosts />
         </div>
     );
 }

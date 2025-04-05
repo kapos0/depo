@@ -70,6 +70,23 @@ export default function Header() {
                     </nav>
                     <div>
                         <ThemeToggle />
+                        {user && user.role === "admin" ? (
+                            <Button
+                                variant="outline"
+                                className="rounded-full"
+                                style={{ cursor: "pointer" }}
+                            >
+                                <Link href="/dashboard">Dashboard</Link>
+                            </Button>
+                        ) : (
+                            <Button
+                                variant="outline"
+                                className="rounded-full"
+                                style={{ cursor: "pointer" }}
+                            >
+                                <Link href="/profile">Profile</Link>
+                            </Button>
+                        )}
                         {user ? (
                             <Button
                                 variant="outline"

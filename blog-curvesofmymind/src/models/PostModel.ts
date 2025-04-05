@@ -33,5 +33,17 @@ const postSchema = new Schema(
     { timestamps: true }
 );
 
+export type PostType = {
+    _id: string;
+    userId: string;
+    content: string;
+    title: string;
+    image: string;
+    category: string;
+    slug: string;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
 const Post = mongoose.models?.Post || mongoose.model("Post", postSchema);
 export default Post;

@@ -4,10 +4,12 @@ import Post from "@/models/PostModel";
 import { connectDB } from "@/lib/connectDB";
 import { auth } from "@/auth";
 
-export async function getPosts() {
+export async function getPosts(limit?: number) {
     try {
         await connectDB();
-        const posts = await Post.find({});
+        const posts = await Post.find({})
+            .limit(limit ? limit : 0)
+            .sort({ createdAt: -1 });
         const plainPosts = posts.map((post) => post.toObject());
         const forClientPosts = plainPosts.map((post) => ({
             ...post,
@@ -23,7 +25,6 @@ export async function getPosts() {
 }
 
 export async function getPostById(postId: string) {
-    //sanırım gerek kalmadı
     try {
         await connectDB();
         const post = await Post.findById(postId);
