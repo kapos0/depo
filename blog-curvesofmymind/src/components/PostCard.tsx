@@ -3,12 +3,12 @@ import { PostType } from "@/models/PostModel";
 
 export default function PostCard({ post }: { post: PostType }) {
     const truncatedContent =
-        post?.content.length > 128
-            ? `${post?.content.substring(0, 128)}...`
+        post?.content.length > 192
+            ? `${post?.content.substring(0, 192)}...`
             : post?.content;
     return (
         <div className="group relative w-full border border-teal-500 hover:border-2 h-[400px] overflow-hidden rounded-lg sm:w-[430px] transition-all">
-            <Link href={`/post/${post.slug}`}>
+            <Link href={`/post/${post._id}`}>
                 <img
                     src={post.image}
                     alt="post cover"
@@ -24,7 +24,7 @@ export default function PostCard({ post }: { post: PostType }) {
                     {truncatedContent}
                 </p>
                 <Link
-                    href={`/post/${post.slug}`}
+                    href={`/post/${post._id}`}
                     className="z-10 group-hover:bottom-0 absolute bottom-[-200px] left-0 right-0 border border-teal-500 text-teal-500 hover:bg-teal-500 hover:text-white transition-all duration-300 text-center py-2 rounded-md !rounded-tl-none m-2"
                 >
                     Read article

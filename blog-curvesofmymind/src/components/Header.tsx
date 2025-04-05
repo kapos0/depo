@@ -6,7 +6,7 @@ import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 export default function Header() {
     const pathname = usePathname();
@@ -70,7 +70,7 @@ export default function Header() {
                     </nav>
                     <div>
                         <ThemeToggle />
-                        {user && user.role === "admin" ? (
+                        {user && user.role === "admin" && (
                             <Button
                                 variant="outline"
                                 className="rounded-full"
@@ -78,26 +78,14 @@ export default function Header() {
                             >
                                 <Link href="/dashboard">Dashboard</Link>
                             </Button>
-                        ) : (
-                            <Button
-                                variant="outline"
-                                className="rounded-full"
-                                style={{ cursor: "pointer" }}
-                            >
-                                <Link href="/profile">Profile</Link>
-                            </Button>
                         )}
                         {user ? (
                             <Button
                                 variant="outline"
                                 className="rounded-full ms-5"
-                                onClick={async () => {
-                                    await signOut();
-                                    window.location.reload(); // Ensure header updates after sign out
-                                }}
                                 style={{ cursor: "pointer" }}
                             >
-                                Log Out
+                                <Link href="/profile">Profile</Link>
                             </Button>
                         ) : (
                             <Button

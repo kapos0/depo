@@ -80,33 +80,46 @@ async function fetchUser() {
 }
 
 async function updateUser(formData: FormData) {
-    const user = await auth();
-    if (!user) throw new Error("User not found");
+    try {
+        const user = await auth();
+        if (!user) throw new Error("User not found");
 
-    const username = formData.get("username") as string;
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const avatar_url = formData.get("avatar_url") as string;
+        const username = formData.get("username") as string;
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
+        //const avatar_url = formData.get("avatar_url") as string; after implementing the upload image function
 
-    await connectDB();
+        await connectDB();
 
-    const db_user = await User.findOne({ email: user.user?.email });
-    if (!db_user) throw new Error("User not found");
-    await User.findByIdAndUpdate(db_user._id, {
-        username,
-        email,
-        password,
-        avatar_url,
-    });
-    console.log("User updated successfully 🥂");
-    revalidatePath("/");
-    redirect("/profile");
+        const db_user = await User.findOne({ email: user.user?.email });
+        if (!db_user) throw new Error("User not found");
+
+        const hashedPassword = password
+            ? await hash(password, 12)
+            : db_user.password;
+
+        await User.findByIdAndUpdate(db_user._id, {
+            username,
+            email,
+            password: hashedPassword,
+            //avatar_url,
+        });
+        console.log("User updated successfully 🥂");
+        revalidatePath("/");
+        return;
+    } catch (error) {
+        console.error("Error updating user:", error);
+        throw new Error("Failed to update user");
+    }
 }
 
 async function deleteUser(_id: string) {
+    if (!_id) throw new Error("Please provide a valid user ID");
     try {
         await connectDB();
         await User.findByIdAndDelete(_id);
+        revalidatePath("/");
+        return;
     } catch (error) {
         console.error("Error deleting user:", error);
     }
