@@ -8,9 +8,8 @@ import { useEffect } from "react";
 export default function SignInPage() {
     const user = useSession();
     useEffect(() => {
-        if (user?.status !== "unauthenticated") {
-            redirect("/");
-        }
+        if (user.status === "authenticated") window.location.href = "/";
+        if (user.status !== "unauthenticated") redirect("/");
     }, [user.status]);
     async function handleGoogleFastLogin() {
         try {
@@ -94,7 +93,7 @@ export default function SignInPage() {
                                 onClick={handleGithubFastLogin}
                                 className="rounded-2xl border-b-2 border-b-gray-300 dark:border-b-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 font-bold text-blue-700 dark:text-blue-400 ring-2 ring-gray-300 dark:ring-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 active:translate-y-[0.125rem] active:border-b-gray-200 dark:active:border-b-gray-600"
                             >
-                                GOOGLE
+                                GITHUB
                             </button>
                         </div>
                     </footer>

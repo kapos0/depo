@@ -3,10 +3,12 @@ import Link from "next/link";
 import { register } from "@/actions/UserActions";
 import { signIn, useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import ImageUpload from "@/components/ImageUpload";
 
 export default function SignUpPage() {
     const user = useSession();
+    const [imageUrl, setImageUrl] = useState("");
     useEffect(() => {
         if (user?.status !== "unauthenticated") {
             redirect("/");
@@ -58,6 +60,21 @@ export default function SignUpPage() {
                                     name="username"
                                     placeholder="User Name"
                                     className="my-3 w-full border-none bg-transparent text-gray-900 dark:text-gray-100 outline-hidden focus:outline-hidden"
+                                />
+                            </div>
+                            <div className="w-full rounded-2xl bg-gray-50 dark:bg-gray-800 px-4 ring-2 ring-gray-200 dark:ring-gray-700 my-4 focus-within:ring-blue-400 dark:focus-within:ring-blue-500">
+                                <ImageUpload
+                                    endpoint="imageUploader"
+                                    value={imageUrl}
+                                    onChange={(url) => {
+                                        setImageUrl(url);
+                                    }}
+                                />
+                                <input
+                                    type="hidden"
+                                    name="avatar_url"
+                                    value={imageUrl}
+                                    readOnly
                                 />
                             </div>
                             <div className="w-full my-4 rounded-2xl bg-gray-50 dark:bg-gray-800 px-4 ring-2 ring-gray-200 dark:ring-gray-700 focus-within:ring-blue-400 dark:focus-within:ring-blue-500">

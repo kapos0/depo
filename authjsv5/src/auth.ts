@@ -4,7 +4,7 @@ import User from "@/models/UserModel";
 import Credentials from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
 import Google from "next-auth/providers/google";
-
+import Github from "next-auth/providers/github";
 import "next-auth";
 
 declare module "next-auth" {
@@ -106,6 +106,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 return userData;
             },
         }),
+        Github,
         Google,
     ],
     pages: {
@@ -116,7 +117,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         //when user sign in with google or github it needs to be saved in the database
         async signIn({ user, account }) {
             await connectDB();
-            if (account?.provider === "google") {
+            if (
+                account?.provider === "google" ||
+                account?.provider === "github"
+            ) {
                 const existingUser = await User.findOne({ email: user?.email });
                 if (!existingUser) {
                     const newUser = new User({
@@ -133,6 +137,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
         async session({ session, token }) {
             session.user = {
+                ...session.user,
                 id: token.id as string,
                 username: token.username as string,
                 email: token.email as string,
@@ -140,7 +145,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 isVerified: token.isVerified as boolean,
                 avatar: token.avatar as string,
                 provider: token.provider as string,
-                emailVerified: null, // Add this property to satisfy the AdapterUser type
             };
             return session;
         },

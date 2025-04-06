@@ -27,7 +27,7 @@ async function login(formData: FormData) {
     }
 }
 
-async function fastLogin(service: "google") {
+async function fastLogin(service: "google" | "github") {
     try {
         await signIn(service, { callbackUrl: "/" });
     } catch (error) {
@@ -40,6 +40,7 @@ async function register(formData: FormData) {
     const username = formData.get("username") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
+    const avatar_url = formData.get("avatar_url") as string;
     const provider = "credentials";
     if (!username || !email || !password) return "Please fill all fields";
 
@@ -51,7 +52,13 @@ async function register(formData: FormData) {
 
     const hashedPassword = await hash(password, 12);
 
-    await User.create({ username, provider, email, password: hashedPassword });
+    await User.create({
+        username,
+        provider,
+        email,
+        password: hashedPassword,
+        avatar: avatar_url,
+    });
     console.log(`User created successfully 🥂`);
     revalidatePath("/");
     redirect("/sign-in");
@@ -72,13 +79,58 @@ async function fetchUser() {
     return dbUser;
 }
 
+async function updateUser(formData: FormData) {
+    try {
+        const user = await auth();
+        if (!user) throw new Error("User not found");
+
+        const username = formData.get("username") as string;
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
+        const avatar_url = formData.get("avatar_url") as string;
+
+        await connectDB();
+
+        const db_user = await User.findOne({ email: user.user?.email });
+        if (!db_user) throw new Error("User not found");
+
+        const hashedPassword = password
+            ? await hash(password, 12)
+            : db_user.password;
+
+        await User.findByIdAndUpdate(db_user._id, {
+            username,
+            email,
+            password: hashedPassword,
+            avatar_url,
+        });
+        console.log("User updated successfully 🥂");
+        revalidatePath("/");
+        return;
+    } catch (error) {
+        console.error("Error updating user:", error);
+        throw new Error("Failed to update user");
+    }
+}
+
 async function deleteUser(_id: string) {
+    if (!_id) throw new Error("Please provide a valid user ID");
     try {
         await connectDB();
         await User.findByIdAndDelete(_id);
+        revalidatePath("/");
+        return;
     } catch (error) {
         console.error("Error deleting user:", error);
     }
 }
 
-export { fastLogin, register, login, fetchAllUsers, fetchUser, deleteUser };
+export {
+    fastLogin,
+    register,
+    login,
+    fetchAllUsers,
+    fetchUser,
+    updateUser,
+    deleteUser,
+};

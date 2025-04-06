@@ -1,20 +1,29 @@
 import NextAuth from "next-auth";
 import type { NextAuthConfig } from "next-auth";
+import { auth } from "./auth";
 
 const authConfig = {
     providers: [],
     callbacks: {
-        authorized({ request, auth }) {
-            const protectedPaths = [
-                /\/shipping/,
-                /\/payment/,
-                /\/place-order/,
-                /\/profile/,
-                /\/order\/(.*)/,
-                /\/admin/,
-            ];
+        async authorized({ request }) {
+            const user = await auth();
+            const protectedPaths = {
+                adminOnly: [/\/dashboard/, /\/admin/],
+                loggedInOnly: [/\/profile/],
+            };
             const { pathname } = request.nextUrl;
-            if (protectedPaths.some((p) => p.test(pathname))) return !!auth;
+
+            // Admin-only paths
+            if (protectedPaths.adminOnly.some((p) => p.test(pathname))) {
+                return user?.user?.role === "admin";
+            }
+
+            // Logged-in-only paths
+            if (protectedPaths.loggedInOnly.some((p) => p.test(pathname))) {
+                return !!user;
+            }
+
+            // Public paths
             return true;
         },
     },
