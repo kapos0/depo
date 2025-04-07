@@ -55,7 +55,7 @@ export default function SignUpPage() {
                                     className="my-3 w-full border-none bg-transparent text-gray-900 dark:text-gray-100 outline-hidden focus:outline-hidden"
                                 />
                             </div>
-                            <div className="w-full rounded-2xl bg-gray-50 dark:bg-gray-800 px-4 ring-2 ring-gray-200 dark:ring-gray-700 my-4 focus-within:ring-blue-400 dark:focus-within:ring-blue-500">
+                            <div className="w-75 rounded-2xl bg-gray-50 dark:bg-black px-4 ring-2 ring-gray-100 dark:ring-gray-100 mx-auto">
                                 <ImageUpload
                                     endpoint="imageUploader"
                                     value={imageUrl}
@@ -105,7 +105,7 @@ export default function SignUpPage() {
                         <div>
                             <button
                                 onClick={handleGoogleFastLogin}
-                                className="rounded-2xl border-b-2 border-b-gray-300 dark:border-b-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 font-bold text-blue-700 dark:text-blue-400 ring-2 ring-gray-300 dark:ring-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 active:translate-y-[0.125rem] active:border-b-gray-200 dark:active:border-b-gray-600"
+                                className="rounded-2xl border-b-2 border-b-gray-300 dark:border-b-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 font-bold text-blue-700 dark:text-blue-400 ring-2 ring-gray-300 dark:ring-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 active:translate-y-[0.125rem] active:border-b-gray-200 dark:active:border-b-gray-600 mb-12"
                             >
                                 GOOGLE
                             </button>

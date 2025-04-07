@@ -152,13 +152,18 @@ export default function CreatePostPage({
                     </Select>
                 </div>
 
-                <ImageUpload
-                    endpoint="imageUploader"
-                    value={formData.image}
-                    onChange={(url) => setFormData({ ...formData, image: url })}
-                />
+                <div className="flex justify-center align-center mx-auto w-full">
+                    <ImageUpload
+                        endpoint="imageUploader"
+                        value={formData.image}
+                        onChange={(url) =>
+                            setFormData({ ...formData, image: url })
+                        }
+                    />
+                </div>
                 <MDEditor
                     value={formData.content}
+                    height={700}
                     onChange={(value) => {
                         setFormData({ ...formData, content: value || "" });
                     }}
