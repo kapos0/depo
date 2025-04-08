@@ -62,7 +62,7 @@ export default function SignUpPage() {
                                     className="my-3 w-full border-none bg-transparent text-gray-900 dark:text-gray-100 outline-hidden focus:outline-hidden"
                                 />
                             </div>
-                            <div className="w-full rounded-2xl bg-gray-50 dark:bg-gray-800 px-4 ring-2 ring-gray-200 dark:ring-gray-700 my-4 focus-within:ring-blue-400 dark:focus-within:ring-blue-500">
+                            <div className="w-50 mx-auto">
                                 <ImageUpload
                                     endpoint="imageUploader"
                                     value={imageUrl}
