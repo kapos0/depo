@@ -24,6 +24,33 @@ export async function getPosts(limit?: number) {
     }
 }
 
+export async function getPostsByQuery(
+    query: string,
+    category: "uncategorized" | string
+) {
+    try {
+        await connectDB();
+        const posts = await Post.find({
+            $or: [
+                { title: { $regex: query, $options: "i" } },
+                { content: { $regex: query, $options: "i" } }, //regex for content options i used for case insensitive
+            ],
+            category: { $regex: category, $options: "i" },
+        }).sort({ createdAt: -1 });
+        const plainPosts = posts.map((post) => post.toObject());
+        const forClientPosts = plainPosts.map((post) => ({
+            ...post,
+            _id: post._id.toString(),
+            userId: post.userId?.toString(),
+            createdAt: post.createdAt?.toISOString(),
+            updatedAt: post.updatedAt?.toISOString(),
+        }));
+        return forClientPosts;
+    } catch (error) {
+        console.error("Error fetching posts:", error);
+    }
+}
+
 export async function getPostById(postId: string) {
     try {
         await connectDB();
@@ -62,7 +89,7 @@ export async function publishPost(formData: FormData) {
     const title = formData.get("title") as string;
     const category = formData.get("category") as string;
     const content = formData.get("content") as string;
-    const image_url = formData.get("image_url") as string;
+    const image_url = formData.get("image") as string;
     const slug = formData.get("slug") as string;
     try {
         await connectDB();

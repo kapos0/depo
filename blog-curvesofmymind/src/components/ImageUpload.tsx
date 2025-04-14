@@ -34,7 +34,7 @@ function ImageUpload({ endpoint, onChange, value }: ImageUploadProps) {
                 onChange(res?.[0].ufsUrl);
             }}
             onUploadError={(error: Error) => {
-                console.log(error);
+                console.error(error);
             }}
             className="bg-black text-white"
         />

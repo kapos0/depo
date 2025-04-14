@@ -75,7 +75,6 @@ export default function CreatePostPage({
         formDataToSend.append("content", formData.content);
         formDataToSend.append("image", formData.image);
         formDataToSend.append("slug", formData.title.replace(/\s+/g, "-"));
-
         try {
             setLoading(true);
             if (params.postId === "create") {
@@ -151,13 +150,15 @@ export default function CreatePostPage({
                         </SelectContent>
                     </Select>
                 </div>
-
                 <div className="flex justify-center align-center mx-auto w-full">
                     <ImageUpload
                         endpoint="imageUploader"
                         value={formData.image}
                         onChange={(url) =>
-                            setFormData({ ...formData, image: url })
+                            setFormData((prevFormData) => ({
+                                ...prevFormData,
+                                image: url,
+                            }))
                         }
                     />
                 </div>
@@ -165,7 +166,10 @@ export default function CreatePostPage({
                     value={formData.content}
                     height={700}
                     onChange={(value) => {
-                        setFormData({ ...formData, content: value || "" });
+                        setFormData((prevFormData) => ({
+                            ...prevFormData,
+                            content: value || "",
+                        }));
                     }}
                 />
 

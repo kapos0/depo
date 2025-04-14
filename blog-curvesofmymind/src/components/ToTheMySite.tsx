@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 
 export default function ToTheMySite() {
     return (
-        <div className="flex flex-col sm:flex-row p-3 border border-teal-500 justify-center items-center rounded-tl-3xl rounded-br-3xl text-center">
+        <div className="flex flex-col sm:flex-row p-3 border border-teal-500 justify-center items-center rounded-tl-3xl rounded-br-3xl text-center mt-5">
             <div className="flex-1 justify-center flex flex-col p-4">
                 <h2 className="text-2xl font-medium">
                     Want to learn more about me?

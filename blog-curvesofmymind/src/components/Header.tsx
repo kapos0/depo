@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,9 +10,11 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useSession } from "next-auth/react";
 
 export default function Header() {
+    const router = useRouter();
     const pathname = usePathname();
     const sessions = useSession();
     const user = sessions?.data?.user;
+    const [searchQuery, setSearchQuery] = useState<string>("");
     return (
         <header className="border-b border-gray-200 bg-background">
             <div className="container flex items-center justify-between h-16 px-4 mx-auto">
@@ -31,7 +34,19 @@ export default function Header() {
                             type="search"
                             placeholder="Search..."
                             className="w-full pl-10 md:w-[300px] rounded-md"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
                         />
+                        <Button
+                            type="button"
+                            variant="default"
+                            className="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer"
+                            onClick={() =>
+                                router.push(`/search/${searchQuery}`)
+                            }
+                        >
+                            Ara
+                        </Button>
                     </div>
                 </div>
 
