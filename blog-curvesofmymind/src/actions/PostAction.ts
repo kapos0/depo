@@ -24,6 +24,20 @@ export async function getPosts(limit?: number) {
     }
 }
 
+export async function fetchRecentPosts() {
+    await connectDB();
+    const plainPosts = await Post.find({}).sort({ createdAt: -1 }).limit(5);
+    const posts = plainPosts.map((post) => post.toObject());
+    const forClientUsers = posts.map((post) => ({
+        ...post,
+        _id: post._id.toString(),
+        userId: post.userId?.toString(),
+        createdAt: post.createdAt?.toISOString(),
+        updatedAt: post.updatedAt?.toISOString(),
+    }));
+    return forClientUsers;
+}
+
 export async function getPostsByQuery(
     query: string,
     category: "uncategorized" | string

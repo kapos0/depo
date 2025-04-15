@@ -13,5 +13,15 @@ const userSchema = new Schema(
     { timestamps: true }
 );
 
+export type UserType = {
+    _id: string;
+    createdAt: Date;
+    avatar?: string;
+    username: string;
+    email: string;
+    role: "admin" | "user";
+    provider: string;
+};
+
 const User = mongoose.models?.User || mongoose.model("User", userSchema);
 export default User;

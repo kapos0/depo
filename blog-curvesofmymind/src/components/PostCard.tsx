@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PostType } from "@/models/PostModel";
+import Image from "next/image";
 
 export default function PostCard({ post }: { post: PostType }) {
     const truncatedContent =
@@ -9,7 +10,9 @@ export default function PostCard({ post }: { post: PostType }) {
     return (
         <div className="group relative w-full border border-teal-500 hover:border-2 h-[400px] overflow-hidden rounded-lg sm:w-[430px] transition-all">
             <Link href={`/post/${post._id}`}>
-                <img
+                <Image
+                    width={500}
+                    height={260}
                     src={post.image}
                     alt="post cover"
                     className="h-[260px] w-full  object-cover group-hover:h-[200px] transition-all duration-300 z-20"

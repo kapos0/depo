@@ -66,8 +66,28 @@ async function register(formData: FormData) {
 
 async function fetchAllUsers() {
     await connectDB();
-    const users = await User.find({});
-    return users;
+    const plainUsers = await User.find({}).sort({ createdAt: -1 });
+    const users = plainUsers.map((user) => user.toObject());
+    const forClientPosts = users.map((user) => ({
+        ...user,
+        _id: user._id.toString(),
+        createdAt: user.createdAt?.toISOString(),
+        updatedAt: user.updatedAt?.toISOString(),
+    }));
+    return forClientPosts;
+}
+
+async function fetchRecentUsers() {
+    await connectDB();
+    const plainUsers = await User.find({}).sort({ createdAt: -1 }).limit(5);
+    const users = plainUsers.map((user) => user.toObject());
+    const forClientUsers = users.map((user) => ({
+        ...user,
+        _id: user._id.toString(),
+        createdAt: user.createdAt?.toISOString(),
+        updatedAt: user.updatedAt?.toISOString(),
+    }));
+    return forClientUsers;
 }
 
 async function fetchUser() {
@@ -129,6 +149,7 @@ export {
     fastLogin,
     register,
     login,
+    fetchRecentUsers,
     fetchAllUsers,
     fetchUser,
     updateUser,

@@ -96,7 +96,7 @@ export default function CreatePostPage({
         }
     }
 
-    if (!data?.user) return <Loading />;
+    if (!data?.user && loading) return <Loading />;
     if (data?.user?.role !== "admin")
         return (
             <div>

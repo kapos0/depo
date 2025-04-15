@@ -12,6 +12,7 @@ function ImageUpload({ endpoint, onChange, value }: ImageUploadProps) {
     if (value) {
         return (
             <div className="relative flex items-center justify-center py-2 overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                     src={value}
                     alt="Upload"

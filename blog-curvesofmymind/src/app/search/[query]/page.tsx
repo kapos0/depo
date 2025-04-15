@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import PostCard from "@/components/PostCard";
 import PostFilter from "@/components/PostFilter";
@@ -22,7 +22,7 @@ export default function SearchPage({
     const [posts, setPosts] = useState<PostType[]>([]);
     const [loading, setLoading] = useState(true);
 
-    async function fetchPosts() {
+    const fetchPosts = useCallback(async () => {
         setLoading(true);
         try {
             const data = searchQuery
@@ -37,11 +37,11 @@ export default function SearchPage({
         } finally {
             setLoading(false);
         }
-    }
+    }, [searchQuery, sidebarData]);
 
     useEffect(() => {
         fetchPosts();
-    }, [sidebarData]);
+    }, [fetchPosts]);
 
     async function handleFilterChange(newData: {
         searchTerm: string;

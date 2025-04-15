@@ -27,7 +27,7 @@ function PostPage({
             }
         }
         getPost();
-    }, [postId]);
+    }, [params, postId]);
 
     if (!post)
         return (

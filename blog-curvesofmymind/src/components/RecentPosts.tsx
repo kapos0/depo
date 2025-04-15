@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { getPosts } from "@/actions/PostAction";
 import { PostType } from "@/models/PostModel";
 import PostCard from "@/components/PostCard";
@@ -11,19 +11,20 @@ export default function RecentPosts({
     limit?: number;
     currentPostId?: string;
 }) {
-    const [posts, setPosts] = useState<PostType[] | any>([]);
+    const [posts, setPosts] = useState<PostType[]>([]);
 
-    async function getAllPosts() {
+    const getAllPosts = useCallback(async () => {
         try {
             const res = await getPosts(limit ? limit : undefined);
-            setPosts(res);
+            if (res) setPosts(res);
         } catch (err) {
             console.error(err);
         }
-    }
+    }, [limit]);
+
     useEffect(() => {
         getAllPosts();
-    }, []);
+    }, [getAllPosts]);
 
     return (
         <>

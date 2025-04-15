@@ -39,12 +39,13 @@ export default function PostCardForAdmin({
     onDelete = () => {},
     onUpdate = () => {},
     onPostDeleted = () => {},
+    createdAt,
+    updatedAt,
 }: PostCardProps) {
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
     const truncatedContent =
         content.length > 64 ? `${content.substring(0, 64)}...` : content;
-
     return (
         <Card className="overflow-hidden transition-all hover:shadow-md w-[400px]">
             <div className="relative h-48 w-full">
@@ -63,6 +64,20 @@ export default function PostCardForAdmin({
                     <Badge variant="outline" className="ml-2 shrink-0">
                         {category}
                     </Badge>
+                </div>
+                <div className="mt-2 text-sm text-muted-foreground">
+                    <p>
+                        Gönderi Oluşturuldu:{" "}
+                        <span>
+                            {new Date(createdAt).toLocaleString("tr-TR")}
+                        </span>
+                    </p>
+                    <p>
+                        Gönderi Güncellendi:{" "}
+                        <span>
+                            {new Date(updatedAt).toLocaleString("tr-TR")}
+                        </span>
+                    </p>
                 </div>
             </CardHeader>
             <CardContent className="p-4 pt-2">

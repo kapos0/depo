@@ -14,7 +14,6 @@ import { redirect } from "next/navigation";
 
 export default function ProfilePage() {
     const { data } = useSession();
-    if (!data?.user.username) return redirect("/sign-in");
     const [username, setUsername] = useState(data?.user.username);
     const [email, setEmail] = useState(data?.user.email);
     const [password, setPassword] = useState("");
@@ -52,6 +51,8 @@ export default function ProfilePage() {
             console.error("Failed to update profile:", error);
         }
     }
+
+    if (!data?.user.username) return redirect("/sign-in");
 
     return (
         <div className="flex min-h-screen">
