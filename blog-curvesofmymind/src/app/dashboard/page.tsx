@@ -100,23 +100,25 @@ export default function DashBoardPage() {
             <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {posts &&
                     posts.map((post: PostType) => (
-                        <PostCardForAdmin
-                            key={post._id}
-                            _id={post._id}
-                            title={post.title}
-                            content={post.content}
-                            category={post.category}
-                            image={post.image}
-                            userId={post.userId}
-                            slug={post.slug}
-                            createdAt={post.createdAt}
-                            updatedAt={post.updatedAt}
-                            onDelete={() => deletePost(post._id)}
-                            onUpdate={() =>
-                                router.push("dashboard/post/" + post._id)
-                            }
-                            onPostDeleted={handlePostDeleted}
-                        />
+                        <div className="w-full" key={post._id}>
+                            <PostCardForAdmin
+                                key={post._id}
+                                _id={post._id}
+                                title={post.title}
+                                content={post.content}
+                                category={post.category}
+                                image={post.image}
+                                userId={post.userId}
+                                slug={post.slug}
+                                createdAt={post.createdAt}
+                                updatedAt={post.updatedAt}
+                                onDelete={() => deletePost(post._id)}
+                                onUpdate={() =>
+                                    router.push("dashboard/post/" + post._id)
+                                }
+                                onPostDeleted={handlePostDeleted}
+                            />
+                        </div>
                     ))}
             </div>
         </div>

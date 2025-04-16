@@ -21,7 +21,7 @@ export default function SignInPage() {
     return (
         <main className="relative min-h-screen w-full bg-white dark:bg-gray-900">
             <div className="p-6" x-data="app">
-                <header className="flex w-full justify-end">
+                <header className="flex w-full justify-end sm:justify-end sm:mb-4">
                     <div>
                         <Link
                             href="/sign-up"
@@ -31,11 +31,14 @@ export default function SignInPage() {
                         </Link>
                     </div>
                 </header>
-                <div className="absolute w-full left-1/2 top-1/2 mx-auto max-w-sm -translate-x-1/2 -translate-y-1/2 transform space-y-4 text-center">
+                <div className="absolute w-full left-1/2 top-1/2 mx-auto max-w-sm -translate-x-1/2 -translate-y-1/2 transform space-y-4 text-center sm:static sm:translate-x-0 sm:translate-y-0 sm:mt-8">
                     <div className="space-y-4">
-                        <header className="mb-3 text-4xl font-bold text-gray-900 dark:text-gray-100">
+                        <header className="mb-3 text-4xl font-bold text-gray-900 dark:text-gray-100 sm:text-3xl">
                             Log in
                         </header>
+                        <p>
+                            For admin account: username is: helo, password is: 1
+                        </p>
                         <form
                             action={(formData) =>
                                 login(formData).then(() =>
@@ -78,7 +81,7 @@ export default function SignInPage() {
                         <div>
                             <button
                                 onClick={handleGoogleFastLogin}
-                                className="rounded-2xl border-b-2 border-b-gray-300 dark:border-b-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 font-bold text-blue-700 dark:text-blue-400 ring-2 ring-gray-300 dark:ring-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 active:translate-y-[0.125rem] active:border-b-gray-200 dark:active:border-b-gray-600"
+                                className="rounded-2xl border-b-2 border-b-gray-300 dark:border-b-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 font-bold text-blue-700 dark:text-blue-400 ring-2 ring-gray-300 dark:ring-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 active:translate-y-[0.125rem] active:border-b-gray-200 dark:active:border-b-gray-600 sm:w-full"
                             >
                                 GOOGLE
                             </button>

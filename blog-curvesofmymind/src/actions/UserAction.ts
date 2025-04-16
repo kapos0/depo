@@ -107,7 +107,7 @@ async function updateUser(formData: FormData) {
         const username = formData.get("username") as string;
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
-        //const avatar_url = formData.get("avatar_url") as string; after implementing the upload image function
+        const avatar_url = formData.get("avatar") as string;
 
         await connectDB();
 
@@ -122,7 +122,7 @@ async function updateUser(formData: FormData) {
             username,
             email,
             password: hashedPassword,
-            //avatar_url,
+            ...(avatar_url && { avatar: avatar_url }),
         });
         console.log("User updated successfully 🥂");
         revalidatePath("/");

@@ -47,8 +47,8 @@ export default function PostCardForAdmin({
     const truncatedContent =
         content.length > 64 ? `${content.substring(0, 64)}...` : content;
     return (
-        <Card className="overflow-hidden transition-all hover:shadow-md w-[400px]">
-            <div className="relative h-48 w-full">
+        <Card className="overflow-hidden transition-all hover:shadow-md w-full max-w-[400px] sm:w-[400px]">
+            <div className="relative h-32 sm:h-48 w-full">
                 <Image
                     src={image || "/placeholder.svg?height=192&width=384"}
                     alt={title}
@@ -57,11 +57,14 @@ export default function PostCardForAdmin({
                 />
             </div>
             <CardHeader className="p-4 pb-2">
-                <div className="flex items-start justify-between">
-                    <h3 className="text-xl font-semibold line-clamp-1">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
+                    <h3 className="text-lg sm:text-xl font-semibold line-clamp-1">
                         {title}
                     </h3>
-                    <Badge variant="outline" className="ml-2 shrink-0">
+                    <Badge
+                        variant="outline"
+                        className="mt-2 sm:mt-0 sm:ml-2 shrink-0"
+                    >
                         {category}
                     </Badge>
                 </div>
@@ -85,7 +88,7 @@ export default function PostCardForAdmin({
                     {truncatedContent}
                 </p>
             </CardContent>
-            <CardFooter className="flex justify-end gap-2 p-4 pt-0">
+            <CardFooter className="flex flex-col sm:flex-row justify-end gap-2 p-4 pt-0">
                 <Button
                     variant="outline"
                     size="sm"

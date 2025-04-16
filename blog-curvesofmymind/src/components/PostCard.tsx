@@ -4,11 +4,11 @@ import Image from "next/image";
 
 export default function PostCard({ post }: { post: PostType }) {
     const truncatedContent =
-        post?.content.length > 192
-            ? `${post?.content.substring(0, 192)}...`
+        post?.content.length > 128
+            ? `${post?.content.substring(0, 128)}...`
             : post?.content;
     return (
-        <div className="group relative w-full border border-teal-500 hover:border-2 h-[400px] overflow-hidden rounded-lg sm:w-[430px] transition-all">
+        <div className="group relative w-full border border-teal-500 hover:border-2 h-[400px] overflow-hidden rounded-lg sm:w-[430px] transition-all mx-3">
             <Link href={`/post/${post._id}`}>
                 <Image
                     width={500}

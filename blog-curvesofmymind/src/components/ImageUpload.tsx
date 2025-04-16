@@ -16,7 +16,7 @@ function ImageUpload({ endpoint, onChange, value }: ImageUploadProps) {
                 <img
                     src={value}
                     alt="Upload"
-                    className="rounded-md object-contain"
+                    className="w-50 rounded-md object-cover max-w-full max-h-full h-full"
                 />
                 <button
                     onClick={() => onChange("")}

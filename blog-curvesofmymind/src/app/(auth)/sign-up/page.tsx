@@ -25,7 +25,12 @@ export default function SignUpPage() {
     return (
         <main className="relative min-h-screen w-full bg-white dark:bg-gray-900">
             <div className="p-6" x-data="app">
-                <header className="flex w-full justify-end">
+                <header className="flex w-full justify-end sm:justify-between sm:items-center">
+                    <div className="hidden sm:block">
+                        <h1 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                            Welcome!
+                        </h1>
+                    </div>
                     <div>
                         <Link
                             href="/sign-in"
@@ -35,9 +40,9 @@ export default function SignUpPage() {
                         </Link>
                     </div>
                 </header>
-                <div className="absolute left-1/2 top-1/2 mx-auto max-w-sm -translate-x-1/2 -translate-y-1/2 transform space-y-4 text-center w-full">
-                    <div className="space-y-4 mt-10">
-                        <header className="mb-3 text-4xl font-bold text-gray-900 dark:text-gray-100">
+                <div className="absolute left-1/2 top-1/2 mx-auto max-w-sm -translate-x-1/2 -translate-y-1/2 transform space-y-4 text-center w-full px-4 sm:px-0">
+                    <div className="space-y-4 mt-25">
+                        <header className="mb-3 text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100">
                             Create your profile
                         </header>
                         <form
@@ -55,7 +60,7 @@ export default function SignUpPage() {
                                     className="my-3 w-full border-none bg-transparent text-gray-900 dark:text-gray-100 outline-hidden focus:outline-hidden"
                                 />
                             </div>
-                            <div className="w-75 rounded-2xl bg-gray-50 dark:bg-black px-4 ring-2 ring-gray-100 dark:ring-gray-100 mx-auto">
+                            <div className="w-full sm:w-75 rounded-2xl bg-gray-50 dark:bg-black px-4 py-4 ring-2 ring-gray-100 dark:ring-gray-100 mx-auto flex justify-center items-center h-48">
                                 <ImageUpload
                                     endpoint="imageUploader"
                                     value={imageUrl}

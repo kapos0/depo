@@ -9,7 +9,6 @@ export const metadata: Metadata = {
     title: "Blog app",
     description: "This is a blog app with admin dashboard using",
 };
-
 export default function RootLayout({
     children,
 }: Readonly<{

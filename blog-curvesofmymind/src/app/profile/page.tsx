@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { signOut, useSession } from "next-auth/react";
 import { deleteUser, updateUser } from "@/actions/UserAction";
 import { redirect } from "next/navigation";
+import ImageUpload from "@/components/ImageUpload";
 
 export default function ProfilePage() {
     const { data } = useSession();
@@ -18,6 +19,7 @@ export default function ProfilePage() {
     const [email, setEmail] = useState(data?.user.email);
     const [password, setPassword] = useState("");
     const [showAlert, setShowAlert] = useState(false);
+    const [imageUrl, setImageUrl] = useState("");
 
     async function handleProfileDelete() {
         try {
@@ -44,6 +46,7 @@ export default function ProfilePage() {
         formdataTosend.append("username", username ?? "");
         formdataTosend.append("email", email ?? "");
         formdataTosend.append("password", password ?? "");
+        formdataTosend.append("avatar", imageUrl ?? "");
         try {
             await updateUser(formdataTosend);
             await signOut();
@@ -55,8 +58,8 @@ export default function ProfilePage() {
     if (!data?.user.username) return redirect("/sign-in");
 
     return (
-        <div className="flex min-h-screen">
-            <div className="w-60  border-gray-200 p-4 space-y-4">
+        <div className="flex flex-col md:flex-row min-h-screen">
+            <div className="w-full md:w-60 border-gray-200 p-4 space-y-4">
                 <div className="flex items-center gap-3 p-2 rounded-md">
                     <User className="h-5 w-5" />
                     <span className="font-medium">Profile</span>
@@ -79,25 +82,37 @@ export default function ProfilePage() {
                 </div>
             </div>
 
-            <div className="flex-1 p-8 flex justify-center ">
+            <div className="flex-1 p-4 md:p-8 flex justify-center">
                 <div className="w-full max-w-md">
-                    <h1 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">
+                    <h1 className="text-xl md:text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4 md:mb-6">
                         Profile
                     </h1>
 
-                    <div className="flex justify-center mb-6">
-                        <Avatar className="h-32 w-32">
+                    <div className="flex justify-center mb-4 md:mb-6">
+                        <Avatar className="h-24 w-24 md:h-32 md:w-32">
                             <AvatarImage
                                 src={data?.user.avatar}
                                 alt="Profile"
                             />
                             <AvatarFallback className="bg-gray-200 dark:bg-gray-700">
-                                <User className="h-16 w-16 text-gray-400 dark:text-gray-300" />
+                                <User className="h-12 w-12 md:h-16 md:w-16 text-gray-400 dark:text-gray-300" />
                             </AvatarFallback>
                         </Avatar>
                     </div>
+                    <div className="my-5">
+                        <ImageUpload
+                            endpoint="imageUploader"
+                            value={imageUrl}
+                            onChange={(url) => {
+                                setImageUrl(url);
+                            }}
+                        />
+                    </div>
 
-                    <form onSubmit={handleUpdate} className="space-y-4">
+                    <form
+                        onSubmit={handleUpdate}
+                        className="space-y-3 md:space-y-4"
+                    >
                         <Input
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
@@ -115,7 +130,7 @@ export default function ProfilePage() {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            placeholder="password"
+                            placeholder="Password"
                             className="bg-white dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
                         />
 
