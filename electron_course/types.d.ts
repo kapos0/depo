@@ -1,11 +1,13 @@
 type Statistics = {
-    cpuUsage: number;
-    ramUsage: number;
-    storageUsage: number;
+    data: {
+        cpuUsage: number;
+        ramUsage: number;
+        storageUsage: number;
+    };
 };
 
 type StaticData = {
-    totalStorage: number;
+    totalStorageGB: number;
     cpuModel: string;
     totalMemoryGB: number;
 };

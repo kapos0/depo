@@ -1,17 +1,18 @@
 import osUitls from "os-utils";
 import os from "os";
 import fs from "fs";
+import { ipcWebContentsSend } from "./utils.js";
 
 const POLLING_INTERVAL = 1000; // 1 second
 
 export function getStaticResources() {
-    const totalStorage = getStorageData().total;
+    const totalStorageGB = getStorageData().total;
     const cpuModel = os.cpus()[0].model;
     const totalMemoryGB = Math.floor(os.totalmem() / 1024);
     return {
         cpuModel,
         totalMemoryGB,
-        totalStorageGB: totalStorage,
+        totalStorageGB,
     };
 }
 
@@ -39,11 +40,11 @@ export function pollResources(mainWindow: Electron.BrowserWindow) {
         const cpuUsage = await getCpuUsage();
         const ramUsage = getRamUsage();
         const storageData = getStorageData();
-        mainWindow.webContents.send("statistics", {
+        ipcWebContentsSend("statistics", mainWindow.webContents, {
             data: {
-                cpuUsage: (cpuUsage * 100).toFixed(2) + "%",
-                ramUsage: (ramUsage * 100).toFixed(2) + "%",
-                storageUsage: storageData.usage * 100 + "%",
+                cpuUsage: Math.floor(cpuUsage * 100),
+                ramUsage: Math.floor(ramUsage * 100),
+                storageUsage: storageData.usage * 100,
             },
         });
     }, POLLING_INTERVAL);
