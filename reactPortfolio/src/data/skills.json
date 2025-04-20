@@ -1,38 +1,46 @@
 [
-  {
-    "title": "HTML",
-    "imageSrc": "skills/html.png"
-  },
-  {
-    "title": "CSS",
-    "imageSrc": "skills/css.png"
-  },
-  {
-    "title": "JavaScript",
-    "imageSrc": "skills/javascript.png"
-  },
-  {
-    "title": "TypeScript",
-    "imageSrc": "skills/typescript.png"
-  },
-  {
-    "title": "React",
-    "imageSrc": "skills/react.png"
-  },
-  {
-    "title": "Next.JS",
-    "imageSrc": "skills/Next.js.png"
-  },
-  {
-    "title": "MongoDB",
-    "imageSrc": "skills/mongodb.png"
-  },
-  {
-    "title": "Git",
-    "imageSrc": "skills/git.png"
-  },
-  {
-    "title": "Docker",
-    "imageSrc": "skills/docker.png"
-  }
+    {
+        "title": "React",
+        "imageSrc": "skills/react.png"
+    },
+    {
+        "title": "Next.JS",
+        "imageSrc": "skills/Next.js.png"
+    },
+    {
+        "title": "React-Native",
+        "imageSrc": "skills/reactnative.png"
+    },
+    {
+        "title": "JavaScript",
+        "imageSrc": "skills/javascript.png"
+    },
+    {
+        "title": "TypeScript",
+        "imageSrc": "skills/typescript.png"
+    },
+    {
+        "title": "HTML",
+        "imageSrc": "skills/html.png"
+    },
+    {
+        "title": "CSS",
+        "imageSrc": "skills/css.png"
+    },
+    {
+        "title": "Electron",
+        "imageSrc": "skills/electron.png"
+    },
+    {
+        "title": "MongoDB",
+        "imageSrc": "skills/mongodb.png"
+    },
+    {
+        "title": "Git",
+        "imageSrc": "skills/git.png"
+    },
+    {
+        "title": "Docker",
+        "imageSrc": "skills/docker.png"
+    }
 ]

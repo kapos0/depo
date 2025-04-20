@@ -1,12 +1,19 @@
 [
     {
-        "title": "Tiny Thoughts Blog Project",
-        "imageSrc": "/projects/tinythoughts/anasayfa.jpeg",
-        "description": "Next.js ile oluşturulmuş bir blog projesidir. Blog yazıları ve yorumlar için MongoDB kullanılmıştır.",
-        "skills": ["Next.js", "React", "MongoDB", "Tailwind"],
+        "title": "Curves of My Mind Blog Project",
+        "imageSrc": "/projects/curvesofmymind.png",
+        "description": "Curves of My Mind: Modern ve Şık Bir Blog Deneyimi. Yalnızca yöneticilerin içerik oluşturup yönetebildiği bu platformda, okuyucular markdown formatında hazırlanmış yazıları gece veya gündüz modunda keyifle okuyabilir.",
+        "skills": [
+            "Next.js",
+            "React",
+            "MongoDB",
+            "TailwindCSS",
+            "TypeScript",
+            "Shadcn"
+        ],
         "demo": {
-            "source": "/projects/tinythoughts/tinythoughts.pdf",
-            "download": "tinythoughtsSunum.pdf"
+            "source": "https://curseofmymind.vercel.app/",
+            "download": ""
         },
         "source": "https://github.com/kapos0/projeler"
     },
@@ -55,20 +62,13 @@
         "source": "https://github.com/kapos0/projeler"
     },
     {
-        "title": "Things App",
-        "imageSrc": "projects/thingsapp.jpeg",
-        "description": "Bu uygulama, kullanıcıların IMDB veritabanından istedikleri filmleri inceleyip favorilerine ekleyebileceği bir platformdur. Kullanıcı girişi, Auth.js v5 kütüphanesi ile sağlanmaktadır; bu sayede kullanıcılar e-posta ve şifre ile hesap oluşturabilir veya hızlı giriş seçenekleri olarak Google ya da GitHub ile giriş yapabilirler.",
-        "skills": [
-            "NextJS",
-            "React",
-            "TailwindCSS",
-            "MongoDB",
-            "AUTHJS5",
-            "TypeScript"
-        ],
+        "title": "Edu-Voyage",
+        "imageSrc": "projects/eduvoyage/IMG-20250420-WA0009.jpg",
+        "description": "Edu-Voyage ile Öğrenmenin Yeni Yolculuğu Başlıyor! İlgi duyduğun konularda kendi ücretsiz eğitimlerini kolayca oluşturabileceğin, öğrenme deneyimini yapay zeka ile kişiselleştirebileceğin modern bir platform. React Native, Google Gemini AI ve Firebase altyapısıyla geliştirilen Edu-Voyage, teknolojiyle eğitimi bir araya getiriyor.",
+        "skills": ["React-Native", "Expo", "Firebase", "TypeScript"],
         "demo": {
-            "source": "https://things-app-three.vercel.app/",
-            "download": ""
+            "source": "/projects/eduvoyage/EDUVOYAGE_SUNUM.pdf",
+            "download": "eduvoyageSunum.pdf"
         },
         "source": "https://github.com/kapos0/projeler"
     },
