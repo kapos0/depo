@@ -24,14 +24,6 @@ export const Hero = () => {
                     yönlü katkı sağlamama olanak tanıyor.
                 </p>
                 <a
-                    href="/MehmetEnesTurhanCV.pdf"
-                    className={styles.contactBtn}
-                    style={{ marginBlock: 12 }}
-                    download="MehmetEnesTurhanCV.pdf"
-                >
-                    CV' yi indir
-                </a>
-                <a
                     href="mailto:eden.turhann@gmail.com"
                     className={styles.contactBtn}
                 >
