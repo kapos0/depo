@@ -5,6 +5,7 @@ declare global {
     interface Window {
         electron: {
             logThings: (message: string) => void;
+            helloWorld: string;
         };
     }
 }
