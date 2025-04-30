@@ -1,6 +1,8 @@
 import { ActionButtonsRow } from "./components/Button/ActionButtonRows";
 import { Content, LayOut, Sidebar } from "./components/LayOut";
+import { MDEditor } from "./components/MDEditor";
 import { NoteList } from "./components/NoteList";
+import { FloatingNoteTitle } from "./components/UpperNoteTitle";
 
 export default function App() {
     return (
@@ -10,7 +12,8 @@ export default function App() {
                 <NoteList className="mt-3 space-y-1" />
             </Sidebar>
             <Content className="border-l bg-zinc-900/50 border-l-white/20 p-2">
-                Content
+                <FloatingNoteTitle className="pt-2" />
+                <MDEditor />
             </Content>
         </LayOut>
     );
