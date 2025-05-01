@@ -1,4 +1,5 @@
 import { useNotesStore } from "../store/notesStore";
+import { useCallback } from "react";
 
 export function useNotesList({ onSelect }: { onSelect?: () => void }) {
     const notes = useNotesStore((state) => state.notes);
@@ -7,11 +8,14 @@ export function useNotesList({ onSelect }: { onSelect?: () => void }) {
         (state) => state.setSelectedNoteIndex
     );
 
-    async function handleNoteSelect(index: number) {
-        setSelectedNoteIndex(index);
+    const handleNoteSelect = useCallback(
+        async (index: number) => {
+            setSelectedNoteIndex(index);
 
-        if (onSelect) onSelect();
-    }
+            if (onSelect) onSelect();
+        },
+        [onSelect, setSelectedNoteIndex]
+    );
 
     return {
         notes,

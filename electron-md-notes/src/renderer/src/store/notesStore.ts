@@ -32,8 +32,8 @@ export const useNotesStore = create<NotesState>((set, get) => ({
         const notes = get().notes;
 
         const newNote: NoteInfo = {
-            title: "",
-            content: "",
+            title: "New Note",
+            content: "empty note",
             lastEditTime: 1,
         };
 

@@ -4,7 +4,7 @@ import { NotePreview } from "./NotePreview";
 import { twMerge } from "tailwind-merge";
 import { useNotesList } from "../hooks/useNoteList";
 
-type NoteListProps = ComponentProps<"ul"> & {
+export type NoteListProps = ComponentProps<"ul"> & {
     onSelect?: () => void;
 };
 
