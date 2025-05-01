@@ -5,11 +5,15 @@ import {
     MDXEditor,
     quotePlugin,
 } from "@mdxeditor/editor";
+import { useMdEditor } from "../hooks/useMdEditor";
 
 export function MDEditor() {
+    const { selectedNote } = useMdEditor();
+    if (!selectedNote) return null;
     return (
         <MDXEditor
-            markdown={"Hello"}
+            key={selectedNote.title} // To force re-render when the note changes
+            markdown={selectedNote.content}
             plugins={[
                 headingsPlugin(),
                 listsPlugin(),
