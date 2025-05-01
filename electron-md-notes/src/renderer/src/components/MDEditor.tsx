@@ -12,8 +12,8 @@ export function MDEditor() {
     if (!selectedNote) return null;
     return (
         <MDXEditor
-            key={selectedNote.title} // To force re-render when the note changes
-            markdown={selectedNote.content}
+            key={selectedNote?.NoteId} // To force re-render when the note changes
+            markdown={selectedNote?.content}
             plugins={[
                 headingsPlugin(),
                 listsPlugin(),

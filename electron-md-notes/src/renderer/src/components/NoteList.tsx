@@ -9,7 +9,7 @@ export type NoteListProps = ComponentProps<"ul"> & {
 };
 
 export function NoteList({ onSelect, className, ...props }: NoteListProps) {
-    const { notes, selectedNoteIndex, handleNoteSelect } = useNotesList({
+    const { notes, selectedNoteId, handleNoteSelect } = useNotesList({
         onSelect,
     });
     if (notes.length === 0)
@@ -20,12 +20,14 @@ export function NoteList({ onSelect, className, ...props }: NoteListProps) {
         );
     return (
         <ul className={`border-t-1 p-2 ${className}`} {...props}>
-            {notes.map((note, index) => (
+            {notes.map((note) => (
                 <NotePreview
-                    key={note.title + note.lastEditTime}
+                    key={note.NoteId}
                     {...note}
-                    isActive={selectedNoteIndex === index}
-                    onClick={() => handleNoteSelect(index)}
+                    isActive={selectedNoteId === note.NoteId}
+                    onClick={() => {
+                        handleNoteSelect(note.NoteId);
+                    }}
                 />
             ))}
         </ul>

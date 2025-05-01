@@ -3,23 +3,21 @@ import { useCallback } from "react";
 
 export function useNotesList({ onSelect }: { onSelect?: () => void }) {
     const notes = useNotesStore((state) => state.notes);
-    const selectedNoteIndex = useNotesStore((state) => state.selectedNoteIndex);
-    const setSelectedNoteIndex = useNotesStore(
-        (state) => state.setSelectedNoteIndex
-    );
+    const selectedNoteId = useNotesStore((state) => state.selectedNoteId);
+    const setSelectedNoteId = useNotesStore((state) => state.setSelectedNoteId);
 
     const handleNoteSelect = useCallback(
-        async (index: number) => {
-            setSelectedNoteIndex(index);
+        async (noteId: string) => {
+            setSelectedNoteId(noteId);
 
             if (onSelect) onSelect();
         },
-        [onSelect, setSelectedNoteIndex]
+        [onSelect, setSelectedNoteId]
     );
 
     return {
         notes,
-        selectedNoteIndex,
+        selectedNoteId,
         handleNoteSelect,
     };
 }
