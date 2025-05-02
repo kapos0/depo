@@ -7,8 +7,8 @@ export function useNotesList({ onSelect }: { onSelect?: () => void }) {
     const setSelectedNoteId = useNotesStore((state) => state.setSelectedNoteId);
 
     const handleNoteSelect = useCallback(
-        async (noteId: string) => {
-            setSelectedNoteId(noteId);
+        async (NoteId: string) => {
+            setSelectedNoteId(NoteId);
 
             if (onSelect) onSelect();
         },
