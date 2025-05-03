@@ -6,16 +6,23 @@ type NotesState = {
     notes: NoteInfo[];
     selectedNoteId: string | null;
     selectedNote: NoteInfo | null;
-    setSelectedNoteId: (NoteId: string | null) => void;
+    setSelectedNote: (NoteId: string | null) => void;
     createEmptyNote: () => Promise<void>;
     deleteNote: () => Promise<void>;
+    saveNote: (newContent: string) => Promise<void>;
 };
 
 export const useNotesStore = create<NotesState>((set, get) => {
     async function initializeNotes() {
         const notes = await window.context.getNotes();
         if (!notes) return;
-        const sortedNotes = notes.sort(
+        const assignIdToNotes = notes.map((note: NoteInfo) => {
+            return {
+                ...note,
+                NoteId: nanoid(),
+            };
+        });
+        const sortedNotes = assignIdToNotes.sort(
             (a: NoteInfo, b: NoteInfo) => b.lastEditTime - a.lastEditTime
         );
         set({ notes: sortedNotes });
@@ -27,11 +34,9 @@ export const useNotesStore = create<NotesState>((set, get) => {
         notes: [],
         selectedNoteId: null,
         selectedNote: null,
-        setSelectedNoteId: (NoteId) => {
+        setSelectedNote: (NoteId) => {
             const notes = get().notes;
             const currentselectedNoteId = get().selectedNoteId;
-
-            // Prevent unnecessary updates if the index hasn't changed
             if (NoteId === currentselectedNoteId) return;
             const selectedNote =
                 NoteId !== null
@@ -44,9 +49,9 @@ export const useNotesStore = create<NotesState>((set, get) => {
 
             const newNote: NoteInfo = {
                 NoteId: nanoid(),
-                title: "New Note",
+                title: `New Note - ${nanoid(3)}`,
                 content: "empty note",
-                lastEditTime: 1,
+                lastEditTime: Date.now(),
             };
 
             set({
@@ -63,13 +68,36 @@ export const useNotesStore = create<NotesState>((set, get) => {
             const selectedNote = get().selectedNote;
 
             if (!selectedNote || !notes) return;
-
+            await window.context.deleteNote(selectedNote.title);
             set({
                 notes: notes.filter(
                     (note) => note.NoteId !== selectedNote.NoteId
                 ),
                 selectedNoteId: null,
                 selectedNote: null,
+            });
+        },
+        saveNote: async (newContent: string) => {
+            const notes = get().notes;
+            const selectedNote = get().selectedNote;
+            if (!selectedNote || !notes) return;
+
+            await window.context.writeNote(selectedNote.title, newContent);
+
+            set({
+                notes: notes.map((note) => {
+                    if (note.NoteId === selectedNote.NoteId) {
+                        return {
+                            ...note,
+                            lastEditTime: Date.now(),
+                        };
+                    }
+                    return note;
+                }),
+                selectedNote: {
+                    ...selectedNote,
+                    lastEditTime: Date.now(),
+                },
             });
         },
     };

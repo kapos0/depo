@@ -8,12 +8,16 @@ import {
 import { useMdEditor } from "../hooks/useMdEditor";
 
 export function MDEditor() {
-    const { selectedNote } = useMdEditor();
+    const { editorRef, handleAutoSaving, handleBlur, selectedNote } =
+        useMdEditor();
     if (!selectedNote) return null;
     return (
         <MDXEditor
             key={selectedNote?.NoteId} // To force re-render when the note changes
             markdown={selectedNote?.content}
+            ref={editorRef}
+            onChange={handleAutoSaving}
+            onBlur={handleBlur}
             plugins={[
                 headingsPlugin(),
                 listsPlugin(),

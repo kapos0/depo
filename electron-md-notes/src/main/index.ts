@@ -2,8 +2,8 @@ import { app, shell, BrowserWindow, ipcMain } from "electron";
 import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import icon from "../../resources/icon.png?asset";
-import { getNotes } from "@/lib";
-import { GetNotes } from "@/shared/types";
+import { deleteNote, getNotes, writeNote } from "@/lib";
+import { DeleteNote, GetNotes, WriteNote } from "@/shared/types";
 
 function createWindow(): void {
     const mainWindow = new BrowserWindow({
@@ -44,6 +44,12 @@ app.whenReady().then(() => {
 
     ipcMain.handle("getNotes", (_, ...args: Parameters<GetNotes>) =>
         getNotes(...args)
+    );
+    ipcMain.handle("writeNote", (_, ...args: Parameters<WriteNote>) =>
+        writeNote(...args)
+    );
+    ipcMain.handle("deleteNote", (_, ...args: Parameters<DeleteNote>) =>
+        deleteNote(...args)
     );
 
     createWindow();

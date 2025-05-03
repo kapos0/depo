@@ -32,8 +32,8 @@ export const NotePreview = ({
         >
             <h3 className="mb-1 font-bold truncate">{title}</h3>
             <span>
-                {content && content.length > 64
-                    ? `${content.slice(0, 64)}...`
+                {content && content.length > 20
+                    ? `${content.slice(0, 20)}...`
                     : content}
             </span>
             <span className="inline-block w-full mb-2 text-xs font-light text-left">
