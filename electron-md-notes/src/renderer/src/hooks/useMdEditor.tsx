@@ -8,11 +8,9 @@ export function useMdEditor() {
     const selectedNote = useNotesStore((state) => state.selectedNote);
     const saveNote = useNotesStore((state) => state.saveNote);
     const editorRef = useRef<MDXEditorMethods>(null);
-
     const handleAutoSaving = throttle(
         async (content: string) => {
             if (!selectedNote) return;
-
             console.info("Auto saving:", selectedNote.title);
 
             await saveNote(content);
@@ -25,7 +23,6 @@ export function useMdEditor() {
     );
 
     async function handleBlur() {
-        console.log(selectedNote);
         if (!selectedNote) return;
 
         handleAutoSaving.cancel();

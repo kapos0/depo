@@ -1,7 +1,6 @@
 import { app, shell, BrowserWindow, ipcMain } from "electron";
 import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
-import icon from "../../resources/icon.png?asset";
 import { deleteNote, getNotes, writeNote } from "@/lib";
 import { DeleteNote, GetNotes, WriteNote } from "@/shared/types";
 
@@ -13,7 +12,6 @@ function createWindow(): void {
         center: true,
         autoHideMenuBar: true,
         title: "MD Notes",
-        ...(process.platform === "linux" ? { icon } : {}),
         webPreferences: {
             preload: join(__dirname, "../preload/index.js"),
             sandbox: true,

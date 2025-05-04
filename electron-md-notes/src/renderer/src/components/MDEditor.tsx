@@ -13,9 +13,9 @@ export function MDEditor() {
     if (!selectedNote) return null;
     return (
         <MDXEditor
-            key={selectedNote?.NoteId} // To force re-render when the note changes
-            markdown={selectedNote?.content}
             ref={editorRef}
+            key={`${selectedNote?.NoteId}-${selectedNote?.lastEditTime}`} // Benzersiz bir key oluşturuldu
+            markdown={selectedNote?.content}
             onChange={handleAutoSaving}
             onBlur={handleBlur}
             plugins={[

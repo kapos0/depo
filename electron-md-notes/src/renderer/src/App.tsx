@@ -3,7 +3,7 @@ import { ActionButtonsRow } from "./components/Button/ActionButtonRows";
 import { Content, LayOut, Sidebar } from "./components/LayOut";
 import { MDEditor } from "./components/MDEditor";
 import { NoteList } from "./components/NoteList";
-import { FloatingNoteTitle } from "./components/UpperNoteTitle";
+import { UpperNoteTitle } from "./components/UpperNoteTitle";
 
 export default function App() {
     const contentContainerRef = useRef<HTMLDivElement>(null);
@@ -20,7 +20,7 @@ export default function App() {
                 className="border-l bg-zinc-900/50 border-l-white/20 p-2"
                 ref={contentContainerRef}
             >
-                <FloatingNoteTitle className="pt-2" />
+                <UpperNoteTitle className="pt-2" />
                 <MDEditor />
             </Content>
         </LayOut>

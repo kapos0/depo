@@ -1,9 +1,5 @@
 import { homedir } from "os";
-import {
-    appDirectoryName,
-    fileEncoding,
-    welcomeNoteFilename,
-} from "@/shared/constants";
+import { appDirectoryName, fileEncoding } from "@/shared/constants";
 import {
     ensureDir,
     readdir,
@@ -12,9 +8,8 @@ import {
     stat,
     writeFile,
 } from "fs-extra";
-import { isEmpty } from "lodash";
 import { NoteInfo } from "@/shared/models";
-import welcomeNoteFile from "../../../resources/welcomeNote.md";
+import { nanoid } from "nanoid";
 
 export function getRootDir() {
     return `${homedir()}/${appDirectoryName}`;
@@ -28,7 +23,7 @@ export async function getNoteFromFileName(filename: string): Promise<NoteInfo> {
         content: await readFile(`${rootDir}/${filename}`, {
             encoding: fileEncoding,
         }),
-        NoteId: "0",
+        NoteId: nanoid(),
         lastEditTime: fileStats.mtimeMs,
     };
 }
@@ -41,20 +36,6 @@ export async function getNotes() {
         withFileTypes: false,
     });
     const notes = notesFileNames.filter((filename) => filename.endsWith(".md"));
-    if (isEmpty(notes)) {
-        console.info("No notes found, creating a welcome note");
-
-        const content = await readFile(welcomeNoteFile, {
-            encoding: fileEncoding,
-        });
-
-        // create the welcome note
-        await writeFile(`${rootDir}/${welcomeNoteFilename}`, content, {
-            encoding: fileEncoding,
-        });
-
-        notes.push(welcomeNoteFilename);
-    }
     return Promise.all(notes.map(getNoteFromFileName));
 }
 
