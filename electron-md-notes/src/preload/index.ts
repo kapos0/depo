@@ -1,4 +1,4 @@
-import { CreateNote, DeleteNote, GetNotes, WriteNote } from "@/shared/types";
+import { DeleteNote, GetNotes, WriteNote } from "@/shared/types";
 import { contextBridge, ipcRenderer } from "electron";
 
 if (!process.contextIsolated)

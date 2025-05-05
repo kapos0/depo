@@ -3,33 +3,45 @@
 ```ts
 import create from "zustand";
 
-type Store = {
+type CounterStoreTypes = {
     count: number;
     increment: () => void;
+    incrementAsync: () => Promise<void>;
     decrement: () => void;
 };
 
-const useStore = create<Store>((set) => ({
+const useCounterStore = create<CounterStoreTypes>((set) => ({
     count: 0,
     increment: () => set((state) => ({ count: state.count + 1 })),
+    incrementAsync: async () => {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        set((state) => ({ count: state.count + 1 }));
+    },
     decrement: () => set((state) => ({ count: state.count - 1 })),
 }));
 
-export default useStore;
+export default useCounterStore;
 ```
 
 **Now that we’ve created a store, we can use it in our components like this:**
 
 ```ts
-import useStore from "./useStore";
+import useCounterStore from "./useStore";
+
+function logCount() {
+    const count = useCounterStore.getState().count;
+    /*Always be that specific it is more better because if you don't need the all store react will listen especially that thing otherwise react will listen the all store.*/
+    console.log(count);
+}
 
 function Counter() {
-    const { count, increment, decrement } = useStore();
+    const { count, increment, decrement, incrementAsync } = useCounterStore();
     return (
         <div>
             <button onClick={decrement}>-</button>
             <span>{count}</span>
             <button onClick={increment}>+</button>
+            <button onClick={incrementAsync}>IncrementAsync</button>
         </div>
     );
 }
