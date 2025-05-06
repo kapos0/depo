@@ -1,0 +1,9 @@
+node_modules/
+dist/
+build/
+out/
+dist-react/
+dist-electron/
+.DS_Store
+.vscode/
+*.log*
