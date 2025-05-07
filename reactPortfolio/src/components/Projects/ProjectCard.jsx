@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "./ProjectCard.module.css";
 
-export const ProjectCard = ({
+export function ProjectCard({
     project: { title, imageSrc, description, skills, demo, source },
-}) => {
+}) {
     return (
         <div className={styles.container}>
             <img
@@ -36,4 +36,4 @@ export const ProjectCard = ({
             </div>
         </div>
     );
-};
+}

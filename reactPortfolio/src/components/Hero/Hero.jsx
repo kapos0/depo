@@ -3,7 +3,7 @@ import React from "react";
 import styles from "./Hero.module.css";
 import { getImageUrl } from "../../utils";
 
-export const Hero = () => {
+export function Hero() {
     return (
         <section className={styles.container}>
             <div className={styles.content}>
@@ -13,15 +13,17 @@ export const Hero = () => {
                     teknoloji dünyasındaki yenilikleri yakından takip ediyorum.
                     Şu anda aktif olarak Next.js, React Native ve Electron
                     üzerine çalışıyorum; projelerimde ise Docker, TypeScript ve
-                    MongoDB gibi güncel teknolojileri kullanıyorum. Ekip
+                    MongoDB gibi güncel teknolojileri kullanıyorum. Ayrıca,
+                    freelancer olarak hem yazılım geliştirme hem de Figma ile
+                    modern ve responsive arayüz tasarımı yapıyorum. Ekip
                     çalışmasına büyük önem veriyor, birlikte üretmenin getirdiği
                     sinerjiden keyif alıyorum. Takım içinde etkili iletişim
                     kurarak katkı sağlamayı önemsiyor ve bu alandaki
-                    yetkinliğime güveniyorum. Ayrıca, bilgisayar teknikeri
-                    olarak sahip olduğum deneyim sayesinde bilgisayar
-                    donanımları konusunda güçlü bir bilgiye sahibim. Hem yazılım
-                    hem donanım tarafındaki bu bilgi birikimi, projelere çok
-                    yönlü katkı sağlamama olanak tanıyor.
+                    yetkinliğime güveniyorum. Bilgisayar teknikeri olarak sahip
+                    olduğum deneyim sayesinde bilgisayar donanımları konusunda
+                    güçlü bir bilgiye sahibim. Hem yazılım hem donanım
+                    tarafındaki bu bilgi birikimi, projelere çok yönlü katkı
+                    sağlamama olanak tanıyor.
                 </p>
                 <a
                     href="mailto:eden.turhann@gmail.com"
@@ -39,4 +41,4 @@ export const Hero = () => {
             <div className={styles.bottomBlur} />
         </section>
     );
-};
+}
