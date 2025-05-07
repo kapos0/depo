@@ -31,7 +31,7 @@
     {
         "title": "Moria windows form mesajlaşma uygulaması",
         "imageSrc": "projects/moria/moriaAnasayfa.png",
-        "description": "Moria, C# ve SQL kullanılarak Windows masaüstü ortamı için geliştirilmiş bir mesajlaşma uygulamasıdır.",
+        "description": "Moria, C# ve SQL kullanılarak Windows masaüstü ortamı için geliştirilmiş bir mesajlaşma uygulamasıdır. Kullanıcılar, arkadaş ekleyebilir, konum, fotoğraf, video, pdf vb. içerikleri gönderebilirler. Mesajlar uçtan uca şifrelenerek güvenli bir iletişim ortamı sağlanır.",
         "skills": ["C#", "SQL"],
         "demo": {
             "source": "/projects/moria/Moria.pdf",
@@ -42,7 +42,7 @@
     {
         "title": "Meram Belediyesi Video Portalı",
         "imageSrc": "projects/videoportal/meramAnasayfa.jpeg",
-        "description": "Üretken akademi ve Mega yazılım akademisi tarafından verilen react eğitimi için final projesi, Meram Belediyesi Video Portalı projesi, Meram Belediyesi'nin youtube' da ki video içeriklerini kullanıcılarına sunan bir web uygulamasıdır.",
+        "description": "Üretken Akademi ve Mega Yazılım Akademisi tarafından sunulan React eğitimi kapsamında gerçekleştirilen final projesi, 'Meram Belediyesi Video Portalı'dır. Bu web uygulaması, Meram Belediyesi ile Mevlana, Konya Büyükşehir Belediyesi, Konya Spor, Türkiye, Ebru Sanatı, Konya Mutfağı gibi içerikleri kullanıcılarına sunmayı hedeflemektedir. Uygulama, YouTube'daki video içeriklerini entegre ederek, kullanıcıların bu değerli kültürel ve sanatsal içeriklere kolayca erişimini sağlamaktadır.",
         "skills": ["React", "Bootstrap", "RapidAPİ"],
         "demo": {
             "source": "/projects/videoportal/uretkenakademifinal.pdf",
@@ -53,7 +53,7 @@
     {
         "title": "Ticketin App (Geri bildirim/destek uygulaması)",
         "imageSrc": "projects/ticketsite.jpeg",
-        "description": "Ticket yönetimi için geliştirilen bu uygulama, kullanıcıların hesap oluşturup şikayetlerini kategorize etmelerine, geri bildirim almalarına ve güncel sorunların takibini yapmalarına olanak tanır. Sorunlar, öncelik derecelerine ve sorumlu kişilere göre sınıflandırılabilir, böylece gerektiğinde hızlı bir şekilde e-posta yoluyla bilgilendirme yapılabilir.",
+        "description": "Ticket yönetimi için geliştirilen bu uygulama, kullanıcıların hesap oluşturup şikayetlerini kategorize etmelerine, geri bildirim almalarına ve güncel sorunların takibini yapmalarına olanak tanır. Sorunlar, öncelik derecelerine ve sorumlu kişilere göre sınıflandırılabilir, böylece gerektiğinde hızlı bir şekilde e-posta yoluyla bilgilendirme yapılabilir.Bu uygulama sayesinde BT departmanları, kullanıcıların sorunlarını daha etkili bir şekilde yönetebilir ve çözüm sürecini hızlandırabilir.",
         "skills": ["NextJS", "React", "TailwindCSS", "MongoDB, AUTHJS5"],
         "demo": {
             "source": "https://ticketingsite.vercel.app/",
