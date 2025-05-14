@@ -5,7 +5,7 @@ import { clientDB } from "./dbClient";
 import { sendEmail } from "./sendEmail";
 
 export const auth = betterAuth({
-    database: mongodbAdapter((await clientDB()).db()),
+    database: mongodbAdapter(await clientDB()),
     emailAndPassword: {
         enabled: true,
         requireEmailVerification: true,

@@ -3,28 +3,28 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { GoogleIcon } from "../ui/google-icon";
+import { GithubIcon } from "../ui/github-icon";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "react-toastify";
 
-type GoogleAuthButtonProps = {
+type GithubAuthButtonProps = {
     action: "sign-in" | "sign-up";
     redirectTo?: string;
     buttonText?: string;
 };
 
-export function GoogleAuthButton({
+export function GithubAuthButton({
     action = "sign-in",
     redirectTo = "/dashboard",
-    buttonText = "Continue with Google",
-}: GoogleAuthButtonProps) {
+    buttonText = "Continue with Github",
+}: GithubAuthButtonProps) {
     const [isLoading, setIsLoading] = useState(false);
 
-    async function handleGoogleAuth() {
+    async function handleGithubAuth() {
         setIsLoading(true);
         try {
             await authClient.signIn.social({
-                provider: "google",
+                provider: "github",
                 callbackURL: redirectTo,
             });
             toast(
@@ -45,14 +45,14 @@ export function GoogleAuthButton({
         <Button
             variant="outline"
             className="w-full flex items-center justify-center gap-2"
-            onClick={handleGoogleAuth}
+            onClick={handleGithubAuth}
             disabled={isLoading}
         >
             {isLoading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
                 <>
-                    <GoogleIcon className="w-4 h-4" />
+                    <GithubIcon className="w-4 h-4" />
                     <span>{buttonText}</span>
                 </>
             )}

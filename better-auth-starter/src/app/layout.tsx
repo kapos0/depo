@@ -1,4 +1,5 @@
 import "@/assets/globals.css";
+import { ToastContainer } from "react-toastify";
 
 export default function RootLayout({
     children,
@@ -20,7 +21,9 @@ export default function RootLayout({
                 <link rel="icon" href="/favicon.ico" />
                 <title>Better Auth Demo</title>
             </head>
-            <body>{children}</body>
+            <body>
+                {children} <ToastContainer />
+            </body>
         </html>
     );
 }

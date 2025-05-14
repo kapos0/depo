@@ -1,5 +1,6 @@
-import { CheckCircle2, Link } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function EmailVerifiedPage() {
     return (

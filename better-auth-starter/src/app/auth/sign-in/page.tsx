@@ -1,7 +1,10 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { authClient } from "@/lib/auth-client";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { Mail, Lock, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,6 +18,7 @@ import {
 import { Form } from "@/components/ui/form";
 import { CheckboxField, InputField } from "@/components/auth/FormFields";
 import { GoogleAuthButton } from "@/components/auth/GoogleBtn";
+import { GithubAuthButton } from "@/components/auth/GithubBtn";
 
 type SignInFormValues = {
     email: string;
@@ -24,6 +28,7 @@ type SignInFormValues = {
 
 export default function SignInPage() {
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
     const form = useForm<SignInFormValues>({
         defaultValues: {
             email: "",
@@ -32,8 +37,32 @@ export default function SignInPage() {
         },
     });
 
-    async function handleSubmit(data: SignInFormValues) {
-        console.log("SignIn data", data);
+    async function onSubmit(data: SignInFormValues) {
+        if (!data.email || !data.password) {
+            toast("Email and password are required");
+            return;
+        }
+        await authClient.signIn.email(
+            {
+                email: data.email,
+                password: data.password,
+                rememberMe: data.rememberMe,
+            },
+            {
+                onRequest: () => {
+                    setLoading(true);
+                },
+                onSuccess: () => {
+                    form.reset();
+                    router.push("/dashboard");
+                },
+                onError: (ctx) => {
+                    console.log("error", ctx);
+                    toast(ctx.error.message ?? "something went wrong");
+                },
+            }
+        );
+        setLoading(false);
     }
 
     return (
@@ -64,7 +93,7 @@ export default function SignInPage() {
                     <CardContent>
                         <Form {...form}>
                             <form
-                                onSubmit={form.handleSubmit(handleSubmit)}
+                                onSubmit={form.handleSubmit(onSubmit)}
                                 className="space-y-4"
                             >
                                 <InputField
@@ -137,10 +166,15 @@ export default function SignInPage() {
                             </div>
                         </div>
 
-                        <div className="flex gap-4 ">
+                        <div className="flex flex-col gap-2 ">
                             <GoogleAuthButton
                                 action="sign-in"
-                                buttonText="Sign up with Google"
+                                buttonText="Sign In with Google"
+                                redirectTo="/dashboard"
+                            />
+                            <GithubAuthButton
+                                action="sign-in"
+                                buttonText="Sign In with Github"
                                 redirectTo="/dashboard"
                             />
                         </div>

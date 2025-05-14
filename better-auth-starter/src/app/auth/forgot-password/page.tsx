@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import { InputField } from "@/components/auth/FormFields";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "react-toastify";
 
 type ForgotPasswordFormValues = {
     email: string;
@@ -28,7 +30,19 @@ export default function ForgotPasswordPage() {
     const [loading, setLoading] = useState(false);
 
     async function handleSubmit(data: ForgotPasswordFormValues) {
-        console.log("this is forget password data", data);
+        if (!data.email) {
+            toast("Email is required");
+            return;
+        }
+        setLoading(true);
+        const { error } = await authClient.forgetPassword({
+            email: data.email,
+            redirectTo: "/auth/reset-password",
+        });
+        if (error) toast(error.message ?? "something went wrong");
+        else toast("Success ! Check your email for the reset link");
+
+        setLoading(false);
     }
 
     return (

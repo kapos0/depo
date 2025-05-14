@@ -1,24 +1,21 @@
-import mongoose from "mongoose";
+import { MongoClient } from "mongodb";
 
-let isConnected = false;
+let client: MongoClient | null = null;
 
 export async function clientDB() {
-    if (process.env.MONGODB_URI === undefined)
-        throw new Error("MONGODB_URI is not defined");
+    if (!process.env.MONGODB_URI || !process.env.MONGODB_DB_NAME) {
+        throw new Error(
+            "MONGODB_URI or MONGODB_DB_NAME not defined is not defined"
+        );
+    }
 
-    mongoose.set("strictQuery", true);
-
-    if (isConnected) return mongoose.connection.getClient();
+    if (client) return client.db(process.env.MONGODB_DB_NAME);
 
     try {
-        const connection = await mongoose.connect(process.env.MONGODB_URI!, {
-            dbName: "better-auth-starter",
-        });
-
-        isConnected = true;
+        client = new MongoClient(process.env.MONGODB_URI);
+        await client.connect();
         console.log("MongoDB connected");
-
-        return connection.connection.getClient();
+        return client.db(process.env.MONGODB_DB_NAME);
     } catch (error) {
         console.error("Failed to connect to MongoDB:", error);
         throw new Error("Failed to connect to MongoDB");

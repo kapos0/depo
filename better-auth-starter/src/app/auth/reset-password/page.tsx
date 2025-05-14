@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Lock, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import { InputField } from "@/components/auth/FormFields";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "react-toastify";
 
 type ResetPasswordFormValues = {
     password: string;
@@ -32,9 +34,27 @@ export default function ResetPasswordPage() {
     });
 
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     async function handleSubmit(data: ResetPasswordFormValues) {
-        console.log("reset password data", data);
+        if (data.password !== data.confirmPassword) {
+            toast("Passwords do not match");
+            return;
+        }
+        setLoading(true);
+        const { error } = await authClient.resetPassword({
+            newPassword: data.password,
+            token: token as string,
+        });
+        if (error) {
+            toast(error.message ?? "something went wrong");
+        } else {
+            toast(
+                "Your password has been reset successfully. sign-in to continue"
+            );
+            router.push("/auth/sign-in");
+        }
+        setLoading(false);
     }
 
     return (
