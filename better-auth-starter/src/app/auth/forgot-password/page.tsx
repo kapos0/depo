@@ -1,8 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
 import { useForm } from "react-hook-form";
-import { Mail, ArrowRight, Loader2 } from "lucide-react";
+import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -14,8 +15,7 @@ import {
 } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import { InputField } from "@/components/auth/FormFields";
-import { authClient } from "@/lib/auth-client";
-import { toast } from "react-toastify";
+import { Mail, ArrowRight, Loader2 } from "lucide-react";
 
 type ForgotPasswordFormValues = {
     email: string;

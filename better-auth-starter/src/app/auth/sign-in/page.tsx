@@ -1,11 +1,10 @@
 "use client";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
 import { authClient } from "@/lib/auth-client";
-import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { Mail, Lock, ArrowRight, Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -19,6 +18,7 @@ import { Form } from "@/components/ui/form";
 import { CheckboxField, InputField } from "@/components/auth/FormFields";
 import { GoogleAuthButton } from "@/components/auth/GoogleBtn";
 import { GithubAuthButton } from "@/components/auth/GithubBtn";
+import { Mail, Lock, ArrowRight, Loader2 } from "lucide-react";
 
 type SignInFormValues = {
     email: string;

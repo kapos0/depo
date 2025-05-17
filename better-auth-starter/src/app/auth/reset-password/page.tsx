@@ -2,8 +2,9 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
-import { Lock, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -14,8 +15,7 @@ import {
 } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import { InputField } from "@/components/auth/FormFields";
-import { authClient } from "@/lib/auth-client";
-import { toast } from "react-toastify";
+import { Lock, ArrowRight, Loader2 } from "lucide-react";
 
 type ResetPasswordFormValues = {
     password: string;
