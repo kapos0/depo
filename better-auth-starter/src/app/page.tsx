@@ -1,3 +1,4 @@
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import Link from "next/link";
 
 export default function Home() {
@@ -8,6 +9,7 @@ export default function Home() {
             <Link href="/dashboard">Dashboard</Link>
             <Link href="/auth/sign-in">Sign In</Link>
             <Link href="/auth/sign-up">Sign Up</Link>
+            <ThemeToggle />
         </div>
     );
 }

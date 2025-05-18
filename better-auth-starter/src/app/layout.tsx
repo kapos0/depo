@@ -1,4 +1,5 @@
 import "@/assets/globals.css";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 import { ToastContainer } from "react-toastify";
 
 export default function RootLayout({
@@ -7,7 +8,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <head>
                 <meta charSet="UTF-8" />
                 <meta
@@ -22,7 +23,15 @@ export default function RootLayout({
                 <title>Better Auth Demo</title>
             </head>
             <body>
-                {children} <ToastContainer />
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    {children}
+                </ThemeProvider>
+                <ToastContainer />
             </body>
         </html>
     );
