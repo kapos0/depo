@@ -1,9 +1,4 @@
-# todo
-
-first run
-`pnpm dlx maildev --web 1080 --smtp 1025`
-
-## env file example
+# env file example
 
 ```env
 BETTER_AUTH_SECRET=
@@ -22,3 +17,6 @@ SMTP_SECURE=
 SMTP_USER=
 SMTP_PASS=
 ```
+
+first run
+`pnpm dlx maildev --web 1080 --smtp 1025`
