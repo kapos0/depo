@@ -33,6 +33,7 @@ export function GithubAuthButton({
                     : "Signed up successfully"
             );
         } catch (error) {
+            console.error("Error during GitHub authentication:", error);
             toast(
                 action === "sign-in" ? "Error logging in" : "Error signing up"
             );

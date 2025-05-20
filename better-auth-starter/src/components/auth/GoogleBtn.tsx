@@ -33,6 +33,7 @@ export function GoogleAuthButton({
                     : "Signed up successfully"
             );
         } catch (error) {
+            console.error("Error during Google authentication:", error);
             toast(
                 action === "sign-in" ? "Error logging in" : "Error signing up"
             );

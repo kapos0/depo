@@ -18,6 +18,7 @@ export default function DashBoardPage() {
             toast("You have been signed out successfully.");
             router.push("/auth/sign-in");
         } catch (error) {
+            console.error("Error signing out:", error);
             toast("there is a problem signing out");
         } finally {
             setLoading(false);
