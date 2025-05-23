@@ -12,6 +12,34 @@ export function Comments() {
                 <ul className={styles.commentsItems}>
                     <li className={styles.commentsItem}>
                         <div className={styles.commentsItemText}>
+                            <h3 className={styles.commentUser}>oleander87</h3>
+                            <span className={styles.commentUserRating}>
+                                ⭐ 5.0
+                            </span>
+                            <p>
+                                Enes Bey hem çok profesyonel hem de UX/UI
+                                konusunda oldukça deneyimli. Öncelikle
+                                ihtiyaçlarımı benimle netleştirdi ve benim
+                                taleplerimi de dikkate alarak, çok kısa sürede
+                                harika bir çalışma yaptı. Başka projelerde de
+                                görüşeceğimize eminim. Aşırı tavsiyedir!
+                            </p>
+                        </div>
+                    </li>
+                    <li className={styles.commentsItem}>
+                        <div className={styles.commentsItemText}>
+                            <h3 className={styles.commentUser}>mertcan7896</h3>
+                            <span className={styles.commentUserRating}>
+                                ⭐ 5.0
+                            </span>
+                            <p>
+                                İşinin ehli ve mütevazi biri kendisiyle iş
+                                yapmak iyiydi
+                            </p>
+                        </div>
+                    </li>
+                    <li className={styles.commentsItem}>
+                        <div className={styles.commentsItemText}>
                             <h3 className={styles.commentUser}>martin1</h3>
                             <span className={styles.commentUserRating}>
                                 ⭐ 5.0
