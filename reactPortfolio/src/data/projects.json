@@ -2,6 +2,7 @@
     {
         "title": "Curves of My Mind Blog Project",
         "imageSrc": "/projects/curvesofmymind.png",
+        "IsFeatured": "false",
         "description": "Curves of My Mind: Modern ve Şık Bir Blog Deneyimi. Yalnızca yöneticilerin içerik oluşturup yönetebildiği bu platformda, okuyucular markdown formatında hazırlanmış yazıları gece veya gündüz modunda keyifle okuyabilir.",
         "skills": [
             "Next.js",
@@ -20,6 +21,7 @@
     {
         "title": "Lezizo yemek tarifleri uygulaması",
         "imageSrc": "projects/lezizo/anasayfa.png",
+        "IsFeatured": "true",
         "description": "Lezizo, yemek tariflerini isimleri ve içeriklerinde bulunan malzemelere göre arayabileceğiniz, ayrıca kişisel menüler oluşturmanıza olanak tanıyan bir uygulamadır.",
         "skills": ["FastApi", "React", "Python", "MySql"],
         "demo": {
@@ -31,6 +33,7 @@
     {
         "title": "Moria windows form mesajlaşma uygulaması",
         "imageSrc": "projects/moria/moriaAnasayfa.png",
+        "IsFeatured": "true",
         "description": "Moria, C# ve SQL kullanılarak Windows masaüstü ortamı için geliştirilmiş bir mesajlaşma uygulamasıdır. Kullanıcılar, arkadaş ekleyebilir, konum, fotoğraf, video, pdf vb. içerikleri gönderebilirler. Mesajlar uçtan uca şifrelenerek güvenli bir iletişim ortamı sağlanır.",
         "skills": ["C#", "SQL"],
         "demo": {
@@ -41,6 +44,7 @@
     },
     {
         "title": "Meram Belediyesi Video Portalı",
+        "IsFeatured": "true",
         "imageSrc": "projects/videoportal/meramAnasayfa.jpeg",
         "description": "Üretken Akademi ve Mega Yazılım Akademisi tarafından sunulan React eğitimi kapsamında gerçekleştirilen final projesi, 'Meram Belediyesi Video Portalı'dır. Bu web uygulaması, Meram Belediyesi ile Mevlana, Konya Büyükşehir Belediyesi, Konya Spor, Türkiye, Ebru Sanatı, Konya Mutfağı gibi içerikleri kullanıcılarına sunmayı hedeflemektedir. Uygulama, YouTube'daki video içeriklerini entegre ederek, kullanıcıların bu değerli kültürel ve sanatsal içeriklere kolayca erişimini sağlamaktadır.",
         "skills": ["React", "Bootstrap", "RapidAPİ"],
@@ -51,18 +55,8 @@
         "source": "https://github.com/kapos0/projeler"
     },
     {
-        "title": "Ticketin App (Geri bildirim/destek uygulaması)",
-        "imageSrc": "projects/ticketsite.jpeg",
-        "description": "Ticket yönetimi için geliştirilen bu uygulama, kullanıcıların hesap oluşturup şikayetlerini kategorize etmelerine, geri bildirim almalarına ve güncel sorunların takibini yapmalarına olanak tanır. Sorunlar, öncelik derecelerine ve sorumlu kişilere göre sınıflandırılabilir, böylece gerektiğinde hızlı bir şekilde e-posta yoluyla bilgilendirme yapılabilir.Bu uygulama sayesinde BT departmanları, kullanıcıların sorunlarını daha etkili bir şekilde yönetebilir ve çözüm sürecini hızlandırabilir.",
-        "skills": ["NextJS", "React", "TailwindCSS", "MongoDB, AUTHJS5"],
-        "demo": {
-            "source": "https://ticketingsite.vercel.app/",
-            "download": ""
-        },
-        "source": "https://github.com/kapos0/projeler"
-    },
-    {
         "title": "Edu-Voyage",
+        "IsFeatured": "false",
         "imageSrc": "projects/eduvoyage/IMG-20250420-WA0009.jpg",
         "description": "Edu-Voyage ile Öğrenmenin Yeni Yolculuğu Başlıyor! İlgi duyduğun konularda kendi ücretsiz eğitimlerini kolayca oluşturabileceğin, öğrenme deneyimini yapay zeka ile kişiselleştirebileceğin modern bir platform. React Native, Google Gemini AI ve Firebase altyapısıyla geliştirilen Edu-Voyage, teknolojiyle eğitimi bir araya getiriyor.",
         "skills": ["React-Native", "Expo", "Firebase", "TypeScript"],
@@ -75,6 +69,7 @@
     {
         "title": "MindFlicks",
         "imageSrc": "projects/mindflicks.png",
+        "IsFeatured": "false",
         "description": "Bu, temel bir Twitter benzeri uygulamadır. Diğer kullanıcıları takip edebilir, takip edilebilirsiniz. Gönderi paylaşabilir, gönderilere yorum yapabilir ve beğenebilirsiniz. Beyaz ve siyah temalar arasında geçiş yapabilirsiniz. Başka kullanıcıların profillerini ve beğendikleri gönderileri görebilirsiniz. Kendi profilinizi yönetebilir ve profil sayfanızdan etkileşimde bulunduğunuz içerikleri görüntüleyebilirsiniz. Bildirim merkezi sayesinde gönderilerinize ve profilinizdeki etkileşimlere dair bildirim alabilirsiniz.",
         "skills": [
             "NextJS",
@@ -95,6 +90,7 @@
         "title": "MernStore",
         "imageSrc": "projects/mernstore.jpeg",
         "description": "Bu, MERN Stack ile geliştirilmiş basit bir e-ticaret uygulamasıdır. Uygulama sayesinde ürün ekleyebilir ve görüntüleyebilirsiniz. DaisyUI kullanarak 9 farklı temadan birini seçebilirsiniz. Eklenen ürünleri düzenleyebilir veya silebilirsiniz. Backend kısmı Node.js ve Express ile yazılmıştır, frontend ise TypeScript ve React kullanılarak geliştirilmiştir. Veritabanı olarak MongoDB kullanılmaktadır.",
+        "IsFeatured": "false",
         "skills": [
             "NodeJS",
             "Express",
@@ -113,6 +109,7 @@
     {
         "title": "AoraView ilkel bir sosyal medya uygulaması",
         "imageSrc": "projects/aoraview/home.png",
+        "IsFeatured": "false",
         "description": "AoraView, kullanıcıların hesap oluşturup fotoğraf ve video paylaşabileceği, beğenebileceği bir sosyal medya uygulamasıdır. Uygulamanın backend kısmında Appwrite servisi kullanılmaktadır.",
         "skills": ["React-Native", "TypeScript", "TailwindCSS", "AppWrite"],
         "demo": {
@@ -120,5 +117,17 @@
             "download": "aoraViewSunum.pdf"
         },
         "source": "https://github.com/kapos0/projeler"
+    },
+    {
+        "title": "Ticket Management App",
+        "imageSrc": "projects/ticketmanagement.png",
+        "IsFeatured": "true",
+        "description": "Ticket Management uygulaması, e-posta doğrulaması ve kullanıcı rolleri içeren bir ticketing sistemidir. Kullanıcılar, kendi ticketlarını oluşturabilirken, yöneticiler (manager) bu ticketları teknisyenlere (technician) atar. Kullanıcılar yalnızca kendi oluşturdukları ticketları görebilirken, teknisyenlerin kontrol panelinde (dashboard) kendilerine atanmış ticketlar görüntülenir. Yöneticiler, kullanıcı rollerini değiştirebilir ve kullanıcıları silebilir. Ayrıca, bir yönetici bir ticketı bir teknisyene atadığında, o teknisyene bildirim gönderilir.",
+        "skills": ["Next.js", "TypeScript", "TailwindCSS", "MongoDB", "Better-Auth"],
+        "demo": {
+            "source": "https://ticket-management-gamma.vercel.app",
+            "download": ""
+        },
+        "source": "https://github.com/kapos0/ticketingapp"
     }
 ]
