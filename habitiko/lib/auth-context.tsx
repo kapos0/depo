@@ -26,47 +26,48 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     async function getUser() {
         try {
             const session = await account.get();
+            if (!session) {
+                setUser(null);
+                return;
+            }
             setUser(session);
-        } catch (error) {
-            console.error("Error fetching user:", error);
+        } catch {
             setUser(null);
         } finally {
             setIsLoadingUser(false);
         }
-    };
+    }
 
-    async function signUp  (email: string, password: string)  {
+    async function signUp(email: string, password: string) {
         try {
             await account.create(ID.unique(), email, password);
             await signIn(email, password);
             return null;
         } catch (error) {
-            if (error instanceof Error) 
-                return error.message;
+            if (error instanceof Error) return error.message;
             return "An error occured during signup";
         }
-    };
-    async function signIn  (email: string, password: string)  {
+    }
+    async function signIn(email: string, password: string) {
         try {
             await account.createEmailPasswordSession(email, password);
             const session = await account.get();
             setUser(session);
             return null;
         } catch (error) {
-            if (error instanceof Error) 
-                return error.message;
+            if (error instanceof Error) return error.message;
             return "An error occured during sign in";
         }
-    };
+    }
 
     async function signOut() {
         try {
             await account.deleteSession("current");
             setUser(null);
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
-    };
+    }
 
     return (
         <AuthContext.Provider
@@ -79,7 +80,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 export function useAuth() {
     const context = useContext(AuthContext);
-    if (context === undefined) 
+    if (context === undefined)
         throw new Error("useAuth must be inside of the AuthProvider");
     return context;
 }

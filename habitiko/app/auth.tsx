@@ -1,8 +1,55 @@
+import { useAuth } from "@/lib/auth-context";
+import { useRouter } from "expo-router";
+import { useState } from "react";
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
 import { Button, Text, TextInput, useTheme } from "react-native-paper";
 
 export default function AuthScreen() {
     const theme = useTheme();
+    const router = useRouter();
+    const [isSigningUp, setIsSigningUp] = useState<boolean>(false);
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [error, setError] = useState<string | null>(null);
+
+    const { signIn, signUp } = useAuth();
+
+    async function handleAuth() {
+        if (!email || !password) {
+            setError("Email and password are required.");
+            return;
+        }
+        if (!/\S+@\S+\.\S+/.test(email)) {
+            setError("Please enter a valid email address.");
+            return;
+        }
+        if (password.length < 6) {
+            setError("Password must be at least 6 characters long.");
+            return;
+        }
+        setError(null);
+        try {
+            if (isSigningUp) {
+                const error = await signUp(email, password);
+                if (error) {
+                    setError(error);
+                    return;
+                }
+            } else {
+                const error = await signIn(email, password);
+                if (error) {
+                    setError(error);
+                    return;
+                }
+
+                router.replace("/");
+            }
+        } catch (err) {
+            setError("An error occurred. Please try again.");
+            console.error(err);
+        }
+    }
+
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -10,7 +57,7 @@ export default function AuthScreen() {
         >
             <View style={styles.content}>
                 <Text style={styles.title} variant="headlineMedium">
-                    {false ? "Create Account" : "Welcome Back"}
+                    {isSigningUp ? "Create Account" : "Welcome Back"}
                 </Text>
 
                 <TextInput
@@ -20,7 +67,7 @@ export default function AuthScreen() {
                     placeholder="example@gmail.com"
                     mode="outlined"
                     style={styles.input}
-                    onChangeText={() => {}}
+                    onChangeText={setEmail}
                 />
 
                 <TextInput
@@ -29,27 +76,31 @@ export default function AuthScreen() {
                     mode="outlined"
                     secureTextEntry
                     style={styles.input}
-                    onChangeText={() => {}}
+                    onChangeText={setPassword}
                 />
 
-                {false && (
-                    <Text style={{ color: theme.colors.error }}>error</Text>
+                {error && (
+                    <Text
+                        style={{ color: theme.colors.error, paddingLeft: 12 }}
+                    >
+                        {error}
+                    </Text>
                 )}
 
                 <Button
                     mode="contained"
                     style={styles.button}
-                    onPress={() => {}}
+                    onPress={handleAuth}
                 >
-                    {false ? "Sign Up" : "Sign In"}
+                    {isSigningUp ? "Sign Up" : "Sign In"}
                 </Button>
 
                 <Button
                     mode="text"
-                    onPress={() => {}}
+                    onPress={() => setIsSigningUp((prev) => !prev)}
                     style={styles.switchModeButton}
                 >
-                    {false
+                    {isSigningUp
                         ? "Already have an account? Sign In"
                         : "Don't have an account? Sign Up"}
                 </Button>
