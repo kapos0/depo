@@ -45,7 +45,10 @@ export default function AddHabitScreen() {
                     created_at: new Date().toISOString(),
                 }
             );
-
+            setTitle("");
+            setDescription("");
+            setFrequency("daily");
+            setError("");
             router.back();
         } catch (error) {
             if (error instanceof Error) {

@@ -31,4 +31,12 @@ frequency required string
 
 created_at required string
 
+#### **Completed Habits collection**
+
+habit_id required string
+
+user_id required string
+
+completed_at required string
+
 ---
