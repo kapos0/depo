@@ -9,10 +9,10 @@ import { useAuth } from "@/lib/auth-context";
 import { Habit } from "@/lib/databaseTypes";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useRouter } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Query } from "react-native-appwrite";
-//import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
+import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 import { Button, Surface, Text } from "react-native-paper";
 
 export default function Index() {
@@ -21,6 +21,9 @@ export default function Index() {
     if (!user && !isLoadingUser) router.push("/auth");
 
     const [habits, setHabits] = useState<Habit[]>([]);
+    const swipeableRefs = useRef<{
+        [key: string]: React.ComponentRef<typeof Swipeable> | null;
+    }>({});
 
     const fetchHabits = useCallback(async () => {
         try {
@@ -47,21 +50,40 @@ export default function Index() {
                 if (
                     response.events.includes(
                         "databases.*.collections.*.documents.*.create"
-                    ) ||
+                    )
+                ) {
+                    fetchHabits();
+                } else if (
                     response.events.includes(
                         "databases.*.collections.*.documents.*.update"
-                    ) ||
+                    )
+                ) {
+                    fetchHabits();
+                } else if (
                     response.events.includes(
                         "databases.*.collections.*.documents.*.delete"
                     )
-                )
-                    fetchHabits(); // for the sake of simplicity, we are fetching all habits again
+                ) {
+                    fetchHabits();
+                }
             }
         );
         return () => {
             habitSubscription();
         };
     }, [user, fetchHabits]);
+
+    async function handleDeleteHabit(id: string) {
+        try {
+            await databases.deleteDocument(
+                DATABASE_ID,
+                HABITS_COLLECTION_ID,
+                id
+            );
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -74,41 +96,64 @@ export default function Index() {
             <ScrollView showsVerticalScrollIndicator={false}>
                 {habits.length > 0 ? (
                     habits.map((habit, key) => (
-                        <Surface
+                        <Swipeable
                             key={key}
-                            style={[styles.card, false && styles.cardCompleted]}
-                            elevation={0}
+                            ref={(ref) => {
+                                swipeableRefs.current[habit.$id] = ref;
+                            }}
+                            overshootLeft={false}
+                            overshootRight={false}
+                            onSwipeableOpen={(direction) => {
+                                if (direction === "left") {
+                                    handleDeleteHabit(habit.$id);
+                                } else if (direction === "right") {
+                                    //handleCompleteHabit(habit.$id);
+                                    console.log(
+                                        "Right swipe action not implemented"
+                                    );
+                                }
+
+                                swipeableRefs.current[habit.$id]?.close();
+                            }}
                         >
-                            <View style={styles.cardContent} key={key}>
-                                <Text style={styles.cardTitle}>
-                                    {" "}
-                                    {habit.title}
-                                </Text>
-                                <Text style={styles.cardDescription}>
-                                    {habit.description}
-                                </Text>
-                                <View style={styles.cardFooter}>
-                                    <View style={styles.streakBadge}>
-                                        <FontAwesome5
-                                            name="fire"
-                                            size={18}
-                                            color="#ff9800"
-                                        />
-                                        <Text style={styles.streakText}>
-                                            {habit.streak_count} day streak
-                                        </Text>
-                                    </View>
-                                    <View style={styles.frequencyBadge}>
-                                        <Text style={styles.frequencyText}>
-                                            {habit.frequency
-                                                .charAt(0)
-                                                .toUpperCase() +
-                                                habit.frequency.slice(1)}
-                                        </Text>
+                            <Surface
+                                style={[
+                                    styles.card,
+                                    false && styles.cardCompleted,
+                                ]}
+                                elevation={0}
+                            >
+                                <View style={styles.cardContent} key={key}>
+                                    <Text style={styles.cardTitle}>
+                                        {" "}
+                                        {habit.title}
+                                    </Text>
+                                    <Text style={styles.cardDescription}>
+                                        {habit.description}
+                                    </Text>
+                                    <View style={styles.cardFooter}>
+                                        <View style={styles.streakBadge}>
+                                            <FontAwesome5
+                                                name="fire"
+                                                size={18}
+                                                color="#ff9800"
+                                            />
+                                            <Text style={styles.streakText}>
+                                                {habit.streak_count} day streak
+                                            </Text>
+                                        </View>
+                                        <View style={styles.frequencyBadge}>
+                                            <Text style={styles.frequencyText}>
+                                                {habit.frequency
+                                                    .charAt(0)
+                                                    .toUpperCase() +
+                                                    habit.frequency.slice(1)}
+                                            </Text>
+                                        </View>
                                     </View>
                                 </View>
-                            </View>
-                        </Surface>
+                            </Surface>
+                        </Swipeable>
                     ))
                 ) : (
                     <View style={styles.emptyState}>
