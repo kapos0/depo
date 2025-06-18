@@ -1,11 +1,14 @@
 import { useAuth } from "@/lib/auth-context";
+import { useRouter } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-paper";
 
 export default function Index() {
-    const { signOut } = useAuth();
+    const router = useRouter();
+    const { user, signOut, isLoadingUser } = useAuth();
+    if (!user && !isLoadingUser) router.push("/auth");
     return (
-        <View>
+        <View style={styles.container}>
             <Text>Welcome to the Home Page!</Text>
             <Text>Navigate to the Login page from here.</Text>
             <Button mode="text" onPress={signOut} icon={"logout"}>

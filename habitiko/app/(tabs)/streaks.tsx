@@ -1,8 +1,13 @@
+import { useAuth } from "@/lib/auth-context";
+import { useRouter } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function StreaksScreen() {
+    const router = useRouter();
+    const { user } = useAuth();
+    if (!user) router.push("/auth");
     return (
-        <View>
+        <View style={styles.container}>
             <Text>Streaks Page</Text>
             <Text>Track your daily activities and maintain your streaks!</Text>
         </View>
