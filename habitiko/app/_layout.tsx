@@ -23,7 +23,7 @@ export default function RootLayout() {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <AuthProvider>
-                <PaperProvider>
+                <PaperProvider theme={{ mode: "exact", dark: false }}>
                     <SafeAreaProvider>
                         <RouteGuard>
                             <Stack>
