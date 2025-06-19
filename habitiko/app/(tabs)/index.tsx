@@ -1,16 +1,14 @@
 import {
-    client,
     COMPLETIONS_COLLECTION_ID,
     DATABASE_ID,
     databases,
     HABITS_COLLECTION_ID,
-    RealtimeResponse,
 } from "@/lib/appwrite";
 import { useAuth } from "@/lib/auth-context";
-import { Habit, HabitCompletion } from "@/lib/databaseTypes";
+import { useHabits } from "@/lib/useHabits";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useRouter } from "expo-router";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { ID, Query } from "react-native-appwrite";
 import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
@@ -19,94 +17,29 @@ import { Button, Surface, Text } from "react-native-paper";
 export default function Index() {
     const router = useRouter();
     const { user, signOut, isLoadingUser } = useAuth();
-    if (!user && !isLoadingUser) router.push("/auth");
 
-    const [habits, setHabits] = useState<Habit[]>([]);
-    const [completedHabits, setCompletedHabits] = useState<string[]>();
+    useEffect(() => {
+        if (!user && !isLoadingUser) {
+            router.push("/auth");
+        }
+    }, [user, isLoadingUser, router]);
+
+    const { habits, completedHabits } = useHabits(user);
     const swipeableRefs = useRef<{
         [key: string]: React.ComponentRef<typeof Swipeable> | null;
     }>({});
 
-    const fetchHabits = useCallback(async () => {
-        try {
-            const response = await databases.listDocuments(
-                DATABASE_ID,
-                HABITS_COLLECTION_ID,
-                [Query.equal("user_id", user?.$id ?? "")]
-            );
-            if (response.documents.length > 0)
-                setHabits(response.documents as Habit[]);
-            else setHabits([]);
-        } catch (error) {
-            console.error("Error fetching habits:", error);
-        }
-    }, [user]);
-
     const isHabitCompleted = (habitId: string) =>
-        completedHabits?.includes(habitId);
-
-    const fetchTodayCompletions = useCallback(async () => {
-        try {
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            const response = await databases.listDocuments(
-                DATABASE_ID,
-                COMPLETIONS_COLLECTION_ID,
-                [
-                    Query.equal("user_id", user?.$id ?? ""),
-                    Query.greaterThanEqual("completed_at", today.toISOString()),
-                ]
-            );
-            const completions = response.documents as HabitCompletion[];
-            setCompletedHabits(completions.map((c) => c.habit_id));
-        } catch (error) {
-            console.error(error);
-        }
-    }, [user]);
-
-    useEffect(() => {
-        if (!user) return;
-        fetchHabits();
-        const habitsChannel = `databases.${DATABASE_ID}.collections.${HABITS_COLLECTION_ID}.documents`;
-        const habitSubscription = client.subscribe(
-            habitsChannel,
-            (response: RealtimeResponse) => {
-                if (
-                    response.events.some(
-                        (e) =>
-                            e.endsWith(".create") ||
-                            e.endsWith(".update") ||
-                            e.endsWith(".delete")
-                    )
-                ) {
-                    fetchHabits();
-                    fetchTodayCompletions();
-                }
-            }
-        );
-
-        fetchHabits();
-        fetchTodayCompletions();
-
-        return () => {
-            habitSubscription();
-            fetchTodayCompletions();
-        };
-    }, [user, fetchHabits, fetchTodayCompletions]);
+        completedHabits?.some((c) => c.habit_id === habitId);
 
     async function handleDeleteHabit(id: string) {
         try {
-            await databases.deleteDocument(
-                DATABASE_ID,
-                HABITS_COLLECTION_ID,
-                id
-            );
             await databases
                 .listDocuments(DATABASE_ID, COMPLETIONS_COLLECTION_ID, [
                     Query.equal("habit_id", id),
                 ])
-                .then((response) => {
-                    response.documents.forEach(async (completion) => {
+                .then((response: { documents: any[] }) => {
+                    response.documents.forEach(async (completion: any) => {
                         await databases.deleteDocument(
                             DATABASE_ID,
                             COMPLETIONS_COLLECTION_ID,
@@ -114,13 +47,18 @@ export default function Index() {
                         );
                     });
                 });
+            await databases.deleteDocument(
+                DATABASE_ID,
+                HABITS_COLLECTION_ID,
+                id
+            );
         } catch (error) {
             console.error(error);
         }
     }
 
     async function handleCompleteHabit(id: string) {
-        if (!user || completedHabits?.includes(id)) return;
+        if (!user || isHabitCompleted(id)) return;
         try {
             const currentDate = new Date().toISOString();
             await databases.createDocument(
@@ -196,7 +134,7 @@ export default function Index() {
                                     handleCompleteHabit(habit.$id);
                                 }
 
-                                swipeableRefs.current[habit.$id]?.close(); //silinmiş habiti ref içinde kapatıyoruz
+                                swipeableRefs.current[habit.$id]?.close();
                             }}
                         >
                             <Surface

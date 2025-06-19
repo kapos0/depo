@@ -1,15 +1,169 @@
 import { useAuth } from "@/lib/auth-context";
+import { useHabits } from "@/lib/useHabits";
 import { useRouter } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { Card, Text } from "react-native-paper";
 
 export default function StreaksScreen() {
-    const router = useRouter();
     const { user } = useAuth();
+    const router = useRouter();
     if (!user) router.push("/auth");
+
+    const { habits, completedHabits } = useHabits(user);
+
+    type StreakData = {
+        streak: number;
+        bestStreak: number;
+        total: number;
+    };
+
+    const getStreakData = (habitId: string): StreakData => {
+        const habitCompletions = completedHabits
+            ?.filter((c) => c.habit_id === habitId)
+            .sort(
+                (a, b) =>
+                    new Date(a.completed_at).getTime() -
+                    new Date(b.completed_at).getTime()
+            );
+
+        if (!habitCompletions || habitCompletions.length === 0) {
+            return { streak: 0, bestStreak: 0, total: 0 };
+        }
+
+        let streak = 0;
+        let bestStreak = 0;
+        let total = habitCompletions.length;
+        let lastDate: Date | null = null;
+        let currentStreak = 0;
+
+        habitCompletions.forEach((c) => {
+            const date = new Date(c.completed_at);
+            if (lastDate) {
+                const diff =
+                    (date.getTime() - lastDate.getTime()) /
+                    (1000 * 60 * 60 * 24);
+                if (diff <= 1.5) {
+                    currentStreak += 1;
+                } else {
+                    currentStreak = 1;
+                }
+            } else {
+                currentStreak = 1;
+            }
+            if (currentStreak > bestStreak) bestStreak = currentStreak;
+            streak = currentStreak;
+            lastDate = date;
+        });
+        return { streak, bestStreak, total };
+    };
+
+    const habitStreaks = habits.map((habit) => {
+        const { streak, bestStreak, total } = getStreakData(habit.$id);
+        return { habit, bestStreak, streak, total };
+    });
+
+    const rankedHabits = habitStreaks.sort(
+        (a, b) => b.bestStreak - a.bestStreak
+    );
+    const badgeStyles = [styles.badge1, styles.badge2, styles.badge3];
+
     return (
         <View style={styles.container}>
-            <Text>Streaks Page</Text>
-            <Text>Track your daily activities and maintain your streaks!</Text>
+            <Text style={styles.title} variant="headlineSmall">
+                Habit Streaks
+            </Text>
+            {rankedHabits.length > 0 && (
+                <View style={styles.rankingContainer}>
+                    <Text style={styles.rankingTitle}> 🏅 Top Streaks</Text>
+                    {rankedHabits.slice(0, 3).map((item, key) => (
+                        <View key={key} style={styles.rankingRow}>
+                            <View
+                                style={[styles.rankingBadge, badgeStyles[key]]}
+                            >
+                                <Text style={styles.rankingBadgeText}>
+                                    {" "}
+                                    {key + 1}{" "}
+                                </Text>
+                            </View>
+                            <Text style={styles.rankingHabit}>
+                                {" "}
+                                {item.habit.title}
+                            </Text>
+                            <Text style={styles.rankingStreak}>
+                                {" "}
+                                {item.bestStreak}
+                            </Text>
+                        </View>
+                    ))}
+                </View>
+            )}
+            {habits.length === 0 ? (
+                <View>
+                    <Text> No Habits yet. Add your first Habit!</Text>
+                </View>
+            ) : (
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    style={styles.container}
+                >
+                    {rankedHabits.map(
+                        ({ habit, streak, bestStreak, total }, key) => (
+                            <Card
+                                key={key}
+                                style={[
+                                    styles.card,
+                                    key === 0 && styles.firstCard,
+                                ]}
+                            >
+                                <Card.Content>
+                                    <Text
+                                        variant="titleMedium"
+                                        style={styles.habitTitle}
+                                    >
+                                        {habit.title}
+                                    </Text>
+                                    <Text style={styles.habitDescription}>
+                                        {habit.description}
+                                    </Text>
+                                    <View style={styles.statsRow}>
+                                        <View style={styles.statBadge}>
+                                            <Text style={styles.statBadgeText}>
+                                                {" "}
+                                                🔥 {streak}
+                                            </Text>
+                                            <Text style={styles.statLabel}>
+                                                {" "}
+                                                Current
+                                            </Text>
+                                        </View>
+                                        <View style={styles.statBadgeGold}>
+                                            <Text style={styles.statBadgeText}>
+                                                {" "}
+                                                🏆 {bestStreak}
+                                            </Text>
+                                            <Text style={styles.statLabel}>
+                                                {" "}
+                                                Best
+                                            </Text>
+                                        </View>
+                                        <View style={styles.statBadgeGreen}>
+                                            <Text style={styles.statBadgeText}>
+                                                {" "}
+                                                ✅ {total}
+                                            </Text>
+                                            <Text style={styles.statLabel}>
+                                                {" "}
+                                                Total
+                                            </Text>
+                                        </View>
+                                    </View>
+                                </Card.Content>
+                            </Card>
+                        )
+                    )}
+                </ScrollView>
+            )}
         </View>
     );
 }
