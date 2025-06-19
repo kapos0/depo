@@ -65,11 +65,13 @@ export default function AddHabitScreen() {
                 label="Title"
                 mode="outlined"
                 onChangeText={setTitle}
+                value={title}
                 style={styles.input}
             />
             <TextInput
                 label="Description"
                 mode="outlined"
+                value={description}
                 onChangeText={setDescription}
                 style={styles.input}
             />
