@@ -1,6 +1,7 @@
 import { useAuth } from "@/lib/auth-context";
 import { useHabits } from "@/lib/useHabits";
 import { useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Card, Text } from "react-native-paper";
@@ -82,16 +83,13 @@ export default function StreaksScreen() {
                                 style={[styles.rankingBadge, badgeStyles[key]]}
                             >
                                 <Text style={styles.rankingBadgeText}>
-                                    {" "}
-                                    {key + 1}{" "}
+                                    {key + 1}
                                 </Text>
                             </View>
                             <Text style={styles.rankingHabit}>
-                                {" "}
                                 {item.habit.title}
                             </Text>
                             <Text style={styles.rankingStreak}>
-                                {" "}
                                 {item.bestStreak}
                             </Text>
                         </View>
@@ -100,7 +98,7 @@ export default function StreaksScreen() {
             )}
             {habits.length === 0 ? (
                 <View>
-                    <Text> No Habits yet. Add your first Habit!</Text>
+                    <Text>No Habits yet. Add your first Habit!</Text>
                 </View>
             ) : (
                 <ScrollView
@@ -129,31 +127,25 @@ export default function StreaksScreen() {
                                     <View style={styles.statsRow}>
                                         <View style={styles.statBadge}>
                                             <Text style={styles.statBadgeText}>
-                                                {" "}
                                                 🔥 {streak}
                                             </Text>
                                             <Text style={styles.statLabel}>
-                                                {" "}
                                                 Current
                                             </Text>
                                         </View>
                                         <View style={styles.statBadgeGold}>
                                             <Text style={styles.statBadgeText}>
-                                                {" "}
                                                 🏆 {bestStreak}
                                             </Text>
                                             <Text style={styles.statLabel}>
-                                                {" "}
                                                 Best
                                             </Text>
                                         </View>
                                         <View style={styles.statBadgeGreen}>
                                             <Text style={styles.statBadgeText}>
-                                                {" "}
                                                 ✅ {total}
                                             </Text>
                                             <Text style={styles.statLabel}>
-                                                {" "}
                                                 Total
                                             </Text>
                                         </View>
@@ -164,6 +156,7 @@ export default function StreaksScreen() {
                     )}
                 </ScrollView>
             )}
+            <StatusBar style="dark" />
         </View>
     );
 }

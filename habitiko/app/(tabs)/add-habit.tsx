@@ -1,6 +1,7 @@
 import { DATABASE_ID, databases, HABITS_COLLECTION_ID } from "@/lib/appwrite";
 import { useAuth } from "@/lib/auth-context";
 import { useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { ID } from "react-native-appwrite";
@@ -93,8 +94,9 @@ export default function AddHabitScreen() {
                 Add Habit
             </Button>
             {error && (
-                <Text style={{ color: theme.colors.error }}> {error}</Text>
+                <Text style={{ color: theme.colors.error }}>{error}</Text>
             )}
+            <StatusBar style="dark" />
         </View>
     );
 }

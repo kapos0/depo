@@ -8,6 +8,7 @@ import { useAuth } from "@/lib/auth-context";
 import { useHabits } from "@/lib/useHabits";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useEffect, useRef } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { ID, Query } from "react-native-appwrite";
@@ -92,7 +93,7 @@ export default function Index() {
     const renderRightActions = (habitId: string) => (
         <View style={styles.swipeActionRight}>
             {isHabitCompleted(habitId) ? (
-                <Text style={{ color: "#fff" }}> Completed!</Text>
+                <Text style={{ color: "#fff" }}>Completed!</Text>
             ) : (
                 <FontAwesome5 name="check" size={32} color={"#fff"} />
             )}
@@ -184,6 +185,7 @@ export default function Index() {
                     </View>
                 )}
             </ScrollView>
+            <StatusBar style="dark" />
         </View>
     );
 }

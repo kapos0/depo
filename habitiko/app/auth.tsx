@@ -1,5 +1,6 @@
 import { useAuth } from "@/lib/auth-context";
 import { useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
 import { Button, Text, TextInput, useTheme } from "react-native-paper";
@@ -104,6 +105,7 @@ export default function AuthScreen() {
                         ? "Already have an account? Sign In"
                         : "Don't have an account? Sign Up"}
                 </Button>
+                <StatusBar style="dark" />
             </View>
         </KeyboardAvoidingView>
     );
