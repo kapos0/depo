@@ -87,6 +87,18 @@
         "source": "https://github.com/kapos0/projeler"
     },
     {
+        "title": "Habit Tracker (Habitiko)",
+        "imageSrc": "/projects/habitiko.jpg",
+        "IsFeatured": "false",
+        "description": "Habitiko, React Native ile geliştirilmiş bir alışkanlık takip uygulamasıdır ve backend olarak Appwrite kullanılmaktadır. Bu uygulama, kullanıcıların alışkanlıklarını takip etmelerine ve geliştirmelerine yardımcı olmak için tasarlanmıştır.",
+        "skills": ["React-Native", "Expo", "AppWrite", "TypeScript"],
+        "demo": {
+            "source": "https://habitiko.netlify.app/",
+            "download": ""
+        },
+        "source": "https://github.com/kapos0/projeler"
+    },
+    {
         "title": "MernStore",
         "imageSrc": "projects/mernstore.jpeg",
         "description": "Bu, MERN Stack ile geliştirilmiş basit bir e-ticaret uygulamasıdır. Uygulama sayesinde ürün ekleyebilir ve görüntüleyebilirsiniz. DaisyUI kullanarak 9 farklı temadan birini seçebilirsiniz. Eklenen ürünleri düzenleyebilir veya silebilirsiniz. Backend kısmı Node.js ve Express ile yazılmıştır, frontend ise TypeScript ve React kullanılarak geliştirilmiştir. Veritabanı olarak MongoDB kullanılmaktadır.",
@@ -123,7 +135,13 @@
         "imageSrc": "projects/ticketmanagement.png",
         "IsFeatured": "true",
         "description": "Ticket Management uygulaması, e-posta doğrulaması ve kullanıcı rolleri içeren bir ticketing sistemidir. Kullanıcılar, kendi ticketlarını oluşturabilirken, yöneticiler (manager) bu ticketları teknisyenlere (technician) atar. Kullanıcılar yalnızca kendi oluşturdukları ticketları görebilirken, teknisyenlerin kontrol panelinde (dashboard) kendilerine atanmış ticketlar görüntülenir. Yöneticiler, kullanıcı rollerini değiştirebilir ve kullanıcıları silebilir. Ayrıca, bir yönetici bir ticketı bir teknisyene atadığında, o teknisyene bildirim gönderilir.",
-        "skills": ["Next.js", "TypeScript", "TailwindCSS", "MongoDB", "Better-Auth"],
+        "skills": [
+            "Next.js",
+            "TypeScript",
+            "TailwindCSS",
+            "MongoDB",
+            "Better-Auth"
+        ],
         "demo": {
             "source": "https://ticket-management-gamma.vercel.app",
             "download": ""
