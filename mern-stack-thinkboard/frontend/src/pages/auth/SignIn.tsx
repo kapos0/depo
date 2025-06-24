@@ -1,0 +1,89 @@
+import { useEffect, useState } from "react";
+import { authClient } from "../../lib/auth-client";
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
+import { useSession } from "../../lib/useSession";
+
+export default function SignIn() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const isLoggedIn = useSession();
+
+    useEffect(() => {
+        if (isLoggedIn) navigate("/");
+    }, [isLoggedIn, navigate]);
+
+    async function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            await authClient.signIn.email(
+                { email, password },
+                {
+                    onError: (ctx) => {
+                        toast.error(ctx.error.message || "Giriş başarısız");
+                        setLoading(false);
+                        throw new Error(ctx.error.message);
+                    },
+                }
+            );
+            toast.success("Başarıyla giriş yapıldı!");
+            navigate("/");
+        } catch (e) {
+            console.error("Giriş hatası:", e);
+        } finally {
+            setLoading(false);
+        }
+    }
+    return (
+        <div className="min-h-screen flex items-center justify-center bg-base-200">
+            <div className="w-full max-w-sm">
+                <div className="card bg-base-100 shadow-xl border border-base-200">
+                    <div className="card-body">
+                        <h2 className="card-title justify-center text-2xl font-bold mb-2 text-primary">
+                            Giriş Yap
+                        </h2>
+                        <form
+                            className="flex flex-col gap-4"
+                            onSubmit={handleSubmit}
+                        >
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                className="input input-bordered w-full"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                            <input
+                                type="password"
+                                placeholder="Şifre"
+                                className="input input-bordered w-full"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                            <button
+                                type="submit"
+                                className="btn btn-primary w-full mt-2"
+                                disabled={loading}
+                            >
+                                {loading ? "Giriş Yapılıyor..." : "Giriş Yap"}
+                            </button>
+                        </form>
+                        <div className="flex justify-center mt-4 text-sm">
+                            <a
+                                href="/auth/sign-up"
+                                className="link link-primary"
+                            >
+                                Kayıt Ol
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
