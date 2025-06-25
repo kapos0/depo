@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router";
 import { authClient } from "./lib/auth-client";
 import { useSession } from "./lib/useSession";
 
 export default function App() {
+    const navigate = useNavigate();
     const isLoggedIn = useSession();
     async function handleLogout() {
         try {
@@ -11,6 +13,7 @@ export default function App() {
             console.error("Logout error:", error);
         }
     }
+    if (!isLoggedIn) navigate("/auth/sign-in");
     return (
         <div>
             <h1>Hello</h1>
