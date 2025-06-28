@@ -2,7 +2,7 @@ import express from "express";
 
 const NotesRouter = express.Router();
 
-NotesRouter.get("/", () => {
+NotesRouter.get("/", (req, res) => {
     /*AllNotes*/
 });
 NotesRouter.get("/:id", () => {
