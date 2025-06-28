@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router";
 import { authClient } from "./lib/auth-client";
 import { useSession } from "./lib/useSession";
+import { useEffect } from "react";
 
 export default function App() {
     const navigate = useNavigate();
@@ -13,7 +14,9 @@ export default function App() {
             console.error("Logout error:", error);
         }
     }
-    if (!isLoggedIn) navigate("/auth/sign-in");
+    useEffect(() => {
+        if (!isLoggedIn) navigate("/auth/sign-in");
+    }, [isLoggedIn, navigate]);
     return (
         <div>
             <h1>Hello</h1>

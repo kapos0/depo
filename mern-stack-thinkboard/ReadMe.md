@@ -15,5 +15,5 @@
 ## FrontEnd
 
 ```env
-    APP_URL=
+    VITE_APP_URL=
 ```
