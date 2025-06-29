@@ -1,0 +1,19 @@
+{
+    "name": "mern-starter",
+    "version": "1.0.0",
+    "description": "Mern-Starter project with backend and frontend",
+    "keywords": [
+        "MongoDB",
+        "Express",
+        "Better-Auth",
+        "React"
+    ],
+    "author": "Mehmet Enes Turhan",
+    "license": "ISC",
+    "packageManager": "pnpm@10.12.4",
+    "scripts": {
+        "dev": "pnpm --filter ./backend dev --parallel && pnpm --filter ./frontend dev --parallel",
+        "start": "pnpm --filter ./backend start --parallel && pnpm --filter ./frontend start --parallel",
+        "build": "pnpm --filter ./frontend build"
+    }
+}
