@@ -25,11 +25,21 @@ export default function SignUp() {
         }
         setLoading(true);
         try {
-            await authClient.signUp?.email({ email, password, name });
-            toast.success(
-                "Kayıt başarılı! Email adresinize doğrulama linki gönderildi."
-            );
-            navigate("/auth/sign-in");
+            const res = await authClient.signUp?.email({
+                email,
+                password,
+                name,
+            });
+            if (!res?.error?.message) {
+                toast.success(
+                    "Kayıt başarılı! Email adresinize doğrulama linki gönderildi."
+                );
+                navigate("/auth/sign-in");
+            } else {
+                toast.error(res?.error?.message);
+                navigate("/auth/sign-up");
+                return;
+            }
         } catch (err) {
             toast.error(err?.message || "Kayıt başarısız");
         } finally {

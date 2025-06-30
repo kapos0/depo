@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { authClient } from "./lib/auth-client";
 import { useSession } from "./lib/useSession";
 import { useNavigate } from "react-router";
@@ -8,8 +9,8 @@ export default function App() {
     async function handleLogout() {
         try {
             await authClient.signOut();
+            toast.success("Başarıyla çıkış yapıldı");
             navigate("/auth/sign-in");
-            console.log("Logged out successfully");
         } catch (error) {
             console.error("Logout error:", error);
         }

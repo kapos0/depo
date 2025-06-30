@@ -52,12 +52,12 @@ export async function sendEmail({ to, subject, content }) {
             text: content.trim(),
         });
 
-        if (env === "development") {
+        /*if (env === "development") {
             console.log("Email sent (dev mode):", info.messageId);
             console.log("Preview URL: http://localhost:1080");
         } else {
             console.log("Email sent (prod mode):", info.messageId);
-        }
+        }*/
 
         return {
             success: true,

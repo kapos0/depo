@@ -10,6 +10,7 @@ export const auth = betterAuth({
     emailAndPassword: {
         enabled: true,
         requireEmailVerification: true,
+        autoSignIn: true,
         sendResetPassword: async ({ user, url }) => {
             console.log("sendResetPassword çağrıldı:", user.email, url);
             try {
