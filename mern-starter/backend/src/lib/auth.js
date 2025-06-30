@@ -11,11 +11,27 @@ export const auth = betterAuth({
         enabled: true,
         requireEmailVerification: true,
         sendResetPassword: async ({ user, url }) => {
-            await sendEmail({
-                to: user.email,
-                subject: "Reset your password",
-                content: `Click the link to reset your password: ${url}`,
-            });
+            console.log("sendResetPassword çağrıldı:", user.email, url);
+            try {
+                const result = await sendEmail({
+                    to: user.email,
+                    subject: "Reset your password",
+                    content: `Click the link to reset your password: ${url}`,
+                });
+                console.log("sendEmail sonucu:", result);
+                if (!result?.success) {
+                    console.error(
+                        "Reset password email failed:",
+                        result?.message
+                    );
+                    throw new Error(
+                        result?.message || "Reset password email failed"
+                    );
+                }
+            } catch (error) {
+                console.error("Error in sendResetPassword:", error);
+                throw error;
+            }
         },
     },
     session: {
@@ -30,12 +46,31 @@ export const auth = betterAuth({
         sendOnSignUp: true,
         autoSignInAfterVerification: true,
         sendVerificationEmail: async ({ user, token }) => {
-            const verificationUrl = `${process.env.BETTER_AUTH_URL}/api/auth/verify-email?token=${token}&callbackURL=${process.env.EMAIL_VERIFICATION_CALLBACK_URL}`;
-            await sendEmail({
-                to: user.email,
-                subject: "Verify your email address",
-                content: `Click the link to verify your email address: ${verificationUrl}`,
-            });
+            try {
+                if (
+                    !process.env.BETTER_AUTH_URL ||
+                    !process.env.EMAIL_VERIFICATION_CALLBACK_URL
+                ) {
+                    throw new Error(
+                        "Environment variables BETTER_AUTH_URL or EMAIL_VERIFICATION_CALLBACK_URL are not set."
+                    );
+                }
+                // callbackURL frontend'e yönlendirilecek şekilde ayarlanıyor
+                const callbackURL = process.env.EMAIL_VERIFICATION_CALLBACK_URL;
+                const verificationUrl = `${
+                    process.env.BETTER_AUTH_URL
+                }/api/auth/verify-email?token=${token}&callbackURL=${encodeURIComponent(
+                    callbackURL
+                )}`;
+                await sendEmail({
+                    to: user.email,
+                    subject: "Verify your email address",
+                    content: `Click the link to verify your email address: ${verificationUrl}`,
+                });
+            } catch (error) {
+                console.error("Error sending verification email:", error);
+                throw error;
+            }
         },
     },
 });

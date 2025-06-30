@@ -12,7 +12,10 @@ export default function ForgotPassword() {
         e.preventDefault();
         setLoading(true);
         try {
-            await authClient.forgotPassword?.({ email });
+            await authClient.requestPasswordReset?.({
+                email,
+                redirectTo: "/auth/reset-password",
+            });
             toast.success("Şifre sıfırlama linki gönderildi!");
         } catch (err) {
             toast.error(err?.message || "Bir hata oluştu");

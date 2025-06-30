@@ -1,11 +1,14 @@
 import { authClient } from "./lib/auth-client";
 import { useSession } from "./lib/useSession";
+import { useNavigate } from "react-router";
 
 export default function App() {
     const isLoggedIn = useSession();
+    const navigate = useNavigate();
     async function handleLogout() {
         try {
             await authClient.signOut();
+            navigate("/auth/sign-in");
             console.log("Logged out successfully");
         } catch (error) {
             console.error("Logout error:", error);
@@ -17,7 +20,9 @@ export default function App() {
             {isLoggedIn ? (
                 <button onClick={handleLogout}>Çıkış Yap</button>
             ) : (
-                <p>Giriş yapmadınız</p>
+                <button onClick={() => navigate("/auth/sign-in")}>
+                    Giriş Yap
+                </button>
             )}
         </div>
     );

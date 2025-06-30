@@ -7,8 +7,8 @@ import { fileURLToPath } from "url";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import { connectDB } from "./lib/connectDB.js";
 import { toNodeHandler } from "better-auth/node";
-import BaseRouter from "./routes/baseRouter.js";
 import { auth } from "./lib/auth.js";
+import BaseRouter from "./routes/baseRouter.js";
 
 dotenv.config();
 

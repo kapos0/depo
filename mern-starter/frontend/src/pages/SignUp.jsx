@@ -26,7 +26,9 @@ export default function SignUp() {
         setLoading(true);
         try {
             await authClient.signUp?.email({ email, password, name });
-            toast.success("Kayıt başarılı! Giriş yapabilirsiniz.");
+            toast.success(
+                "Kayıt başarılı! Email adresinize doğrulama linki gönderildi."
+            );
             navigate("/auth/sign-in");
         } catch (err) {
             toast.error(err?.message || "Kayıt başarısız");

@@ -19,7 +19,7 @@ function ResetPasswordPageInner() {
         }
         setLoading(true);
         try {
-            await authClient.resetPassword?.({ token, password });
+            await authClient.resetPassword?.({ token, newPassword: password });
             toast.success("Şifre başarıyla güncellendi!");
             navigate("/auth/sign-in");
         } catch (err) {
