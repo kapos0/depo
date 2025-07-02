@@ -2,12 +2,20 @@
     "name": "think-board",
     "version": "1.0.0",
     "description": "A Mern Stack App with Better-Auth",
-    "keywords": ["MongoDB", "Express", "Better-Auth", "React"],
+    "keywords": [
+        "MongoDB",
+        "Express",
+        "Better-Auth",
+        "React"
+    ],
     "author": "Mehmet Enes Turhan",
     "license": "ISC",
     "packageManager": "pnpm@10.12.4",
     "scripts": {
         "dev": "pnpm exec concurrently \"pnpm --filter backend dev\" \"pnpm --filter frontend dev\" \"pnpm dlx maildev --web 1080 --smtp 1025\"",
         "start": "pnpm --filter backend start"
+    },
+    "devDependencies": {
+        "concurrently": "^9.2.0"
     }
 }
