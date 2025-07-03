@@ -4,22 +4,14 @@ import { checkNoteModel } from "../models/noteModel.js";
 import { auth } from "../lib/auth.js";
 
 async function getNotesCollection() {
-    let db;
-    try {
-        db = await connectDB();
-    } catch (error) {
-        console.error("Error connecting to the database:", error);
-        throw new Error("Database connection failed");
-    }
+    const db = await connectDB();
     if (!db) throw new Error("Database connection is not established");
-
     return db.collection("notes");
 }
 
 async function getUserSession(req, res) {
-    let session;
     try {
-        session = await auth.api.getSession({
+        return await auth.api.getSession({
             headers: fromNodeHeaders(req.headers),
         });
     } catch (error) {
@@ -27,18 +19,27 @@ async function getUserSession(req, res) {
         res.status(500).json({ message: "Internal server error" });
         return null;
     }
-    return session;
+}
+
+function validateSession(session, res) {
+    if (!session) {
+        res.status(401).json({ message: "Unauthorized" });
+        return false;
+    }
+    if (!session.user || !session.user.id) {
+        res.status(400).json({ message: "User ID is required" });
+        return false;
+    }
+    return true;
 }
 
 export async function getAllUserNotes(req, res) {
     const session = await getUserSession(req, res);
-    if (!session) return res.status(401).json({ message: "Unauthorized" });
-    if (!session.user || !session.user.id)
-        return res.status(400).json({ message: "User ID is required" });
+    if (!validateSession(session, res)) return;
     try {
         const notesCollection = await getNotesCollection();
         const notes = await notesCollection
-            .find({ _id: new ObjectId(String(session.user.id)) })
+            .find({ userId: new ObjectId(String(session.user.id)) })
             .sort({ createdAt: -1 })
             .toArray();
         if (!notes || notes.length === 0)
@@ -52,9 +53,7 @@ export async function getAllUserNotes(req, res) {
 
 export async function getNoteById(req, res) {
     const session = await getUserSession(req, res);
-    if (!session) return res.status(401).json({ message: "Unauthorized" });
-    if (!session.user || !session.user.id)
-        return res.status(400).json({ message: "User ID is required" });
+    if (!validateSession(session, res)) return;
     const noteId = req.params.id;
     if (!noteId)
         return res.status(400).json({ message: "Note ID is required" });
@@ -65,7 +64,6 @@ export async function getNoteById(req, res) {
             userId: new ObjectId(String(session.user.id)),
         });
         if (!note) return res.status(404).json({ message: "Note not found" });
-
         res.status(200).json(note);
     } catch (error) {
         console.error(`Error fetching note with ID ${noteId}:`, error);
@@ -75,9 +73,7 @@ export async function getNoteById(req, res) {
 
 export async function createNote(req, res) {
     const session = await getUserSession(req, res);
-    if (!session) return res.status(401).json({ message: "Unauthorized" });
-    if (!session.user || !session.user.id)
-        return res.status(400).json({ message: "User ID is required" });
+    if (!validateSession(session, res)) return;
     const note = { ...req.body, userId: session.user.id };
     if (!note || Object.keys(note).length === 0)
         return res.status(400).json({ message: "Note data is required" });
@@ -86,6 +82,7 @@ export async function createNote(req, res) {
         const notesCollection = await getNotesCollection();
         const result = await notesCollection.insertOne({
             ...note,
+            userId: new ObjectId(String(session.user.id)),
             createdAt: new Date(),
             updatedAt: new Date(),
         });
@@ -100,9 +97,7 @@ export async function createNote(req, res) {
 
 export async function updateNote(req, res) {
     const session = await getUserSession(req, res);
-    if (!session) return res.status(401).json({ message: "Unauthorized" });
-    if (!session.user || !session.user.id)
-        return res.status(400).json({ message: "User ID is required" });
+    if (!validateSession(session, res)) return;
     const noteId = req.params.id;
     const updatedNote = req.body;
     if (!noteId || !updatedNote || Object.keys(updatedNote).length === 0)
@@ -130,9 +125,7 @@ export async function updateNote(req, res) {
 
 export async function deleteNote(req, res) {
     const session = await getUserSession(req, res);
-    if (!session) return res.status(401).json({ message: "Unauthorized" });
-    if (!session.user || !session.user.id)
-        return res.status(400).json({ message: "User ID is required" });
+    if (!validateSession(session, res)) return;
     const noteId = req.params.id;
     if (!noteId)
         return res.status(400).json({ message: "Note ID is required" });
