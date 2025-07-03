@@ -19,3 +19,9 @@ SMTP_SECURE=
 SMTP_USER=
 SMTP_PASS=
 ```
+
+### for frontend
+
+```env
+VITE_API_URL=
+```

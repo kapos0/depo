@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { authClient } from "../lib/auth-client";
+import { authClient } from "../../lib/auth-client";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import { useSession } from "../lib/useSession";
+import { useSession } from "../../lib/useSession";
 
 export default function SignIn() {
     const [email, setEmail] = useState("");

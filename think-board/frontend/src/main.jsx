@@ -2,11 +2,12 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
 import { ToastContainer } from "react-toastify";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
-import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
-import EmailVerified from "./pages/EmailVerified";
+import SignIn from "./pages/auth/SignIn";
+import SignUp from "./pages/auth/SignUp";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import ResetPassword from "./pages/auth/ResetPassword";
+import EmailVerified from "./pages/auth/EmailVerified";
+import CreatePage from "./pages/CreateNote";
 import App from "./App";
 import "./assets/base.css";
 
@@ -31,6 +32,7 @@ createRoot(document.getElementById("root")).render(
                     />
                 </Route>
                 <Route path="/" element={<App />} />
+                <Route path="/create-note" element={<CreatePage />} />
             </Routes>
             <ToastContainer />
         </BrowserRouter>

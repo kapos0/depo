@@ -1,27 +1,22 @@
-import { Suspense, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router";
+import { useState } from "react";
+import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import { authClient } from "../lib/auth-client";
+import { authClient } from "../../lib/auth-client";
 
-function ResetPasswordPageInner() {
-    const [password, setPassword] = useState("");
-    const [password2, setPassword2] = useState("");
+export default function ForgotPassword() {
+    const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
-    const [searchParams] = useSearchParams();
     const navigate = useNavigate();
-    const token = searchParams.get("token");
 
     async function handleSubmit(e) {
         e.preventDefault();
-        if (password !== password2) {
-            toast.error("Şifreler eşleşmiyor");
-            return;
-        }
         setLoading(true);
         try {
-            await authClient.resetPassword?.({ token, newPassword: password });
-            toast.success("Şifre başarıyla güncellendi!");
-            navigate("/auth/sign-in");
+            await authClient.requestPasswordReset?.({
+                email,
+                redirectTo: "/auth/reset-password",
+            });
+            toast.success("Şifre sıfırlama linki gönderildi!");
         } catch (err) {
             toast.error(err?.message || "Bir hata oluştu");
         } finally {
@@ -35,26 +30,18 @@ function ResetPasswordPageInner() {
                 <div className="card bg-base-100 shadow-xl border border-base-200">
                     <div className="card-body">
                         <h2 className="card-title justify-center text-2xl font-bold mb-2 text-primary">
-                            Şifre Sıfırla
+                            Şifremi Unuttum
                         </h2>
                         <form
                             className="flex flex-col gap-4"
                             onSubmit={handleSubmit}
                         >
                             <input
-                                type="password"
-                                placeholder="Yeni Şifre"
+                                type="email"
+                                placeholder="Email"
                                 className="input input-bordered w-full"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                            />
-                            <input
-                                type="password"
-                                placeholder="Yeni Şifre Tekrar"
-                                className="input input-bordered w-full"
-                                value={password2}
-                                onChange={(e) => setPassword2(e.target.value)}
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 required
                             />
                             <button
@@ -63,8 +50,8 @@ function ResetPasswordPageInner() {
                                 disabled={loading}
                             >
                                 {loading
-                                    ? "Güncelleniyor..."
-                                    : "Şifreyi Güncelle"}
+                                    ? "Gönderiliyor..."
+                                    : "Şifre Sıfırlama Linki Gönder"}
                             </button>
                         </form>
                         <div className="text-center mt-4 text-sm">
@@ -79,13 +66,5 @@ function ResetPasswordPageInner() {
                 </div>
             </div>
         </div>
-    );
-}
-
-export default function ResetPasswordPage() {
-    return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <ResetPasswordPageInner />
-        </Suspense>
     );
 }

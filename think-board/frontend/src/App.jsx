@@ -1,30 +1,13 @@
-import { toast } from "react-toastify";
-import { authClient } from "./lib/auth-client";
-import { useSession } from "./lib/useSession";
-import { useNavigate } from "react-router";
+import Navbar from "./components/Navbar";
+import NoNote from "./components/NoNote";
 
 export default function App() {
-    const isLoggedIn = useSession();
-    const navigate = useNavigate();
-    async function handleLogout() {
-        try {
-            await authClient.signOut();
-            toast.success("Başarıyla çıkış yapıldı");
-            navigate("/auth/sign-in");
-        } catch (error) {
-            console.error("Logout error:", error);
-        }
-    }
     return (
-        <div>
-            <h1>Hello</h1>
-            {isLoggedIn ? (
-                <button onClick={handleLogout}>Çıkış Yap</button>
-            ) : (
-                <button onClick={() => navigate("/auth/sign-in")}>
-                    Giriş Yap
-                </button>
-            )}
+        <div className="relative h-full w-full">
+            <Navbar />
+            <div className="absolute inset-0 -z-10 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_60%,#00FF9D40_100%)]">
+                <NoNote />
+            </div>
         </div>
     );
 }
