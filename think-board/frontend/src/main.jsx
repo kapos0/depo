@@ -8,6 +8,7 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
 import EmailVerified from "./pages/auth/EmailVerified";
 import CreatePage from "./pages/CreateNote";
+import Navbar from "./components/Navbar";
 import App from "./App";
 import "./assets/base.css";
 
@@ -15,6 +16,7 @@ createRoot(document.getElementById("root")).render(
     <StrictMode>
         <BrowserRouter>
             <Routes>
+                <Navbar />
                 <Route path="/auth">
                     <Route path="/auth/sign-in" element={<SignIn />} />
                     <Route path="/auth/sign-up" element={<SignUp />} />
