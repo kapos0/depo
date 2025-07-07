@@ -16,8 +16,8 @@ import "./assets/base.css";
 createRoot(document.getElementById("root")).render(
     <StrictMode>
         <BrowserRouter>
+            <Navbar />
             <Routes>
-                <Navbar />
                 <Route path="/auth">
                     <Route path="/auth/sign-in" element={<SignIn />} />
                     <Route path="/auth/sign-up" element={<SignUp />} />
@@ -36,7 +36,7 @@ createRoot(document.getElementById("root")).render(
                 </Route>
                 <Route path="/" element={<App />} />
                 <Route path="notes/:id" element={<NoteDetailPage />} />
-                <Route path="/create-note" element={<CreatePage />} />
+                <Route path="/create" element={<CreatePage />} />
             </Routes>
             <ToastContainer />
         </BrowserRouter>

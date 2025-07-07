@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb";
+import { fromNodeHeaders } from "better-auth/node";
 import { connectDB } from "../lib/connectDB.js";
 import { checkNoteModel } from "../models/noteModel.js";
 import { auth } from "../lib/auth.js";
@@ -23,7 +24,7 @@ async function getUserSession(req, res) {
 
 function validateSession(session, res) {
     if (!session) {
-        res.status(401).json({ message: "Unauthorized" });
+        res.status(200).json({ message: "Unauthorized" });
         return false;
     }
     if (!session.user || !session.user.id) {
@@ -43,7 +44,7 @@ export async function getAllUserNotes(req, res) {
             .sort({ createdAt: -1 })
             .toArray();
         if (!notes || notes.length === 0)
-            return res.status(404).json({ message: "No notes found" });
+            return res.status(200).json({ message: "No notes found" });
         res.status(200).json(notes);
     } catch (error) {
         console.error("Error fetching all notes:", error);

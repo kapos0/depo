@@ -12,7 +12,7 @@ export default function SignIn() {
     const isLoggedIn = useSession();
 
     useEffect(() => {
-        if (isLoggedIn) navigate("/");
+        if (isLoggedIn === true) navigate("/");
     }, [isLoggedIn, navigate]);
 
     async function handleSubmit(e) {
