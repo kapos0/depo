@@ -12,6 +12,7 @@ import Navbar from "./components/Navbar";
 import NoteDetailPage from "./pages/NoteDetail";
 import App from "./App";
 import "./assets/base.css";
+import EditNote from "./pages/EditNote";
 
 createRoot(document.getElementById("root")).render(
     <StrictMode>
@@ -37,6 +38,7 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/" element={<App />} />
                 <Route path="notes/:id" element={<NoteDetailPage />} />
                 <Route path="/create" element={<CreatePage />} />
+                <Route path="/edit/:id" element={<EditNote />} />
             </Routes>
             <ToastContainer />
         </BrowserRouter>

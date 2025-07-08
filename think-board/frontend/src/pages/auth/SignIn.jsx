@@ -45,7 +45,7 @@ export default function SignIn() {
                 <div className="card bg-base-100 shadow-xl border border-base-200">
                     <div className="card-body">
                         <h2 className="card-title justify-center text-2xl font-bold mb-2 text-primary">
-                            Giriş Yap
+                            Sign In
                         </h2>
                         <form
                             className="flex flex-col gap-4"
@@ -61,7 +61,7 @@ export default function SignIn() {
                             />
                             <input
                                 type="password"
-                                placeholder="Şifre"
+                                placeholder="Password"
                                 className="input input-bordered w-full"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
@@ -80,7 +80,7 @@ export default function SignIn() {
                                 className="link link-primary"
                                 onClick={() => navigate("/auth/sign-up")}
                             >
-                                Kayıt Ol
+                                Register
                             </button>
                             <button
                                 className="link link-primary"
@@ -88,7 +88,7 @@ export default function SignIn() {
                                     navigate("/auth/forgot-password")
                                 }
                             >
-                                Şifremi Unuttum
+                                Forgot Password?
                             </button>
                         </div>
                     </div>

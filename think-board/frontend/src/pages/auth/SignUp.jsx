@@ -54,7 +54,7 @@ export default function SignUp() {
                 <div className="card bg-base-100 shadow-xl border border-base-200">
                     <div className="card-body">
                         <h2 className="card-title justify-center text-2xl font-bold mb-2 text-primary">
-                            Kayıt Ol
+                            Register
                         </h2>
                         <form
                             className="flex flex-col gap-4"
@@ -62,7 +62,7 @@ export default function SignUp() {
                         >
                             <input
                                 type="text"
-                                placeholder="Adınız"
+                                placeholder="Name"
                                 className="input input-bordered w-full"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
@@ -78,7 +78,7 @@ export default function SignUp() {
                             />
                             <input
                                 type="password"
-                                placeholder="Şifre"
+                                placeholder="Password"
                                 className="input input-bordered w-full"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
@@ -86,7 +86,7 @@ export default function SignUp() {
                             />
                             <input
                                 type="password"
-                                placeholder="Şifre Tekrar"
+                                placeholder="Password Again"
                                 className="input input-bordered w-full"
                                 value={password2}
                                 onChange={(e) => setPassword2(e.target.value)}
@@ -97,7 +97,7 @@ export default function SignUp() {
                                 className="btn btn-primary w-full mt-2"
                                 disabled={loading}
                             >
-                                {loading ? "Kayıt Olunuyor..." : "Kayıt Ol"}
+                                {loading ? "Registering ..." : "Register"}
                             </button>
                         </form>
                         <div className="text-center mt-4 text-sm">
@@ -105,7 +105,7 @@ export default function SignUp() {
                                 className="link link-primary"
                                 onClick={() => navigate("/auth/sign-in")}
                             >
-                                Giriş Yap
+                                Sign In
                             </button>
                         </div>
                     </div>

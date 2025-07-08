@@ -6,9 +6,13 @@
     "type": "module",
     "scripts": {
         "dev": "nodemon",
-        "start": "node"
+        "start": "node src/server.js"
     },
-    "keywords": ["MongoDB", "Express", "Better-Auth"],
+    "keywords": [
+        "MongoDB",
+        "Express",
+        "Better-Auth"
+    ],
     "author": "Mehmet Enes Turhan",
     "license": "ISC",
     "packageManager": "pnpm@10.12.4",

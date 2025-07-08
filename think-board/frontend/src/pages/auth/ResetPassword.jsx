@@ -14,16 +14,16 @@ function ResetPasswordPageInner() {
     async function handleSubmit(e) {
         e.preventDefault();
         if (password !== password2) {
-            toast.error("Şifreler eşleşmiyor");
+            toast.error("Passwords do not match");
             return;
         }
         setLoading(true);
         try {
             await authClient.resetPassword?.({ token, newPassword: password });
-            toast.success("Şifre başarıyla güncellendi!");
+            toast.success("Password Updated Successful!");
             navigate("/auth/sign-in");
         } catch (err) {
-            toast.error(err?.message || "Bir hata oluştu");
+            toast.error(err?.message || "Password reset failed");
         } finally {
             setLoading(false);
         }
@@ -35,7 +35,7 @@ function ResetPasswordPageInner() {
                 <div className="card bg-base-100 shadow-xl border border-base-200">
                     <div className="card-body">
                         <h2 className="card-title justify-center text-2xl font-bold mb-2 text-primary">
-                            Şifre Sıfırla
+                            Password Reset
                         </h2>
                         <form
                             className="flex flex-col gap-4"
@@ -43,7 +43,7 @@ function ResetPasswordPageInner() {
                         >
                             <input
                                 type="password"
-                                placeholder="Yeni Şifre"
+                                placeholder="New Password"
                                 className="input input-bordered w-full"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
@@ -51,7 +51,7 @@ function ResetPasswordPageInner() {
                             />
                             <input
                                 type="password"
-                                placeholder="Yeni Şifre Tekrar"
+                                placeholder="Confirm New Password"
                                 className="input input-bordered w-full"
                                 value={password2}
                                 onChange={(e) => setPassword2(e.target.value)}
@@ -62,9 +62,7 @@ function ResetPasswordPageInner() {
                                 className="btn btn-primary w-full mt-2"
                                 disabled={loading}
                             >
-                                {loading
-                                    ? "Güncelleniyor..."
-                                    : "Şifreyi Güncelle"}
+                                {loading ? "Updating..." : "Update Password"}
                             </button>
                         </form>
                         <div className="text-center mt-4 text-sm">
@@ -72,7 +70,7 @@ function ResetPasswordPageInner() {
                                 className="link link-primary"
                                 onClick={() => navigate("/auth/sign-in")}
                             >
-                                Giriş Yap
+                                Sign In
                             </button>
                         </div>
                     </div>

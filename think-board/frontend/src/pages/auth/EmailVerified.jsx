@@ -20,17 +20,17 @@ export default function EmailVerified() {
                             </svg>
                         </div>
                         <h2 className="card-title text-2xl font-bold mb-2 text-success">
-                            Email Doğrulandı!
+                            Email Confirmed
                         </h2>
                         <p className="mb-6 text-base-content/70">
-                            Email adresiniz başarıyla doğrulandı. Artık tüm
-                            özelliklere erişebilirsiniz.
+                            Your email has been successfully verified. You can
+                            now log in to your account.
                         </p>
                         <button
                             className="btn btn-primary w-full"
                             onClick={() => navigate("/auth/sign-in")}
                         >
-                            Giriş Yap
+                            Sign In
                         </button>
                     </div>
                 </div>

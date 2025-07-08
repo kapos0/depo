@@ -1,17 +1,14 @@
-import { useEffect } from "react";
-import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router";
-import { FaArrowCircleLeft, FaAsterisk, FaTrash } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router";
+import { FaArrowCircleLeft, FaAsterisk } from "react-icons/fa";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { baseUrl } from "../lib/utils";
 
 export default function NoteDetailPage() {
-    const navigate = useNavigate();
     const { id } = useParams();
     const [note, setNote] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [saving, setSaving] = useState(false);
 
     useEffect(() => {
         async function fetchNote() {
@@ -29,44 +26,18 @@ export default function NoteDetailPage() {
         fetchNote();
     }, [id]);
 
-    async function handleDelete() {
-        if (!window.confirm("Are you sure you want to delete this note?"))
-            return;
-
-        try {
-            await axios.delete(`${baseUrl}/notes/${id}`);
-            toast.success("Note deleted");
-            navigate("/");
-        } catch (error) {
-            console.log("Error deleting the note:", error);
-            toast.error("Failed to delete note");
-        }
-    }
-
-    async function handleSave() {
-        if (!note.title.trim() || !note.content.trim()) {
-            toast.error("Please add a title or content");
-            return;
-        }
-
-        setSaving(true);
-
-        try {
-            await axios.put(`${baseUrl}/notes/${id}`, note);
-            toast.success("Note updated successfully");
-            navigate("/");
-        } catch (error) {
-            console.log("Error saving the note:", error);
-            toast.error("Failed to update note");
-        } finally {
-            setSaving(false);
-        }
-    }
-
     if (loading) {
         return (
-            <div className="min-h-screen bg-base-200 flex items-center justify-center">
+            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center">
                 <FaAsterisk className="animate-spin size-10" />
+            </div>
+        );
+    }
+
+    if (!note) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center">
+                <div className="text-center text-gray-400">Note not found.</div>
             </div>
         );
     }
@@ -80,60 +51,21 @@ export default function NoteDetailPage() {
                             <FaArrowCircleLeft className="h-5 w-5" />
                             Back to Notes
                         </Link>
-                        <button
-                            onClick={handleDelete}
-                            className="btn btn-error btn-outline"
+                        <Link
+                            to={`/edit/${note._id}`}
+                            className="btn btn-primary"
                         >
-                            <FaTrash className="h-5 w-5" />
-                            Delete Note
-                        </button>
+                            Edit Note
+                        </Link>
                     </div>
 
-                    <div className="card bg-base-100">
+                    <div className="card bg-base-100 shadow-xl">
                         <div className="card-body">
-                            <div className="form-control mb-4">
-                                <label className="label">
-                                    <span className="label-text">Title</span>
-                                </label>
-                                <input
-                                    type="text"
-                                    placeholder="Note title"
-                                    className="input input-bordered"
-                                    value={note.title}
-                                    onChange={(e) =>
-                                        setNote({
-                                            ...note,
-                                            title: e.target.value,
-                                        })
-                                    }
-                                />
-                            </div>
-
-                            <div className="form-control mb-4">
-                                <label className="label">
-                                    <span className="label-text">Content</span>
-                                </label>
-                                <textarea
-                                    placeholder="Write your note here..."
-                                    className="textarea textarea-bordered h-32"
-                                    value={note.content}
-                                    onChange={(e) =>
-                                        setNote({
-                                            ...note,
-                                            content: e.target.value,
-                                        })
-                                    }
-                                />
-                            </div>
-
-                            <div className="card-actions justify-end">
-                                <button
-                                    className="btn btn-primary"
-                                    disabled={saving}
-                                    onClick={handleSave}
-                                >
-                                    {saving ? "Saving..." : "Save Changes"}
-                                </button>
+                            <h2 className="card-title text-2xl font-bold mb-4 break-words">
+                                {note.title}
+                            </h2>
+                            <div className="prose prose-invert max-w-none whitespace-pre-line text-lg text-gray-200">
+                                {note.content}
                             </div>
                         </div>
                     </div>

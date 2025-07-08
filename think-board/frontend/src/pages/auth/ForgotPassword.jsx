@@ -16,9 +16,9 @@ export default function ForgotPassword() {
                 email,
                 redirectTo: "/auth/reset-password",
             });
-            toast.success("Şifre sıfırlama linki gönderildi!");
+            toast.success("Password reset link sent!");
         } catch (err) {
-            toast.error(err?.message || "Bir hata oluştu");
+            toast.error(err?.message || "Failed to send reset link");
         } finally {
             setLoading(false);
         }
@@ -30,7 +30,7 @@ export default function ForgotPassword() {
                 <div className="card bg-base-100 shadow-xl border border-base-200">
                     <div className="card-body">
                         <h2 className="card-title justify-center text-2xl font-bold mb-2 text-primary">
-                            Şifremi Unuttum
+                            Forgot Password
                         </h2>
                         <form
                             className="flex flex-col gap-4"
@@ -49,9 +49,7 @@ export default function ForgotPassword() {
                                 className="btn btn-primary w-full mt-2"
                                 disabled={loading}
                             >
-                                {loading
-                                    ? "Gönderiliyor..."
-                                    : "Şifre Sıfırlama Linki Gönder"}
+                                {loading ? "Sending ..." : "Send Reset Link"}
                             </button>
                         </form>
                         <div className="text-center mt-4 text-sm">
@@ -59,7 +57,7 @@ export default function ForgotPassword() {
                                 className="link link-primary"
                                 onClick={() => navigate("/auth/sign-in")}
                             >
-                                Giriş Yap
+                                Sign In
                             </button>
                         </div>
                     </div>

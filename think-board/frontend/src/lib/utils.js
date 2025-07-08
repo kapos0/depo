@@ -6,4 +6,4 @@ export function formatDate(date) {
     });
 }
 
-export const baseUrl = `${import.meta.env.VITE_API_URL}/api`;
+export const baseUrl = `${import.meta.env.VITE_APP_URL}/api`;

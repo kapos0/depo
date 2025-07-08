@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { CiCirclePlus } from "react-icons/ci";
 
 export default function Navbar() {
-    const { isLoggedIn } = useSession();
+    const { isLoggedIn, user } = useSession();
     async function handleLogout() {
         try {
             await authClient.signOut();
@@ -32,9 +32,19 @@ export default function Navbar() {
                             </Link>
                         )}
                         {isLoggedIn === true ? (
-                            <Link onClick={handleLogout}>Çıkış Yap</Link>
+                            <div>
+                                <span className="text-xl text-emerald-400">
+                                    <span className="text-white text-sm">
+                                        Signed User:
+                                    </span>
+                                    {user?.name}
+                                </span>
+                                <span className="mx-2">|</span>
+
+                                <Link onClick={handleLogout}>Sign Out</Link>
+                            </div>
                         ) : (
-                            <Link to="/auth/sign-in">Giriş Yap</Link>
+                            <Link to="/auth/sign-in">Sign In</Link>
                         )}
                     </div>
                 </div>
