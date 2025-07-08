@@ -9,11 +9,13 @@ export default function SignIn() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const isLoggedIn = useSession();
+    const { isLoggedIn, isLoading } = useSession();
 
     useEffect(() => {
-        if (isLoggedIn === true) navigate("/");
-    }, [isLoggedIn, navigate]);
+        if (!isLoading && isLoggedIn === true) {
+            navigate("/");
+        }
+    }, [isLoggedIn, isLoading, navigate]);
 
     async function handleSubmit(e) {
         e.preventDefault();
