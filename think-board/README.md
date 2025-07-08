@@ -23,5 +23,5 @@ SMTP_PASS=
 ### for frontend
 
 ```env
-VITE_API_URL=
+VITE_APP_URL=
 ```
