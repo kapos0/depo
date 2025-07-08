@@ -32,7 +32,7 @@ export default function SignIn() {
                 }
             );
             toast.success("Başarıyla giriş yapıldı!");
-            navigate("/");
+            window.location.href = "/";
         } catch (e) {
             toast.error(e?.message || "Giriş başarısız");
         } finally {

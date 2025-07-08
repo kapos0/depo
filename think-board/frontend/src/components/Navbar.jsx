@@ -1,17 +1,16 @@
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { authClient } from "../lib/auth-client";
 import { useSession } from "../lib/useSession";
 import { toast } from "react-toastify";
 import { CiCirclePlus } from "react-icons/ci";
 
 export default function Navbar() {
-    const navigate = useNavigate();
     const { isLoggedIn } = useSession();
     async function handleLogout() {
         try {
             await authClient.signOut();
             toast.success("Başarıyla çıkış yapıldı");
-            navigate("/auth/sign-in");
+            window.location.href = "/auth/sign-in";
         } catch (error) {
             console.error("Logout error:", error);
         }
@@ -35,9 +34,7 @@ export default function Navbar() {
                         {isLoggedIn === true ? (
                             <Link onClick={handleLogout}>Çıkış Yap</Link>
                         ) : (
-                            <Link onClick={() => navigate("/auth/sign-in")}>
-                                Giriş Yap
-                            </Link>
+                            <Link to="/auth/sign-in">Giriş Yap</Link>
                         )}
                     </div>
                 </div>
