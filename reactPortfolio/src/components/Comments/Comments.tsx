@@ -40,6 +40,20 @@ export function Comments() {
                     </li>
                     <li className={styles.commentsItem}>
                         <div className={styles.commentsItemText}>
+                            <h3 className={styles.commentUser}>
+                                emrekaramannn
+                            </h3>
+                            <span className={styles.commentUserRating}>
+                                ⭐ 5.0
+                            </span>
+                            <p>
+                                Nazik ve çalışmak için iyi bir arkadaş, şiddetle
+                                tavsiye edilri.
+                            </p>
+                        </div>
+                    </li>
+                    <li className={styles.commentsItem}>
+                        <div className={styles.commentsItemText}>
                             <h3 className={styles.commentUser}>martin1</h3>
                             <span className={styles.commentUserRating}>
                                 ⭐ 5.0
