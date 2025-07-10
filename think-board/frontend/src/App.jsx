@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { baseUrl } from "./lib/utils";
-import Navbar from "./components/Navbar";
 import NoteCard from "./components/NoteCard";
 import NoNote from "./components/NoNote";
 

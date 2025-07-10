@@ -8,9 +8,6 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
 import EmailVerified from "./pages/auth/EmailVerified";
 import Navbar from "./components/Navbar";
-import CreatePage from "./pages/CreateNote";
-import EditNote from "./pages/EditNote";
-import NoteDetailPage from "./pages/NoteDetail";
 import App from "./App";
 import "./assets/base.css";
 
@@ -36,9 +33,6 @@ createRoot(document.getElementById("root")).render(
                     />
                 </Route>
                 <Route path="/" element={<App />} />
-                <Route path="notes/:id" element={<NoteDetailPage />} />
-                <Route path="/create" element={<CreatePage />} />
-                <Route path="/edit/:id" element={<EditNote />} />
             </Routes>
             <ToastContainer />
         </BrowserRouter>

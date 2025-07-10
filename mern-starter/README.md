@@ -1,4 +1,4 @@
-# Think Board
+# Mern starter template
 
 ## env examples
 
