@@ -1,6 +1,7 @@
 @import "../../vars.css";
 
 .container {
+  width: 100%; /*test that*/
   position: relative;
   display: flex;
   align-items: center;
