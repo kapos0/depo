@@ -1,1 +1,108 @@
-[]
+[
+    {
+        "title": "Harvard CS50's Introduction to Computer Science",
+        "issuer": "Harvard University",
+        "issuedAt": "2025",
+        "credentialId": "45cf1860-1bc4-4946-bc33-0d09e8183902",
+        "verifyUrl": "https://certificates.cs50.io/45cf1860-1bc4-4946-bc33-0d09e8183902.pdf?size=letter",
+        "skills": [
+            "Programming Fundamentals",
+            "Data Structures",
+            "Algorithms",
+            "Web Development",
+            "Database Management"
+        ]
+    },
+    {
+        "title": "BTK Akademi Uygulamalı Figma Eğitimi",
+        "issuer": "BTK Akademi",
+        "issuedAt": "2025",
+        "credentialId": "2Nwc0jNOMe",
+        "verifyUrl": "https://drive.google.com/file/d/19Yzo5t09vqFMXCxuwbdYRKP66XJwWlc-/view?usp=sharing",
+        "skills": ["Figma", "UI/UX Design", "Prototyping", "Design Systems"]
+    },
+    {
+        "title": "Ağ Temelleri",
+        "issuer": "BTK Akademi",
+        "issuedAt": "2025",
+        "credentialId": "ax1hDzABZk",
+        "verifyUrl": "https://drive.google.com/file/d/1OPQMx3qS1-W2PbNVk9-mFWZEiWAc9CN4/view?usp=sharing",
+        "skills": ["Ağ Temelleri", "TCP/IP", "Subnetting", "Network Protocols"]
+    },
+    {
+        "title": "Scrimba Full stack Developer Bootcamp",
+        "issuer": "Scrimba",
+        "issuedAt": "2026",
+        "credentialId": "Platfrom Certificate",
+        "verifyUrl": "https://scrimba.com/@kapos0:certs;cert23wfboWopMJqZ44YQE7uiR78uaehnP6f7Bo7Y6Q5jLCrRoCL",
+        "skills": [
+            "React",
+            "TypeScript",
+            "Node.js",
+            "Express",
+            "Next.js",
+            "AI Integration",
+            "SQL"
+        ]
+    },
+    {
+        "title": "Scrimba Frontend Developer Bootcamp",
+        "issuer": "Scrimba",
+        "issuedAt": "2026",
+        "credentialId": "Platfrom Certificate",
+        "verifyUrl": "https://scrimba.com/@kapos0:certs;cert24zAwPPowMj1RxsjMYTh24N1S3ymrbM9aqosW",
+        "skills": ["React", "CSS", "Responsive Design", "JavaScript"]
+    },
+    {
+        "title": "Scrimba Advanced React Course",
+        "issuer": "Scrimba",
+        "issuedAt": "2026",
+        "credentialId": "Platfrom Certificate",
+        "verifyUrl": "https://scrimba.com/@kapos0:certs;cert2JbLs3qgAvUQuBcuwftRkHJZQhYctkCKML35DX",
+        "skills": [
+            "React",
+            "State Management",
+            "Hooks",
+            "Performance Optimization"
+        ]
+    },
+    {
+        "title": "Udemy IT Uzmanlığı ve Sistem Destek Uzmanlığı Kursu",
+        "issuer": "Udemy",
+        "issuedAt": "2026",
+        "credentialId": "UC-4ccac005-2253-47f4-8ff4-2c53c4101a77",
+        "verifyUrl": "https://www.ude.my/UC-4ccac005-2253-47f4-8ff4-2c53c4101a77/",
+        "skills": [
+            "IT Support",
+            "System Administration",
+            "Troubleshooting",
+            "Network Fundamentals"
+        ]
+    },
+    {
+        "title": "Udemy Sistem ve Network Yönetimi Kursu",
+        "issuer": "Udemy",
+        "issuedAt": "2026",
+        "credentialId": "UC-2cde287e-a482-4ef5-b330-51d58a81bc2b",
+        "verifyUrl": "https://www.ude.my/UC-2cde287e-a482-4ef5-b330-51d58a81bc2b/",
+        "skills": [
+            "Sistem Yönetimi",
+            "Network Yönetimi",
+            "Windows Server",
+            "Server Configuration"
+        ]
+    },
+    {
+        "title": "Udemy Sistem ve Network Yönetimi Kursu 2 GNU/Linux",
+        "issuer": "Udemy",
+        "issuedAt": "2026",
+        "credentialId": "UC-0d9fb235-ab83-4afa-ae72-abcbe515d72b",
+        "verifyUrl": "https://www.ude.my/UC-0d9fb235-ab83-4afa-ae72-abcbe515d72b/",
+        "skills": [
+            "Linux Sistem Yönetimi",
+            "Linux Network Yönetimi",
+            "Linux Server Configuration",
+            "Linux Console Commands"
+        ]
+    }
+]

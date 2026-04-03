@@ -32,19 +32,11 @@
         "imageSrc": "skills/electron.png"
     },
     {
-        "title": "MongoDB",
-        "imageSrc": "skills/mongodb.png"
-    },
-    {
         "title": "Figma",
         "imageSrc": "skills/figma.png"
     },
     {
         "title": "Git",
         "imageSrc": "skills/git.png"
-    },
-    {
-        "title": "Docker",
-        "imageSrc": "skills/docker.png"
     }
 ]
