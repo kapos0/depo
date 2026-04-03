@@ -1,0 +1,151 @@
+@import "../../vars.css";
+
+.container {
+    margin-top: 92px;
+    margin-left: 10%;
+    margin-right: 10%;
+    color: var(--color-text);
+}
+
+.title {
+    font-size: 35px;
+    font-weight: 700;
+    letter-spacing: 1.75px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.subtitle {
+    max-width: 760px;
+    margin: 16px auto 0;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 20px;
+    line-height: 1.45;
+}
+
+.grid {
+    margin-top: 34px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+}
+
+.card {
+    background: linear-gradient(
+        160deg,
+        rgba(25, 55, 109, 0.95) 0%,
+        rgba(11, 36, 71, 0.9) 100%
+    );
+    border: 1px solid rgba(82, 211, 216, 0.2);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 320px;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 28px rgba(82, 211, 216, 0.14);
+}
+
+.cardTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.badge {
+    background: rgba(82, 211, 216, 0.18);
+    color: var(--color-text-primary);
+    border: 1px solid rgba(82, 211, 216, 0.35);
+    border-radius: 99px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+}
+
+.year {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.cardTitle {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.metaLabel {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.65);
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+}
+
+.metaValue {
+    font-size: 16px;
+    color: #ffffff;
+    word-break: break-word;
+}
+
+.skills {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.skill {
+    background: rgba(87, 108, 188, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border-radius: 999px;
+    font-size: 13px;
+    padding: 5px 11px;
+}
+
+.verifyBtn {
+    margin-top: auto;
+    text-decoration: none;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-text);
+    background: linear-gradient(90deg, var(--color-primary) 0%, #3c4da1 100%);
+    border-radius: 12px;
+    padding: 10px;
+    transition: filter 0.2s ease;
+}
+
+.verifyBtn:hover {
+    filter: brightness(1.12);
+}
+
+@media screen and (max-width: 830px) {
+    .container {
+        margin-top: 70px;
+    }
+
+    .title {
+        font-size: 30px;
+    }
+
+    .subtitle {
+        font-size: 17px;
+    }
+}

@@ -38,6 +38,9 @@ export function Navbar() {
                         <a href="#projects">Projelerim</a>
                     </li>
                     <li>
+                        <a href="#certificates">Sertifikalar</a>
+                    </li>
+                    <li>
                         <a href="#comments">Benim Hakkımda ki Yorumları</a>
                     </li>
                     <li>
