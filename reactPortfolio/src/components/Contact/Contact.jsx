@@ -13,8 +13,8 @@ export function Contact() {
                         src={getImageUrl("contact/emailIcon.png")}
                         alt="Email icon"
                     />
-                    <a href="mailto:eden.turhann@gmail.com">
-                        eden.turhann@gmail.com
+                    <a href="mailto:memetenesturhan@gmail.com">
+                        memetenesturhan@gmail.com
                     </a>
                 </li>
                 <li className={styles.link}>

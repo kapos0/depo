@@ -46,7 +46,7 @@ export function Hero() {
                 </p>
                 <div style={{ display: "flex", gap: "32px" }}>
                     <a
-                        href="mailto:eden.turhann@gmail.com"
+                        href="mailto:memetenesturhan@gmail.com"
                         className={styles.contactBtn}
                     >
                         Mail iletişim
