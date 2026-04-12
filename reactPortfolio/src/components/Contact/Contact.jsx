@@ -1,5 +1,7 @@
 import styles from "./Contact.module.css";
-import { getImageUrl } from "../../utils";
+import emailIcon from "../../assets/contact/emailIcon.png";
+import linkedinIcon from "../../assets/contact/linkedinIcon.png";
+import githubIcon from "../../assets/contact/githubIcon.png";
 
 export function Contact() {
     return (
@@ -9,19 +11,13 @@ export function Contact() {
             </div>
             <ul className={styles.links}>
                 <li className={styles.link}>
-                    <img
-                        src={getImageUrl("contact/emailIcon.png")}
-                        alt="Email icon"
-                    />
+                    <img src={emailIcon} alt="Email icon" />
                     <a href="mailto:memetenesturhan@gmail.com">
                         memetenesturhan@gmail.com
                     </a>
                 </li>
                 <li className={styles.link}>
-                    <img
-                        src={getImageUrl("contact/linkedinIcon.png")}
-                        alt="LinkedIn icon"
-                    />
+                    <img src={linkedinIcon} alt="LinkedIn icon" />
                     <a
                         href="https://www.linkedin.com/in/mehmet-enes-turhan/"
                         target="_blank"
@@ -30,10 +26,7 @@ export function Contact() {
                     </a>
                 </li>
                 <li className={styles.link}>
-                    <img
-                        src={getImageUrl("contact/githubIcon.png")}
-                        alt="Github icon"
-                    />
+                    <img src={githubIcon} alt="Github icon" />
                     <a href="https://github.com/kapos0" target="_blank">
                         github.com/kapos0
                     </a>

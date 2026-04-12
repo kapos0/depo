@@ -1,12 +1,12 @@
 import styles from "./Hero.module.css";
-import { getImageUrl } from "../../utils";
+import heroImage from "../../assets/hero/heroImage.png";
 
 export function Hero() {
     return (
         <section className={styles.container}>
             <div className={styles.content}>
                 <h1 className={styles.title}>Mehmet Enes Turhan</h1>
-                <p className={styles.description}>
+                <div className={styles.description}>
                     <p>
                         Bilişim alanına duyduğum ilgi ve sürekli öğrenme
                         motivasyonumla kendimi teknoloji sektöründe
@@ -43,7 +43,7 @@ export function Hero() {
                         "bahçeyi" bulduğumda kurumunuza çok daha verimli
                         katkılar sağlayacağıma inanıyorum.
                     </p>
-                </p>
+                </div>
                 <div style={{ display: "flex", gap: "32px" }}>
                     <a
                         href="mailto:memetenesturhan@gmail.com"
@@ -61,7 +61,7 @@ export function Hero() {
                 </div>
             </div>
             <img
-                src={getImageUrl("hero/heroImage.png")}
+                src={heroImage}
                 alt="Hero image of me"
                 className={styles.heroImg}
             />

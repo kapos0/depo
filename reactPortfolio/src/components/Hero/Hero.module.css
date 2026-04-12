@@ -2,13 +2,16 @@
 
 .container {
     width: 100%;
+    max-width: 1400px;
     position: relative;
     display: flex;
     align-items: center;
+    justify-content: center;
     margin-top: 49px;
     z-index: 1;
-    margin-left: 10%;
-    margin-right: 10%;
+    padding: 0 10%;
+    box-sizing: border-box;
+    gap: 40px;
 }
 
 .content {
@@ -17,10 +20,12 @@
     align-items: flex-start;
     color: var(--color-text);
     z-index: 1;
+    flex: 1.4;
+    min-width: 0;
 }
 
 .title {
-    font-size: 72px;
+    font-size: clamp(36px, 8vw, 72px);
     font-weight: 900;
     margin-bottom: 33px;
     font-family: var(--font-roboto);
@@ -32,13 +37,15 @@
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
+    line-height: 1.2;
 }
 
 .description {
-    font-size: 30px;
+    font-size: clamp(16px, 2.5vw, 30px);
     font-family: var(--font-roboto);
     margin-bottom: 52px;
     max-width: 100%;
+    line-height: 1.6;
 }
 
 .contactBtn {
@@ -46,10 +53,19 @@
     background-color: var(--color-primary);
     color: var(--color-text);
     border-radius: 100px;
-    font-size: 30px;
+    font-size: clamp(14px, 2vw, 30px);
     font-weight: 600;
-    padding: 17px 26px;
+    padding: clamp(12px, 1.5vw, 17px) clamp(18px, 3vw, 26px);
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.25);
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+    white-space: nowrap;
+}
+
+.contactBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.35);
 }
 
 .heroImg {
@@ -57,6 +73,10 @@
     animation-duration: 3s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
+    max-width: 100%;
+    height: auto;
+    flex: 0.9;
+    object-fit: contain;
 }
 
 @keyframes floating {
@@ -73,38 +93,132 @@
 
 .topBlur {
     position: absolute;
-    width: 50vw;
-    height: 50vw;
-    min-width: 350px;
-    min-width: 350px;
-    top: -128px;
-    left: -10vw;
+    width: clamp(300px, 50vw, 600px);
+    height: clamp(300px, 50vw, 600px);
+    top: clamp(-200px, -15vw, -50px);
+    left: clamp(-150px, -15vw, 0);
     border-radius: 764px;
     background: rgba(25, 55, 109, 0.7);
     filter: blur(100px);
     z-index: 0;
+    pointer-events: none;
 }
 
 .bottomBlur {
     position: absolute;
-    width: 70vw;
-    height: 50vw;
-    min-width: 350px;
-    min-width: 250px;
-    top: 246px;
-    right: -25vw;
+    width: clamp(300px, 70vw, 900px);
+    height: clamp(250px, 50vw, 600px);
+    top: clamp(150px, 25vw, 350px);
+    right: clamp(-300px, -30vw, -100px);
     border-radius: 764px;
     background: rgba(25, 55, 109, 0.7);
     filter: blur(100px);
     z-index: 0;
+    pointer-events: none;
+}
+
+@media screen and (max-width: 1024px) {
+    .container {
+        padding: 0 7%;
+        gap: 30px;
+    }
+
+    .description {
+        margin-bottom: 40px;
+    }
+
+    .title {
+        margin-bottom: 25px;
+    }
 }
 
 @media screen and (max-width: 830px) {
     .container {
         flex-direction: column-reverse;
+        padding: 0 5%;
+        gap: 20px;
     }
 
     .content {
         align-items: center;
+        text-align: center;
+        width: 100%;
+    }
+
+    .title {
+        margin-bottom: 20px;
+    }
+
+    .description {
+        margin-bottom: 32px;
+        font-size: clamp(14px, 4vw, 20px);
+    }
+
+    .heroImg {
+        max-width: 100%;
+        width: clamp(250px, 80vw, 400px);
+    }
+
+    .topBlur {
+        width: clamp(200px, 70vw, 400px);
+        height: clamp(200px, 70vw, 400px);
+        top: clamp(-150px, -20vw, -80px);
+        left: auto;
+        right: clamp(-150px, -25vw, -50px);
+    }
+
+    .bottomBlur {
+        width: clamp(250px, 90vw, 500px);
+        height: clamp(200px, 70vw, 400px);
+        top: clamp(200px, 40vw, 350px);
+        right: auto;
+        left: clamp(-200px, -30vw, -80px);
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .container {
+        margin-top: 30px;
+        padding: 0 4%;
+        gap: 15px;
+    }
+
+    .content {
+        width: 100%;
+    }
+
+    .title {
+        margin-bottom: 16px;
+        font-size: clamp(28px, 7vw, 48px);
+    }
+
+    .description {
+        font-size: clamp(13px, 3.5vw, 16px);
+        margin-bottom: 24px;
+    }
+
+    .contactBtn {
+        font-size: clamp(12px, 3vw, 16px);
+        padding: clamp(10px, 1.2vw, 14px) clamp(16px, 2.5vw, 20px);
+        display: inline-block;
+    }
+
+    .heroImg {
+        width: clamp(200px, 70vw, 350px);
+        margin-bottom: 20px;
+    }
+
+    .topBlur {
+        width: clamp(150px, 60vw, 300px);
+        height: clamp(150px, 60vw, 300px);
+        top: clamp(-100px, -15vw, -50px);
+        right: clamp(-100px, -20vw, -30px);
+    }
+
+    .bottomBlur {
+        width: clamp(180px, 80vw, 350px);
+        height: clamp(150px, 60vw, 300px);
+        top: clamp(250px, 50vw, 350px);
+        left: clamp(-150px, -25vw, -50px);
     }
 }

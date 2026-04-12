@@ -1,7 +1,15 @@
 import styles from "./Experience.module.css";
 import skills from "../../data/skills.json";
 import history from "../../data/history.json";
-import { getImageUrl } from "../../utils";
+
+const skillImages = import.meta.glob("../../assets/skills/*", {
+    eager: true,
+    import: "default",
+});
+const historyImages = import.meta.glob("../../assets/history/*", {
+    eager: true,
+    import: "default",
+});
 
 export function Experience() {
     return (
@@ -14,7 +22,11 @@ export function Experience() {
                             <div key={id} className={styles.skill}>
                                 <div className={styles.skillImageContainer}>
                                     <img
-                                        src={getImageUrl(skill.imageSrc)}
+                                        src={
+                                            skillImages[
+                                                `../../assets/${skill.imageSrc}`
+                                            ]
+                                        }
                                         alt={skill.title}
                                     />
                                 </div>
@@ -28,7 +40,11 @@ export function Experience() {
                         return (
                             <li key={id} className={styles.historyItem}>
                                 <img
-                                    src={getImageUrl(historyItem.imageSrc)}
+                                    src={
+                                        historyImages[
+                                            `../../assets/${historyItem.imageSrc}`
+                                        ]
+                                    }
                                     alt={`${historyItem.organisation} Logo`}
                                 />
                                 <div className={styles.historyItemDetails}>
