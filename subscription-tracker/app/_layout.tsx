@@ -2,6 +2,8 @@ import "@/global.css";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { useFonts } from "expo-font";
+import { StatusBar } from "expo-status-bar";
+import { colors } from "@/constants/theme";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -20,5 +22,10 @@ export default function RootLayout() {
     }, [fonstLoaded]);
     if (!fonstLoaded) return null;
 
-    return <Stack screenOptions={{ headerShown: false }} />;
+    return (
+        <>
+            <StatusBar style="dark" backgroundColor={colors.background} />
+            <Stack screenOptions={{ headerShown: false }} />
+        </>
+    );
 }

@@ -50,7 +50,7 @@ export default function App() {
                                 </Text>
                                 <Text className="home-balance-date">
                                     {dayjs(HOME_BALANCE.nextRenewalDate).format(
-                                        "MM/DD/YYYY",
+                                        "DD/MM/YYYY",
                                     )}
                                 </Text>
                             </View>
