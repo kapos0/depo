@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
 
-export const formatCurrency = (value: number, currency = "USD"): string => {
+export const formatCurrency = (value: number, currency = "TR"): string => {
     try {
-        return new Intl.NumberFormat("en-US", {
+        return new Intl.NumberFormat("tr-TR", {
             style: "currency",
             currency,
             minimumFractionDigits: 2,
@@ -17,7 +17,7 @@ export const formatSubscriptionDateTime = (value?: string): string => {
     if (!value) return "Not provided";
     const parsedDate = dayjs(value);
     return parsedDate.isValid()
-        ? parsedDate.format("MM/DD/YYYY")
+        ? parsedDate.format("DD/MM/YYYY")
         : "Not provided";
 };
 
