@@ -24,8 +24,9 @@ async function DashboardContent() {
     await connectToDatabase();
     const restaurant = await Restaurant.findOne({ ownerId: session.user.id }).lean();
     const tables = restaurant
-        ? await Table.find({ restaurantId: restaurant._id, isActive: true }).sort({ createdAt: -1 }).lean()
+        ? await Table.find({ restaurantId: restaurant._id }).sort({ createdAt: -1 }).lean()
         : [];
+    const activeTables = tables.filter((table) => table.isActive);
     const ratingSummary = restaurant
         ? await Rating.aggregate<{ _id: null; count: number; average: number; foodAverage: number; staffAverage: number }>([
               { $match: { restaurantId: restaurant._id } },
@@ -97,7 +98,7 @@ async function DashboardContent() {
                     {[
                         [String(summary?.count ?? 0), "Toplam değerlendirme"],
                         [summary ? summary.average.toFixed(1) : "—", "Ortalama puan"],
-                        [String(tables.length), "Aktif masa"],
+                        [String(activeTables.length), "Aktif masa"],
                     ].map(([value, label]) => (
                         <div key={label} className="rounded-3xl bg-white p-6 shadow-sm">
                             <p className="text-4xl font-semibold tracking-tight">{value}</p>
@@ -137,14 +138,16 @@ async function DashboardContent() {
                             {tables.length > 0 && (
                                 <div className="space-y-4">
                                     <div>
-                                        <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[#e46f45]">Masa QR kodları</p>
-                                        <h2 className="mt-2 text-2xl font-semibold tracking-tight">Müşteri bağlantılarınız</h2>
+                                        <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[#e46f45]">Masa yönetimi</p>
+                                        <h2 className="mt-2 text-2xl font-semibold tracking-tight">Masa ve QR kodları</h2>
                                     </div>
                                     {tables.map((table) => (
                                         <TableQr
                                             key={String(table._id)}
                                             name={table.name}
                                             url={`${appUrl}/r/${table.publicSlug}`}
+                                            tableId={String(table._id)}
+                                            isActive={table.isActive}
                                         />
                                     ))}
                                 </div>

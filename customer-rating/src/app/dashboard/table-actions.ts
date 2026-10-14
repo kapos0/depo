@@ -6,6 +6,7 @@ import { auth } from "@/lib/auth";
 import { connectToDatabase } from "@/lib/db";
 import { Restaurant } from "@/models/restaurant";
 import { Table } from "@/models/table";
+import mongoose from "mongoose";
 
 export type TableActionState = {
     error?: string;
@@ -48,5 +49,41 @@ export async function createTable(
     } catch (error) {
         console.error("Table creation failed.", error);
         return { error: "Masa oluşturulurken bir hata oluştu. Lütfen tekrar deneyin." };
+    }
+}
+
+export async function toggleTableStatus(formData: FormData): Promise<void> {
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+    const tableId = String(formData.get("tableId") ?? "");
+
+    if (!session || !mongoose.Types.ObjectId.isValid(tableId)) {
+        throw new Error("Geçersiz masa veya oturum.");
+    }
+
+    try {
+        await connectToDatabase();
+        const restaurant = await Restaurant.findOne({ ownerId: session.user.id }).select("_id").lean();
+
+        if (!restaurant) {
+            throw new Error("İşletme bulunamadı.");
+        }
+
+        const table = await Table.findOne({
+            _id: tableId,
+            restaurantId: restaurant._id,
+        }).select("isActive");
+
+        if (!table) {
+            throw new Error("Masa bulunamadı.");
+        }
+
+        table.isActive = !table.isActive;
+        await table.save();
+        revalidatePath("/dashboard");
+    } catch (error) {
+        console.error("Table status update failed.", error);
+        throw new Error("Masa durumu güncellenemedi.");
     }
 }
