@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
@@ -11,6 +10,7 @@ import { Table } from "@/models/table";
 import { TableForm } from "@/components/table-form";
 import { TableQr } from "@/components/table-qr";
 import { Rating } from "@/models/rating";
+import { Brand } from "@/components/brand";
 
 async function DashboardContent() {
     const session = await auth.api.getSession({
@@ -77,26 +77,23 @@ async function DashboardContent() {
         <main className="min-h-screen bg-[#f7f7f4] px-5 py-8 text-[#161616] sm:px-8">
             <div className="mx-auto max-w-6xl">
                 <header className="flex items-center justify-between">
-                    <Link href="/" className="flex items-center gap-2 text-base font-semibold tracking-tight">
-                        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#161616] text-sm text-white">m</span>
-                        MasaPuan
-                    </Link>
+                    <Brand compact />
                     <SignOutButton />
                 </header>
 
                 <section className="mt-16">
-                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#e46f45]">Yönetim paneli</p>
+                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#b86b3f]">İşletme merkezi</p>
                     <h1 className="mt-4 text-4xl font-semibold tracking-[-0.04em] sm:text-6xl">
                         Hoş geldiniz, {session.user.name}.
                     </h1>
                     <p className="mt-5 max-w-xl text-lg leading-8 text-black/55">
-                        İşletmenizi, masalarınızı ve müşteri geri bildirimlerinizi buradan yöneteceksiniz.
+                        İşletmenizi, masalarınızı ve misafir deneyimi verilerinizi tek merkezden yönetin.
                     </p>
                 </section>
 
                 <div className="mt-12 grid gap-4 sm:grid-cols-3">
                     {[
-                        [String(summary?.count ?? 0), "Toplam değerlendirme"],
+                        [String(summary?.count ?? 0), "Toplam geri bildirim"],
                         [summary ? summary.average.toFixed(1) : "—", "Ortalama puan"],
                         [String(activeTables.length), "Aktif masa"],
                     ].map(([value, label]) => (
@@ -112,8 +109,8 @@ async function DashboardContent() {
                         <div className="space-y-8">
                             <div className="rounded-3xl bg-white p-7 shadow-sm">
                                 <div>
-                                    <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[#e46f45]">Puan kırılımı</p>
-                                    <h2 className="mt-2 text-2xl font-semibold tracking-tight">Deneyim detayları</h2>
+                                    <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[#b86b3f]">Deneyim özeti</p>
+                                    <h2 className="mt-2 text-2xl font-semibold tracking-tight">Hizmet kalitenizi izleyin</h2>
                                 </div>
                                 <div className="mt-6 grid gap-3 sm:grid-cols-3">
                                     {[
@@ -154,7 +151,7 @@ async function DashboardContent() {
                             )}
                             <div className="space-y-4">
                                 <div>
-                                    <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[#e46f45]">Masa performansı</p>
+                                    <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[#b86b3f]">Masa performansı</p>
                                     <h2 className="mt-2 text-2xl font-semibold tracking-tight">Masalarınızı karşılaştırın</h2>
                                 </div>
                                 {tablePerformance.length > 0 ? (
@@ -164,7 +161,7 @@ async function DashboardContent() {
                                                 <div className="flex items-center justify-between gap-4">
                                                     <div>
                                                         <h3 className="font-semibold">{tableNames.get(String(performance._id)) ?? "Masa"}</h3>
-                                                        <p className="mt-1 text-xs text-black/40">{performance.count} değerlendirme</p>
+                                                        <p className="mt-1 text-xs text-black/40">{performance.count} geri bildirim</p>
                                                     </div>
                                                     <span className="rounded-full bg-[#fff1eb] px-3 py-1.5 text-sm font-semibold text-[#c9552f]">
                                                         {performance.average.toFixed(1)} / 5
@@ -195,8 +192,8 @@ async function DashboardContent() {
                             </div>
                             <div className="space-y-4">
                                 <div>
-                                    <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[#e46f45]">Geri bildirimler</p>
-                                    <h2 className="mt-2 text-2xl font-semibold tracking-tight">Son değerlendirmeler</h2>
+                                    <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[#b86b3f]">Misafir geri bildirimleri</p>
+                                    <h2 className="mt-2 text-2xl font-semibold tracking-tight">Son paylaşımlar</h2>
                                 </div>
                                 {recentRatings.length > 0 ? (
                                     <div className="divide-y divide-black/5 rounded-3xl bg-white shadow-sm">
@@ -223,8 +220,8 @@ async function DashboardContent() {
                                     </div>
                                 ) : (
                                     <div className="rounded-3xl border border-dashed border-black/15 bg-white/50 p-8 text-center">
-                                        <p className="text-sm text-black/50">Henüz değerlendirme yok.</p>
-                                        <p className="mt-2 text-xs text-black/35">İlk müşteri geri bildiriminiz burada görünecek.</p>
+                                        <p className="text-sm text-black/50">Henüz geri bildirim yok.</p>
+                                        <p className="mt-2 text-xs text-black/35">İlk misafir paylaşımı burada görünecek.</p>
                                     </div>
                                 )}
                             </div>

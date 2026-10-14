@@ -13,7 +13,7 @@ export function TableForm() {
             <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[#e46f45]">Yeni masa</p>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight">QR kodlu masa ekleyin</h2>
             <p className="mt-2 text-sm leading-6 text-black/50">
-                Masa adına göre benzersiz bir müşteri bağlantısı oluşturacağız.
+                Masa adına göre misafirlerinizin kullanacağı benzersiz bir bağlantı oluşturacağız.
             </p>
             <label className="mt-6 block text-sm font-medium text-black/70">
                 Masa adı

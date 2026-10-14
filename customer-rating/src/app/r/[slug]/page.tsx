@@ -1,10 +1,10 @@
-import Link from "next/link";
 import { Suspense } from "react";
 import { RatingForm } from "@/components/rating-form";
 import { connectToDatabase } from "@/lib/db";
 import { Table } from "@/models/table";
 import { Restaurant } from "@/models/restaurant";
 import { notFound } from "next/navigation";
+import { Brand } from "@/components/brand";
 
 type RatingPageProps = {
     params: Promise<{ slug: string }>;
@@ -29,14 +29,11 @@ async function RatingPageContent({ params }: RatingPageProps) {
         <main className="min-h-screen bg-[#f7f7f4] px-5 py-6 text-[#161616] sm:px-8 sm:py-10">
             <div className="mx-auto max-w-xl">
                 <header className="mb-7 flex items-center justify-between px-1">
-                    <Link href="/" className="flex items-center gap-2 text-base font-semibold tracking-tight">
-                        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#161616] text-sm text-white">m</span>
-                        MasaPuan
-                    </Link>
+                    <Brand compact />
                     <span className="text-xs text-black/35">{table.name}</span>
                 </header>
                 <RatingForm restaurantName={restaurant.name} tableName={table.name} tableId={String(table._id)} restaurantId={String(restaurant._id)} />
-                <p className="mt-6 text-center text-xs text-black/35">Bu sayfa işletmenin QR kodu ile açıldı.</p>
+                <p className="mt-6 text-center text-xs text-black/35">Görüşleriniz işletmenin hizmet kalitesini geliştirmesine yardımcı olur.</p>
             </div>
         </main>
     );

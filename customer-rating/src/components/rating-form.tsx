@@ -76,7 +76,7 @@ export function RatingForm({ restaurantName, tableName, tableId, restaurantId }:
                     }}
                     className={`mt-8 rounded-full px-5 py-3 text-sm font-medium ${dark ? "bg-white text-[#161616]" : "bg-[#161616] text-white"}`}
                 >
-                    Yeni değerlendirme
+                    Yeni geri bildirim paylaş
                 </button>
             </div>
         );
@@ -87,7 +87,7 @@ export function RatingForm({ restaurantName, tableName, tableId, restaurantId }:
             <div className="mb-10 flex items-start justify-between">
                 <div>
                     <p className={`mb-2 text-sm ${dark ? "text-white/45" : "text-black/45"}`}>{restaurantName}</p>
-                    <h1 className="text-3xl font-semibold tracking-[-0.03em]">Deneyiminiz nasıldı?</h1>
+                    <h1 className="text-3xl font-semibold tracking-[-0.03em]">Deneyiminizi paylaşın.</h1>
                     <p className={`mt-3 text-sm leading-6 ${dark ? "text-white/50" : "text-black/50"}`}>{tableName}</p>
                 </div>
                 <button
@@ -105,13 +105,13 @@ export function RatingForm({ restaurantName, tableName, tableId, restaurantId }:
             <RatingScale label="Personel" value={staffRating} onChange={setStaffRating} dark={dark} />
 
             <label className={`mt-9 block text-sm font-medium ${dark ? "text-white/80" : "text-black/70"}`} htmlFor="comment">
-                Bize biraz daha anlatmak ister misiniz? <span className="font-normal opacity-50">(İsteğe bağlı)</span>
+                Deneyiminiz hakkında ne paylaşmak istersiniz? <span className="font-normal opacity-50">(İsteğe bağlı)</span>
             </label>
             <textarea
                 id="comment"
                 value={comment}
                 onChange={(event) => setComment(event.target.value)}
-                placeholder="Yemeğiniz, servisimiz veya ortamımız hakkında..."
+                placeholder="Yemekler, hizmet veya ortam hakkında görüşleriniz..."
                 rows={4}
                 className={`mt-3 w-full resize-none rounded-2xl border p-4 text-sm outline-none transition focus:border-[#e46f45] ${dark ? "border-white/10 bg-white/5 placeholder:text-white/25" : "border-black/10 bg-[#fafaf8] placeholder:text-black/30"}`}
             />
@@ -123,7 +123,7 @@ export function RatingForm({ restaurantName, tableName, tableId, restaurantId }:
                 {isPending ? "Gönderiliyor..." : "Değerlendirmeyi gönder"}
             </button>
             {error && <p className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-center text-xs text-red-700">{error}</p>}
-            <p className={`mt-4 text-center text-xs ${dark ? "text-white/30" : "text-black/35"}`}>Yanıtınız anonim olarak paylaşılır.</p>
+            <p className={`mt-4 text-center text-xs ${dark ? "text-white/30" : "text-black/35"}`}>Geri bildiriminiz anonim olarak değerlendirilir.</p>
         </form>
     );
 }

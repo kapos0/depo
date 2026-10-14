@@ -32,10 +32,10 @@ export function RestaurantForm() {
     return (
         <form action={formAction} className="rounded-3xl bg-white p-7 shadow-sm sm:p-8">
             <div className="mb-7">
-                <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[#e46f45]">İlk adım</p>
-                <h2 className="mt-2 text-2xl font-semibold tracking-tight">İşletmenizi ekleyin</h2>
+                <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[#b86b3f]">Kurulum</p>
+                <h2 className="mt-2 text-2xl font-semibold tracking-tight">İşletme profilinizi oluşturun</h2>
                 <p className="mt-2 text-sm leading-6 text-black/50">
-                    Müşterilerinizin QR kodu okuttuğunda göreceği işletme bilgilerini girin.
+                    Misafirlerinizin geri bildirim ekranında göreceği işletme bilgilerini girin.
                 </p>
             </div>
             <div className="space-y-4">

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-    title: "MasaPuan | Misafir deneyimini dinleyin",
-    description: "Restoranlar için hızlı ve içgörülü müşteri geri bildirimleri",
+    title: "Müşteri Deneyim Merkezi | Misafir içgörülerini büyütün",
+    description: "Restoran ve kafeler için güvenilir müşteri deneyimi yönetimi",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

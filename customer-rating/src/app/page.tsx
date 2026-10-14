@@ -1,14 +1,12 @@
 import Link from "next/link";
+import { Brand } from "@/components/brand";
 
 export default function Home() {
     return (
         <main className="min-h-screen overflow-hidden bg-[#f7f7f4] text-[#161616]">
             <section className="mx-auto flex min-h-screen max-w-6xl flex-col px-6 py-8 lg:px-10">
                 <nav className="flex items-center justify-between">
-                    <Link href="/" className="flex items-center gap-2 text-lg font-semibold tracking-tight">
-                        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#161616] text-sm text-white">m</span>
-                        MasaPuan
-                    </Link>
+                    <Brand />
                     <Link
                         href="/sign-in"
                         className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-medium transition hover:border-black/30"
@@ -20,21 +18,21 @@ export default function Home() {
                 <div className="grid flex-1 items-center gap-16 py-20 lg:grid-cols-[1.05fr_0.95fr] lg:py-12">
                     <div>
                         <p className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-[#e46f45]">
-                            Restoranlar için geri bildirim
+                            Misafir deneyimi yönetimi
                         </p>
                         <h1 className="max-w-xl text-5xl font-semibold leading-[1.05] tracking-[-0.04em] sm:text-7xl">
-                            Misafirlerinizin sesini, <span className="text-[#e46f45]">masada</span> duyun.
+                            Her geri bildirimle, <span className="text-[#b86b3f]">daha iyi</span> bir deneyim sunun.
                         </h1>
                         <p className="mt-7 max-w-lg text-lg leading-8 text-black/60">
-                            QR kodu okutulur, değerlendirme birkaç saniyede tamamlanır. Ekibinizin neyi iyi yaptığını ve
-                            nerede gelişebileceğini tek panelden görün.
+                            Müşterilerinizin deneyimini masada dinleyin; ekibinizin güçlü yönlerini ve gelişim alanlarını
+                            güvenilir verilerle yönetin.
                         </p>
                         <div className="mt-9 flex flex-wrap gap-3">
                             <Link
                                 href="/sign-in"
                                 className="rounded-full bg-[#161616] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#333]"
                             >
-                                Yönetim paneline başlayın
+                                Ücretsiz başlayın
                             </Link>
                             <span className="flex items-center px-3 py-3 text-sm text-black/50">Kurulum birkaç dakika sürer</span>
                         </div>
@@ -44,13 +42,13 @@ export default function Home() {
                         <div className="absolute -inset-8 rounded-[3rem] bg-[#e8e4d9]" />
                         <div className="relative rounded-[2.5rem] border border-black/10 bg-white p-8 shadow-2xl shadow-black/10">
                             <div className="mb-12 flex items-center justify-between">
-                                <span className="text-sm font-semibold">MasaPuan</span>
+                                <Brand compact />
                                 <span className="rounded-full bg-[#f7f7f4] px-3 py-1.5 text-xs text-black/50">QR ile açılır</span>
                             </div>
                             <div className="mb-8">
-                                <p className="mb-2 text-sm text-black/50">Misafir geri bildirimi</p>
-                                <h2 className="text-3xl font-semibold tracking-tight">Deneyiminiz nasıldı?</h2>
-                                <p className="mt-3 text-sm leading-6 text-black/50">Geri bildiriminiz ekibimiz için çok değerli.</p>
+                                <p className="mb-2 text-sm text-black/50">Misafir deneyimi</p>
+                                <h2 className="text-3xl font-semibold tracking-tight">Deneyiminizi paylaşın.</h2>
+                                <p className="mt-3 text-sm leading-6 text-black/50">Görüşleriniz hizmet kalitemizi geliştirmemize yardımcı olur.</p>
                             </div>
                             <div className="flex gap-2">
                                 {["Çok kötü", "Kötü", "İyi", "Harika", "Mükemmel"].map((label, index) => (

@@ -43,14 +43,14 @@ export function AuthForm() {
     return (
         <div className="rounded-[2rem] bg-white p-7 shadow-xl shadow-black/5 sm:p-10">
             <div className="mb-8">
-                <p className="mb-2 text-sm text-black/45">MasaPuan yönetimi</p>
+                <p className="mb-2 text-sm font-medium text-[#b86b3f]">İşletme yönetimi</p>
                 <h1 className="text-3xl font-semibold tracking-[-0.03em]">
-                    {mode === "sign-in" ? "Tekrar hoş geldiniz." : "İşletmenizi oluşturun."}
+                    {mode === "sign-in" ? "Tekrar hoş geldiniz." : "İşletmenizi güçlendirin."}
                 </h1>
                 <p className="mt-3 text-sm leading-6 text-black/50">
                     {mode === "sign-in"
-                        ? "Değerlendirmelerinizi görmek için hesabınıza giriş yapın."
-                        : "Müşteri geri bildirimlerini toplamaya hemen başlayın."}
+                        ? "Misafir deneyimi içgörüleriniz için hesabınıza giriş yapın."
+                        : "Misafirlerinizin sesini dinlemeye hemen başlayın."}
                 </p>
             </div>
 
@@ -98,7 +98,7 @@ export function AuthForm() {
                             onChange={(event) => setRememberMe(event.target.checked)}
                             className="h-4 w-4 rounded border-black/20 accent-[#e46f45]"
                         />
-                        Beni hatırla
+                        Oturumumu açık tut
                     </label>
                 )}
                 {error && <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
@@ -118,7 +118,7 @@ export function AuthForm() {
                 }}
                 className="mt-6 w-full text-center text-sm text-black/50 underline decoration-black/20 underline-offset-4"
             >
-                {mode === "sign-in" ? "Henüz hesabınız yok mu? Kayıt olun" : "Zaten hesabınız var mı? Giriş yapın"}
+                {mode === "sign-in" ? "Henüz hesabınız yok mu? Hesap oluşturun" : "Zaten hesabınız var mı? Giriş yapın"}
             </button>
         </div>
     );
