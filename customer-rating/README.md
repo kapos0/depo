@@ -5,7 +5,7 @@ Restoran ve kafeler için QR kod üzerinden müşteri geri bildirimi toplama uyg
 ## Geliştirme
 
 Projeyi çalıştırmadan önce `.env.example` dosyasını `.env.local` olarak kopyalayın ve
-MongoDB bağlantı adresinizi `MONGODB_URI` değişkenine yazın.
+MongoDB bağlantı adresinizi `MONGODB_URI` değişkenine yazın. URI içinde veritabanı adı yoksa uygulama `active` veritabanını kullanır. Farklı bir ad için isteğe bağlı olarak `MONGODB_DB_NAME` değişkenini ayarlayabilirsiniz.
 
 ```bash
 cp .env.example .env.local

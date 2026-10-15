@@ -26,9 +26,14 @@ export async function createTable(
     }
 
     const name = String(formData.get("name") ?? "").trim();
+    const description = String(formData.get("description") ?? "").trim();
 
     if (name.length < 1 || name.length > 50) {
         return { error: "Masa adı 1 ile 50 karakter arasında olmalı." };
+    }
+
+    if (description.length > 200) {
+        return { error: "Masa açıklaması 200 karakterden uzun olamaz." };
     }
 
     try {
@@ -42,6 +47,7 @@ export async function createTable(
         await Table.create({
             restaurantId: restaurant._id,
             name,
+            description: description || undefined,
         });
 
         revalidatePath("/dashboard");
@@ -49,6 +55,64 @@ export async function createTable(
     } catch (error) {
         console.error("Table creation failed.", error);
         return { error: "Masa oluşturulurken bir hata oluştu. Lütfen tekrar deneyin." };
+    }
+}
+
+export async function updateTable(
+        _previousState: TableActionState,
+        formData: FormData,
+    ): Promise<TableActionState> {
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+
+    if (!session) {
+        return { error: "Bu işlemi yapmak için giriş yapmalısınız." };
+    }
+
+    const tableId = String(formData.get("tableId") ?? "");
+    const name = String(formData.get("name") ?? "").trim();
+    const description = String(formData.get("description") ?? "").trim();
+
+    if (!mongoose.Types.ObjectId.isValid(tableId)) {
+        return { error: "Geçersiz masa." };
+    }
+
+    if (name.length < 1 || name.length > 50) {
+        return { error: "Masa adı 1 ile 50 karakter arasında olmalı." };
+    }
+
+    if (description.length > 200) {
+        return { error: "Masa açıklaması 200 karakterden uzun olamaz." };
+    }
+
+    try {
+        await connectToDatabase();
+        const restaurant = await Restaurant.findOne({ ownerId: session.user.id }).select("_id").lean();
+
+        if (!restaurant) {
+            return { error: "İşletme bulunamadı." };
+        }
+
+        const table = await Table.findOne({
+            _id: tableId,
+            restaurantId: restaurant._id,
+        });
+
+        if (!table) {
+            return { error: "Masa bulunamadı." };
+        }
+
+        table.name = name;
+        table.description = description || undefined;
+        await table.save();
+
+        revalidatePath("/dashboard");
+        revalidatePath(`/r/${table.publicSlug}`);
+        return { success: true };
+    } catch (error) {
+        console.error("Table update failed.", error);
+        return { error: "Masa güncellenirken bir hata oluştu. Lütfen tekrar deneyin." };
     }
 }
 

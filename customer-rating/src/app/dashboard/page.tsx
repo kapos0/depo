@@ -131,7 +131,6 @@ async function DashboardContent() {
                                 <h2 className="mt-3 text-3xl font-semibold tracking-tight">{restaurant.name}</h2>
                                 {restaurant.description && <p className="mt-2 text-sm leading-6 text-black/50">{restaurant.description}</p>}
                             </div>
-                            <TableForm />
                             {tables.length > 0 && (
                                 <div className="space-y-4">
                                     <div>
@@ -142,6 +141,7 @@ async function DashboardContent() {
                                         <TableQr
                                             key={String(table._id)}
                                             name={table.name}
+                                            description={table.description}
                                             url={`${appUrl}/r/${table.publicSlug}`}
                                             tableId={String(table._id)}
                                             isActive={table.isActive}
@@ -225,6 +225,7 @@ async function DashboardContent() {
                                     </div>
                                 )}
                             </div>
+                            <TableForm />
                         </div>
                     ) : (
                         <RestaurantForm />

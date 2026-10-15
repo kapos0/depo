@@ -28,10 +28,12 @@ export async function connectToDatabase(): Promise<typeof mongoose> {
     }
 
     if (!cached.promise) {
-        cached.promise = mongoose.connect(uri).catch((error: unknown) => {
-            cached.promise = null;
-            throw error;
-        });
+        cached.promise = mongoose
+            .connect(uri, { dbName: process.env.MONGODB_DB_NAME ?? "active" })
+            .catch((error: unknown) => {
+                cached.promise = null;
+                throw error;
+            });
     }
 
     cached.conn = await cached.promise;

@@ -25,6 +25,16 @@ export function TableForm() {
                     className="mt-2 w-full rounded-xl border border-black/10 bg-[#fafaf8] px-4 py-3 outline-none focus:border-[#e46f45]"
                 />
             </label>
+            <label className="mt-4 block text-sm font-medium text-black/70">
+                Açıklama <span className="font-normal text-black/40">(İsteğe bağlı)</span>
+                <textarea
+                    name="description"
+                    maxLength={200}
+                    rows={2}
+                    placeholder="Örn. Bahçedeki köşe masa"
+                    className="mt-2 w-full resize-none rounded-xl border border-black/10 bg-[#fafaf8] px-4 py-3 outline-none focus:border-[#e46f45]"
+                />
+            </label>
             {state.error && <p className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{state.error}</p>}
             {state.success && <p className="mt-4 rounded-xl bg-[#e9f5ed] px-4 py-3 text-sm text-[#33774b]">Masa oluşturuldu.</p>}
             <button

@@ -15,6 +15,11 @@ const tableSchema = new Schema(
             trim: true,
             maxlength: 50,
         },
+        description: {
+            type: String,
+            trim: true,
+            maxlength: 200,
+        },
         publicSlug: {
             type: String,
             required: true,

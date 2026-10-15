@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { connection } from "next/server";
 import { RatingForm } from "@/components/rating-form";
 import { connectToDatabase } from "@/lib/db";
 import { Table } from "@/models/table";
@@ -12,14 +13,20 @@ type RatingPageProps = {
 
 async function RatingPageContent({ params }: RatingPageProps) {
     const { slug } = await params;
+    await connection();
     await connectToDatabase();
-    const table = await Table.findOne({ publicSlug: slug, isActive: true }).lean();
+    const table = await Table.findOne({
+        publicSlug: slug,
+        isActive: true,
+    }).lean();
 
     if (!table) {
         notFound();
     }
 
-    const restaurant = await Restaurant.findById(table.restaurantId).select("name description").lean();
+    const restaurant = await Restaurant.findById(table.restaurantId)
+        .select("name description")
+        .lean();
 
     if (!restaurant) {
         notFound();
@@ -32,8 +39,17 @@ async function RatingPageContent({ params }: RatingPageProps) {
                     <Brand compact />
                     <span className="text-xs text-black/35">{table.name}</span>
                 </header>
-                <RatingForm restaurantName={restaurant.name} tableName={table.name} tableId={String(table._id)} restaurantId={String(restaurant._id)} />
-                <p className="mt-6 text-center text-xs text-black/35">Görüşleriniz işletmenin hizmet kalitesini geliştirmesine yardımcı olur.</p>
+                {/*{table.description && <p className="mb-5 rounded-2xl bg-white px-4 py-3 text-sm leading-6 text-black/55 shadow-sm">{table.description}</p>}*/}
+                <RatingForm
+                    restaurantName={restaurant.name}
+                    tableName={table.name}
+                    tableId={String(table._id)}
+                    restaurantId={String(restaurant._id)}
+                />
+                <p className="mt-6 text-center text-xs text-black/35">
+                    Görüşleriniz işletmenin hizmet kalitesini geliştirmesine
+                    yardımcı olur.
+                </p>
             </div>
         </main>
     );
@@ -41,7 +57,16 @@ async function RatingPageContent({ params }: RatingPageProps) {
 
 export default function RatingPage({ params }: RatingPageProps) {
     return (
-        <Suspense fallback={<main className="min-h-screen bg-[#f7f7f4]" />}>
+        <Suspense
+            fallback={
+                <main className="min-h-screen bg-[#f7f7f4] px-5 py-6 text-[#161616] sm:px-8 sm:py-10">
+                    <div className="mx-auto max-w-xl">
+                        <div className="mb-7 h-5 w-36 animate-pulse rounded bg-black/10" />
+                        <div className="h-96 animate-pulse rounded-3xl bg-white/70" />
+                    </div>
+                </main>
+            }
+        >
             <RatingPageContent params={params} />
         </Suspense>
     );
