@@ -33,3 +33,38 @@ benzersiz bir bağlantı ve QR kodu oluşturulur. Müşteri formu bu bağlantı 
 pnpm lint
 pnpm build
 ```
+
+## Docker ile çalıştırma
+
+Docker Compose, Next.js uygulamasını ve MongoDB'yi aynı ağda başlatır. Better
+Auth transaction kullandığı için MongoDB Docker içinde tek düğümlü `rs0`
+replica set olarak çalıştırılır. MongoDB verileri `mongo-data` isimli kalıcı
+Docker volume'unda tutulur.
+
+`.env.local` dosyanız yoksa önce örnek dosyayı oluşturun ve özellikle
+`BETTER_AUTH_SECRET` değerini güçlü, en az 32 karakterlik bir değerle doldurun:
+
+```bash
+cp .env.example .env.local
+docker compose up --build
+```
+
+Replica set ayarını ilk kez uygularken mevcut MongoDB volume'unu temizlemek
+gerekirse:
+
+```bash
+docker compose down -v
+docker compose up --build
+```
+
+Uygulama `http://localhost:3000` adresinde açılır. Compose içindeki `web`
+servisi, host makinedeki veya `.env.local` içindeki MongoDB adresini kullanmak
+yerine aynı Compose projesindeki `mongo` servisine bağlanır. Verileri ve
+kullanıcı hesaplarını tamamen silmek için:
+
+```bash
+docker compose down -v
+```
+
+`.env.local` gizli bilgileri içerdiği için Docker imajına kopyalanmaz ve Git'e
+eklenmemelidir.
