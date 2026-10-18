@@ -36,6 +36,24 @@ export function TableQr({ name, description, url, tableId, isActive }: TableQrPr
         await navigator.clipboard.writeText(url);
     }
 
+    function downloadQr() {
+        const qrElement = document.getElementById(`qr-${tableId}`);
+
+        if (!(qrElement instanceof SVGElement)) {
+            return;
+        }
+
+        const svg = new XMLSerializer().serializeToString(qrElement);
+        const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
+        const downloadUrl = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        link.href = downloadUrl;
+        link.download = `${name.toLowerCase().replace(/[^a-z0-9]+/gi, "-") || "masa"}-qr.svg`;
+        link.click();
+        URL.revokeObjectURL(downloadUrl);
+    }
+
     return (
         <article
             className={`flex flex-col gap-5 rounded-3xl p-6 shadow-sm sm:flex-row sm:items-center ${isActive ? "bg-white" : "bg-black/3 opacity-75"}`}
@@ -43,6 +61,7 @@ export function TableQr({ name, description, url, tableId, isActive }: TableQrPr
             {isActive && (
                 <div className="rounded-2xl bg-white p-3 ring-1 ring-black/5">
                     <QRCodeSVG
+                        id={`qr-${tableId}`}
                         value={url}
                         size={128}
                         bgColor="#ffffff"
@@ -72,6 +91,15 @@ export function TableQr({ name, description, url, tableId, isActive }: TableQrPr
                             className="rounded-full border border-black/10 px-4 py-2 text-sm font-medium transition hover:border-black/30"
                         >
                             Bağlantıyı kopyala
+                        </button>
+                    )}
+                    {isActive && (
+                        <button
+                            type="button"
+                            onClick={downloadQr}
+                            className="rounded-full border border-black/10 px-4 py-2 text-sm font-medium transition hover:border-black/30"
+                        >
+                            QR görselini indir
                         </button>
                     )}
                     <button

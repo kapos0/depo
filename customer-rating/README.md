@@ -39,7 +39,9 @@ pnpm build
 Docker Compose, Next.js uygulamasını ve MongoDB'yi aynı ağda başlatır. Better
 Auth transaction kullandığı için MongoDB Docker içinde tek düğümlü `rs0`
 replica set olarak çalıştırılır. MongoDB verileri `mongo-data` isimli kalıcı
-Docker volume'unda tutulur.
+Docker volume'unda tutulur. MongoDB, rutin bağlantı günlüklerini terminali
+doldurmaması için sessiz modda çalışır; uyarı ve hata günlükleri görünmeye
+devam eder. Container logları ayrıca 10 MB ve 3 dosya ile sınırlandırılır.
 
 `.env.local` dosyanız yoksa önce örnek dosyayı oluşturun ve özellikle
 `BETTER_AUTH_SECRET` değerini güçlü, en az 32 karakterlik bir değerle doldurun:

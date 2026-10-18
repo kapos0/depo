@@ -11,6 +11,9 @@ import { TableForm } from "@/components/table-form";
 import { TableQr } from "@/components/table-qr";
 import { Rating } from "@/models/rating";
 import { Brand } from "@/components/brand";
+import Link from "next/link";
+import { RatingCard } from "@/components/rating-card";
+import { deleteRating } from "@/app/dashboard/rating-actions";
 
 async function DashboardContent() {
     const session = await auth.api.getSession({
@@ -65,7 +68,7 @@ async function DashboardContent() {
     const recentRatings = restaurant
         ? await Rating.find({ restaurantId: restaurant._id })
               .sort({ createdAt: -1 })
-              .limit(8)
+              .limit(10)
               .select("tableId overallRating foodRating staffRating comment createdAt")
               .lean()
         : [];
@@ -191,31 +194,28 @@ async function DashboardContent() {
                                 )}
                             </div>
                             <div className="space-y-4">
-                                <div>
+                                <div className="flex items-end justify-between gap-4">
+                                    <div>
                                     <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[#b86b3f]">Misafir geri bildirimleri</p>
                                     <h2 className="mt-2 text-2xl font-semibold tracking-tight">Son paylaşımlar</h2>
+                                    </div>
+                                    <Link href="/dashboard/ratings" className="text-sm font-medium text-[#b86b3f] hover:underline">Tümünü gör</Link>
                                 </div>
                                 {recentRatings.length > 0 ? (
-                                    <div className="divide-y divide-black/5 rounded-3xl bg-white shadow-sm">
+                                    <div className="grid gap-4">
                                         {recentRatings.map((rating) => (
-                                            <article key={String(rating._id)} className="p-6">
-                                                <div className="flex items-center justify-between gap-4">
-                                                    <div>
-                                                        <p className="text-sm font-semibold">{tableNames.get(String(rating.tableId)) ?? "Masa"}</p>
-                                                        <p className="mt-1 text-xs text-black/40">
-                                                            {new Date(rating.createdAt).toLocaleDateString("tr-TR", {
-                                                                day: "numeric",
-                                                                month: "long",
-                                                                year: "numeric",
-                                                            })}
-                                                        </p>
-                                                    </div>
-                                                    <span className="rounded-full bg-[#fff1eb] px-3 py-1.5 text-sm font-semibold text-[#c9552f]">
-                                                        {rating.overallRating}/5
-                                                    </span>
-                                                </div>
-                                                {rating.comment && <p className="mt-4 text-sm leading-6 text-black/60">{rating.comment}</p>}
-                                            </article>
+                                            <RatingCard
+                                                key={String(rating._id)}
+                                                ratingId={String(rating._id)}
+                                                tableName={tableNames.get(String(rating.tableId)) ?? "Masa"}
+                                                overallRating={rating.overallRating}
+                                                foodRating={rating.foodRating}
+                                                staffRating={rating.staffRating}
+                                                comment={rating.comment}
+                                                createdAt={rating.createdAt}
+                                                displayedCategory="overall"
+                                                deleteAction={deleteRating}
+                                            />
                                         ))}
                                     </div>
                                 ) : (
