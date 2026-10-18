@@ -3,7 +3,11 @@
 import { QRCodeSVG } from "qrcode.react";
 import { startTransition, useActionState, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { toggleTableStatus, updateTable, type TableActionState } from "@/app/dashboard/table-actions";
+import {
+    toggleTableStatus,
+    updateTable,
+    type TableActionState,
+} from "@/app/dashboard/table-actions";
 
 type TableQrProps = {
     name: string;
@@ -13,10 +17,19 @@ type TableQrProps = {
     isActive: boolean;
 };
 
-export function TableQr({ name, description, url, tableId, isActive }: TableQrProps) {
+export function TableQr({
+    name,
+    description,
+    url,
+    tableId,
+    isActive,
+}: TableQrProps) {
     const router = useRouter();
     const [isEditing, setIsEditing] = useState(false);
-    const [state, formAction, isPending] = useActionState<TableActionState, FormData>(async (previousState, formData) => {
+    const [state, formAction, isPending] = useActionState<
+        TableActionState,
+        FormData
+    >(async (previousState, formData) => {
         const result = await updateTable(previousState, formData);
 
         if (result.success) {
@@ -79,7 +92,11 @@ export function TableQr({ name, description, url, tableId, isActive }: TableQrPr
                 <h3 className="mt-2 text-2xl font-semibold tracking-tight">
                     {name}
                 </h3>
-                {description && <p className="mt-1 text-sm leading-6 text-black/50">{description}</p>}
+                {description && (
+                    <p className="mt-1 text-sm leading-6 text-black/50">
+                        {description}
+                    </p>
+                )}
                 {isActive && (
                     <p className="mt-2 truncate text-sm text-black/45">{url}</p>
                 )}
@@ -99,7 +116,7 @@ export function TableQr({ name, description, url, tableId, isActive }: TableQrPr
                             onClick={downloadQr}
                             className="rounded-full border border-black/10 px-4 py-2 text-sm font-medium transition hover:border-black/30"
                         >
-                            QR görselini indir
+                            QR indir
                         </button>
                     )}
                     <button
@@ -115,12 +132,15 @@ export function TableQr({ name, description, url, tableId, isActive }: TableQrPr
                             type="submit"
                             className={`rounded-full px-4 py-2 text-sm font-medium transition ${isActive ? "border border-red-200 text-red-700 hover:bg-red-50" : "bg-[#161616] text-white hover:bg-[#333]"}`}
                         >
-                            {isActive ? "Pasifleştir" : "Aktifleştir"}
+                            {isActive ? "Pasif" : "Aktif"}
                         </button>
                     </form>
                 </div>
                 {isEditing && (
-                    <form action={formAction} className="mt-5 space-y-3 rounded-2xl bg-[#f7f7f4] p-4">
+                    <form
+                        action={formAction}
+                        className="mt-5 space-y-3 rounded-2xl bg-[#f7f7f4] p-4"
+                    >
                         <input type="hidden" name="tableId" value={tableId} />
                         <label className="block text-sm font-medium text-black/70">
                             Masa adı
@@ -133,7 +153,10 @@ export function TableQr({ name, description, url, tableId, isActive }: TableQrPr
                             />
                         </label>
                         <label className="block text-sm font-medium text-black/70">
-                            Açıklama <span className="font-normal text-black/40">(İsteğe bağlı)</span>
+                            Açıklama{" "}
+                            <span className="font-normal text-black/40">
+                                (İsteğe bağlı)
+                            </span>
                             <textarea
                                 name="description"
                                 maxLength={200}
@@ -143,13 +166,19 @@ export function TableQr({ name, description, url, tableId, isActive }: TableQrPr
                                 className="mt-1.5 w-full resize-none rounded-xl border border-black/10 bg-white px-3 py-2.5 outline-none focus:border-[#e46f45]"
                             />
                         </label>
-                        {state.error && <p className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{state.error}</p>}
+                        {state.error && (
+                            <p className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">
+                                {state.error}
+                            </p>
+                        )}
                         <button
                             type="submit"
                             disabled={isPending}
                             className="rounded-xl bg-[#161616] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#333] disabled:cursor-wait disabled:opacity-50"
                         >
-                            {isPending ? "Kaydediliyor..." : "Değişiklikleri kaydet"}
+                            {isPending
+                                ? "Kaydediliyor..."
+                                : "Değişiklikleri kaydet"}
                         </button>
                     </form>
                 )}
