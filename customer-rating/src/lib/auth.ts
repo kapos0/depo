@@ -4,7 +4,7 @@ import { betterAuth } from "better-auth/minimal";
 import { mongoClient } from "@/lib/mongodb";
 
 export const auth = betterAuth({
-    database: mongodbAdapter(mongoClient.db(process.env.MONGODB_DB_NAME ?? "active"), { client: mongoClient }),
+    database: mongodbAdapter(mongoClient.db(process.env.MONGODB_DB_NAME ?? "active")),
     emailAndPassword: {
         enabled: true,
     },
