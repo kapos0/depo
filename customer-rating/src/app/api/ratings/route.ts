@@ -13,7 +13,47 @@ type RatingRequest = {
     comment?: string;
 };
 
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX_REQUESTS = 10;
+const requestCounts = new Map<string, { count: number; resetAt: number }>();
+
+function getClientKey(request: Request): string {
+    return (
+        request.headers.get("x-real-ip") ??
+        request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+        "unknown"
+    );
+}
+
+function isRateLimited(key: string): boolean {
+    const now = Date.now();
+    const current = requestCounts.get(key);
+
+    if (requestCounts.size > 1_000) {
+        for (const [storedKey, entry] of requestCounts) {
+            if (entry.resetAt <= now) {
+                requestCounts.delete(storedKey);
+            }
+        }
+    }
+
+    if (!current || current.resetAt <= now) {
+        requestCounts.set(key, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+        return false;
+    }
+
+    current.count += 1;
+    return current.count > RATE_LIMIT_MAX_REQUESTS;
+}
+
 export async function POST(request: Request) {
+    if (isRateLimited(getClientKey(request))) {
+        return NextResponse.json(
+            { error: "Çok fazla istek gönderildi. Lütfen biraz sonra tekrar deneyin." },
+            { status: 429 },
+        );
+    }
+
     let body: RatingRequest;
 
     try {

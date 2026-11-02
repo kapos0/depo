@@ -39,7 +39,6 @@ async function RatingPageContent({ params }: RatingPageProps) {
                     <Brand compact />
                     <span className="text-xs text-black/35">{table.name}</span>
                 </header>
-                {/*{table.description && <p className="mb-5 rounded-2xl bg-white px-4 py-3 text-sm leading-6 text-black/55 shadow-sm">{table.description}</p>}*/}
                 <RatingForm
                     restaurantName={restaurant.name}
                     tableName={table.name}

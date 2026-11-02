@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import "@/css/globals.css";
-import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+import Navbar from "@/components/navbar";
 
 export const metadata: Metadata = {
     title: "Tracing of Fular",
@@ -12,8 +10,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
     return (
-        <html lang="en" className={cn("font-sans", geist.variable)}>
-            <body className="antialiased">{children}</body>
+        <html lang="en" className={cn("font-sans")}>
+            <body className="antialiased">
+                <Navbar />
+                {children}
+            </body>
         </html>
     );
 }

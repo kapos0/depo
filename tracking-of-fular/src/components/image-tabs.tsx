@@ -51,6 +51,7 @@ export default function ImageTabs() {
                                 alt="Organize Things"
                                 width={1200}
                                 height={800}
+                                loading="eager"
                             />
                         )}
 

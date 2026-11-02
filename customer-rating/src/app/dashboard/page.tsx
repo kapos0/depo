@@ -26,55 +26,51 @@ async function DashboardContent() {
 
     await connectToDatabase();
     const restaurant = await Restaurant.findOne({ ownerId: session.user.id }).lean();
-    const tables = restaurant
-        ? await Table.find({ restaurantId: restaurant._id }).sort({ createdAt: -1 }).lean()
-        : [];
+    const [tables, ratingSummary, tablePerformance, recentRatings] = restaurant
+        ? await Promise.all([
+              Table.find({ restaurantId: restaurant._id }).sort({ createdAt: -1 }).lean(),
+              Rating.aggregate<{ _id: null; count: number; average: number; foodAverage: number; staffAverage: number }>([
+                  { $match: { restaurantId: restaurant._id } },
+                  {
+                      $group: {
+                          _id: null,
+                          count: { $sum: 1 },
+                          average: { $avg: "$overallRating" },
+                          foodAverage: { $avg: "$foodRating" },
+                          staffAverage: { $avg: "$staffRating" },
+                      },
+                  },
+              ]),
+              Rating.aggregate<{
+                  _id: string;
+                  count: number;
+                  average: number;
+                  foodAverage: number;
+                  staffAverage: number;
+              }>([
+                  { $match: { restaurantId: restaurant._id } },
+                  {
+                      $group: {
+                          _id: "$tableId",
+                          count: { $sum: 1 },
+                          average: { $avg: "$overallRating" },
+                          foodAverage: { $avg: "$foodRating" },
+                          staffAverage: { $avg: "$staffRating" },
+                      },
+                  },
+                  { $sort: { average: -1 } },
+              ]),
+              Rating.find({ restaurantId: restaurant._id })
+                  .sort({ createdAt: -1 })
+                  .limit(10)
+                  .select("tableId overallRating foodRating staffRating comment createdAt")
+                  .lean(),
+          ])
+        : [[], [], [], []];
     const activeTables = tables.filter((table) => table.isActive);
-    const ratingSummary = restaurant
-        ? await Rating.aggregate<{ _id: null; count: number; average: number; foodAverage: number; staffAverage: number }>([
-              { $match: { restaurantId: restaurant._id } },
-              {
-                  $group: {
-                      _id: null,
-                      count: { $sum: 1 },
-                      average: { $avg: "$overallRating" },
-                      foodAverage: { $avg: "$foodRating" },
-                      staffAverage: { $avg: "$staffRating" },
-                  },
-              },
-          ])
-        : [];
-    const tablePerformance = restaurant
-        ? await Rating.aggregate<{
-              _id: string;
-              count: number;
-              average: number;
-              foodAverage: number;
-              staffAverage: number;
-          }>([
-              { $match: { restaurantId: restaurant._id } },
-              {
-                  $group: {
-                      _id: "$tableId",
-                      count: { $sum: 1 },
-                      average: { $avg: "$overallRating" },
-                      foodAverage: { $avg: "$foodRating" },
-                      staffAverage: { $avg: "$staffRating" },
-                  },
-              },
-              { $sort: { average: -1 } },
-          ])
-        : [];
-    const recentRatings = restaurant
-        ? await Rating.find({ restaurantId: restaurant._id })
-              .sort({ createdAt: -1 })
-              .limit(10)
-              .select("tableId overallRating foodRating staffRating comment createdAt")
-              .lean()
-        : [];
     const tableNames = new Map(tables.map((table) => [String(table._id), table.name]));
     const summary = ratingSummary[0];
-    const appUrl = process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
+    const appUrl = process.env.PUBLIC_APP_URL ?? process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
 
     return (
         <main className="min-h-screen bg-[#f7f7f4] px-5 py-8 text-[#161616] sm:px-8">
