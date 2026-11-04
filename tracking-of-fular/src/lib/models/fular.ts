@@ -4,6 +4,7 @@ export interface IFular extends Document {
     title: string;
     creator: string;
     category?: string;
+    tasks: string[];
     status: string;
     columnId: mongoose.Types.ObjectId;
     boardId: mongoose.Types.ObjectId;
@@ -36,6 +37,10 @@ const FularSchema = new Schema<IFular>(
             type: String,
             required: true,
             default: "planned",
+        },
+        tasks: {
+            type: [String],
+            default: [],
         },
         columnId: {
             type: Schema.Types.ObjectId,
