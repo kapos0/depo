@@ -1,12 +1,23 @@
 import { getSession } from "@/lib/auth/auth";
+import { getDashboardData } from "@/lib/actions/board";
+import DashboardBoard from "@/components/dashboard-board";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
+import { Suspense } from "react";
 
-export default async function Dashboard() {
+export default function Dashboard() {
+    return <Suspense fallback={<DashboardSkeleton />}><DashboardContent /></Suspense>;
+}
+
+async function DashboardContent() {
+    await connection();
     const session = await getSession();
     if (!session?.user) redirect("/sign-in");
-    return (
-        <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-white p-4">
-            <h1 className="text-2xl font-bold text-black">Dashboard</h1>
-        </div>
-    );
+    const data = await getDashboardData();
+    if (!data) redirect("/sign-in");
+    return <DashboardBoard initialData={data} />;
+}
+
+function DashboardSkeleton() {
+    return <div className="min-h-[calc(100vh-4rem)] animate-pulse bg-[#fff9fb] p-8"><div className="mx-auto h-10 max-w-[1500px] rounded bg-pink-100" /></div>;
 }

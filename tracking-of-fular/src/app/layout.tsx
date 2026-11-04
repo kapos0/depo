@@ -4,13 +4,13 @@ import { cn } from "@/lib/utils";
 import Navbar from "@/components/navbar";
 
 export const metadata: Metadata = {
-    title: "Tracing of Fular",
-    description: "A web application for tracking and managing fulars.",
+    title: "Fular | Kişisel takip panon",
+    description: "Kitap, film, podcast ve daha fazlasını kişisel panolarında takip et.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
     return (
-        <html lang="en" className={cn("font-sans")}>
+        <html lang="tr" className={cn("font-sans")}>
             <body className="antialiased">
                 <Navbar />
                 {children}

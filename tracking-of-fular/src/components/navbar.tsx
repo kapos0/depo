@@ -1,6 +1,6 @@
 "use client";
 
-import { Briefcase } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import {
@@ -23,8 +23,8 @@ export default function Navbar() {
                     href="/"
                     className="flex items-center gap-2 text-xl font-semibold text-primary"
                 >
-                    <Briefcase />
-                    Fular Tracking
+                    <BookOpen />
+                    Fular
                 </Link>
                 <div className="flex items-center gap-4">
                     {session?.user ? (
@@ -35,7 +35,7 @@ export default function Navbar() {
                                 variant="ghost"
                                 className="text-gray-700 hover:text-black"
                             >
-                                Dashboard
+                                Panom
                             </Button>
                             <DropdownMenu>
                                 <DropdownMenuTrigger
@@ -69,6 +69,14 @@ export default function Navbar() {
                                             </div>
                                         </DropdownMenuLabel>
                                     </DropdownMenuGroup>
+                                    <Button
+                                        render={<Link href="/profile" />}
+                                        nativeButton={false}
+                                        variant="ghost"
+                                        className="w-full justify-start"
+                                    >
+                                        Profilim
+                                    </Button>
                                     <SignOutButton />
                                 </DropdownMenuContent>
                             </DropdownMenu>
@@ -81,14 +89,14 @@ export default function Navbar() {
                                 variant="ghost"
                                 className="text-gray-700 hover:text-black"
                             >
-                                Log In
+                                Giriş yap
                             </Button>
                             <Button
                                 render={<Link href="/sign-up" />}
                                 nativeButton={false}
                                 className="bg-primary hover:bg-primary/90"
                             >
-                                Start for free
+                                Ücretsiz başla
                             </Button>
                         </>
                     )}

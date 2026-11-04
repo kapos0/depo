@@ -2,15 +2,13 @@ import connectDB from "./db";
 import { Board, Column } from "./models";
 
 const DEFAULT_COLUMNS = [
-    { name: "To Do", tasks: [], order: 0 },
-    { name: "In Progress", tasks: [], order: 1 },
-    { name: "Done", tasks: [], order: 2 },
-    { name: "Backlog", tasks: [], order: 3 },
-    { name: "Archived", tasks: [], order: 4 },
-    { name: "Ideas", tasks: [], order: 5 },
+    { name: "Planlandı", order: 0 },
+    { name: "Devam ediyor", order: 1 },
+    { name: "Tamamlandı", order: 2 },
+    { name: "Arşiv", order: 3 },
 ];
 
-export default async function initUserBoard(userId: string): Promise<void> {
+export default async function initUserBoard(userId: string) {
     try {
         await connectDB();
         const existingBoard = await Board.findOne({ userId, name: "Fular" });
@@ -25,7 +23,6 @@ export default async function initUserBoard(userId: string): Promise<void> {
             DEFAULT_COLUMNS.map(async (column) => {
                 const newColumn = await Column.create({
                     name: column.name,
-                    tasks: column.tasks,
                     order: column.order,
                     boardId: board._id,
                 });

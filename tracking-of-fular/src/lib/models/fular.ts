@@ -3,14 +3,12 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface IFular extends Document {
     title: string;
     creator: string;
+    mediaType?: string;
     category?: string;
-    tasks: string[];
-    status: string;
     columnId: mongoose.Types.ObjectId;
     boardId: mongoose.Types.ObjectId;
     userId: string;
     order: number;
-    notes?: string;
     rating?: string;
     mediaUrl?: string;
     actionDate?: Date;
@@ -30,17 +28,12 @@ const FularSchema = new Schema<IFular>(
             type: String,
             required: true,
         },
+        mediaType: {
+            type: String,
+            default: "Diğer",
+        },
         category: {
             type: String,
-        },
-        status: {
-            type: String,
-            required: true,
-            default: "planned",
-        },
-        tasks: {
-            type: [String],
-            default: [],
         },
         columnId: {
             type: Schema.Types.ObjectId,
@@ -63,9 +56,6 @@ const FularSchema = new Schema<IFular>(
             type: Number,
             required: true,
             default: 0,
-        },
-        notes: {
-            type: String,
         },
         rating: {
             type: String,

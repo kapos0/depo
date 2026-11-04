@@ -1,6 +1,6 @@
 import ImageTabs from "@/components/image-tabs";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Briefcase, CheckCircle2, TrendingUp } from "lucide-react";
+import { ArrowRight, BookOpen, CheckCircle2, Layers3 } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
@@ -11,11 +11,12 @@ export default function Home() {
                 <section className="container mx-auto px-4 py-32">
                     <div className="mx-auto max-w-4xl text-center">
                         <h1 className="text-black mb-6 text-6xl font-bold">
-                            A better way to categorize your things.
+                            Okuma yolculuğunu
+                            <span className="block text-primary">kendin tasarla.</span>
                         </h1>
                         <p className="text-muted-foreground mb-10 text-xl">
-                            Capture, organize, and manage your things in one
-                            place.
+                            Okuduğun, okumak istediğin ve keşfetmek için
+                            biriktirdiğin kitapları sana ait panolarda takip et.
                         </p>
                         <div className="flex flex-col items-center gap-4">
                             <Link href="/sign-up">
@@ -23,12 +24,12 @@ export default function Home() {
                                     size="lg"
                                     className="h-12 px-8 text-lg font-medium"
                                 >
-                                    Start for free
+                                    Ücretsiz başla
                                     <ArrowRight className="ml-2" />
                                 </Button>
                             </Link>
                             <p className="text-sm text-muted-foreground">
-                                Free forever. No credit card required.
+                                Ücretsiz, sade ve tamamen sana ait.
                             </p>
                         </div>
                     </div>
@@ -43,26 +44,26 @@ export default function Home() {
                         <div className="grid gap-12 md:grid-cols-3">
                             <div className="flex flex-col">
                                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                                    <Briefcase className="h-6 w-6 text-primary" />
+                                    <BookOpen className="h-6 w-6 text-primary" />
                                 </div>
                                 <h3 className="mb-3 text-2xl font-semibold text-black">
-                                    Organize Things
+                                    Kitaplarını düzenle
                                 </h3>
                                 <p className="text-muted-foreground">
-                                    Create custom boards and columns to track
-                                    your things at every stage of the process.
+                                    Okuma listelerini board ve kolonlarla
+                                    kendi yöntemine göre şekillendir.
                                 </p>
                             </div>
                             <div className="flex flex-col">
                                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                                    <TrendingUp className="h-6 w-6 text-primary" />
+                                    <Layers3 className="h-6 w-6 text-primary" />
                                 </div>
                                 <h3 className="mb-3 text-2xl font-semibold text-black">
-                                    Track Progress
+                                    İlerlemeni gör
                                 </h3>
                                 <p className="text-muted-foreground">
-                                    Monitor your things status from start to
-                                    finish to offer with visual Kanban boards.
+                                    Kitaplarını sürükleyerek “Okumak
+                                    istiyorum”dan “Okudum”a taşı.
                                 </p>
                             </div>
                             <div className="flex flex-col">
@@ -70,12 +71,11 @@ export default function Home() {
                                     <CheckCircle2 className="h-6 w-6 text-primary" />
                                 </div>
                                 <h3 className="mb-3 text-2xl font-semibold text-black">
-                                    Stay Organized
+                                    Notlarını kaybetme
                                 </h3>
                                 <p className="text-muted-foreground">
-                                    Never lose track of a thing. Keep all your
-                                    all thing information in one centralized
-                                    place.
+                                    Yazar, kategori, etiket, puan ve kişisel
+                                    notlarını tek bir yerde sakla.
                                 </p>
                             </div>
                         </div>
