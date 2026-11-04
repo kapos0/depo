@@ -11,9 +11,11 @@ import {
     DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "./ui/avatar";
+import SignOutButton from "./sign-out-btn";
+import { useSession } from "@/lib/auth/auth-client";
 
 export default function Navbar() {
-    //const { data: session } = useSession();
+    const { data: session } = useSession();
     return (
         <nav className="border-b border-gray-200 bg-white">
             <div className="container mx-auto flex h-16 items-center px-4 justify-between">
@@ -22,10 +24,10 @@ export default function Navbar() {
                     className="flex items-center gap-2 text-xl font-semibold text-primary"
                 >
                     <Briefcase />
-                    Job Tracker
+                    Fular Tracking
                 </Link>
                 <div className="flex items-center gap-4">
-                    {true /*session?.user*/ ? (
+                    {session?.user ? (
                         <>
                             <Button
                                 render={<Link href="/dashboard" />}
@@ -46,9 +48,7 @@ export default function Navbar() {
                                 >
                                     <Avatar className="h-8 w-8">
                                         <AvatarFallback className="bg-primary text-white">
-                                            {
-                                                "kapos" /*session.user.name[0].toUpperCase()*/
-                                            }
+                                            {session.user.name[0].toUpperCase()}
                                         </AvatarFallback>
                                     </Avatar>
                                 </DropdownMenuTrigger>
@@ -61,19 +61,15 @@ export default function Navbar() {
                                         <DropdownMenuLabel className="font-normal">
                                             <div className="flex flex-col space-y-1">
                                                 <p className="text-sm font-medium leading-none">
-                                                    {
-                                                        "kapos" /*session.user.name*/
-                                                    }
+                                                    {session.user.name}
                                                 </p>
                                                 <p className="text-xs leading-none text-muted-foreground">
-                                                    {
-                                                        "deneme@gmail.com" /*session.user.email*/
-                                                    }
+                                                    {session.user.email}
                                                 </p>
                                             </div>
                                         </DropdownMenuLabel>
                                     </DropdownMenuGroup>
-                                    {/*<SignOutButton />*/}
+                                    <SignOutButton />
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </>

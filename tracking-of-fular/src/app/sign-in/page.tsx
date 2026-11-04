@@ -12,8 +12,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-//import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { signIn } from "@/lib/auth/auth-client";
 
 export default function SignIn() {
     const [email, setEmail] = useState("");
@@ -22,7 +23,7 @@ export default function SignIn() {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
-    //const router = useRouter();
+    const router = useRouter();
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -31,7 +32,7 @@ export default function SignIn() {
         setLoading(true);
 
         try {
-            /*const result = await signIn.email({
+            const result = await signIn.email({
                 email,
                 password,
             });
@@ -40,7 +41,7 @@ export default function SignIn() {
                 setError(result.error.message ?? "Failed to sign in");
             } else {
                 router.push("/dashboard");
-            }*/
+            }
         } catch (err) {
             console.error(err);
             setError("An unexpected error occurred");
