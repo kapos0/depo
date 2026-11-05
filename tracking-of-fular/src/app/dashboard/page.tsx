@@ -6,7 +6,11 @@ import { connection } from "next/server";
 import { Suspense } from "react";
 
 export default function Dashboard() {
-    return <Suspense fallback={<DashboardSkeleton />}><DashboardContent /></Suspense>;
+    return (
+        <Suspense fallback={<DashboardSkeleton />}>
+            <DashboardContent />
+        </Suspense>
+    );
 }
 
 async function DashboardContent() {
@@ -19,5 +23,9 @@ async function DashboardContent() {
 }
 
 function DashboardSkeleton() {
-    return <div className="min-h-[calc(100vh-4rem)] animate-pulse bg-[#fff9fb] p-8"><div className="mx-auto h-10 max-w-[1500px] rounded bg-pink-100" /></div>;
+    return (
+        <div className="min-h-[calc(100vh-4rem)] animate-pulse bg-[#fff9fb] p-8">
+            <div className="mx-auto h-10 max-w-375 rounded bg-pink-100" />
+        </div>
+    );
 }
