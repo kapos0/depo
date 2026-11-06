@@ -2,6 +2,12 @@ import type { Metadata } from "next";
 import "@/css/globals.css";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/navbar";
+import { Roboto } from "next/font/google";
+
+const roboto = Roboto({
+    subsets: ["latin"],
+    variable: "--font-roboto",
+});
 
 export const metadata: Metadata = {
     title: "Fular | Kişisel takip panon",
@@ -10,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
     return (
-        <html lang="tr" className={cn("font-sans")}>
+        <html lang="tr" className={cn(roboto.variable, "font-sans")}>
             <body className="antialiased">
                 <Navbar />
                 {children}

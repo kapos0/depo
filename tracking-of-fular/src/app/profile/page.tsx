@@ -4,6 +4,7 @@ import { connection } from "next/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Suspense } from "react";
+import ProfileForm from "@/components/profile-form";
 
 export default function ProfilePage() {
     return (
@@ -42,20 +43,13 @@ async function ProfileContent() {
                     <CardHeader>
                         <CardTitle>Hesap bilgileri</CardTitle>
                     </CardHeader>
-                    <CardContent className="flex items-center gap-4">
+                    <CardContent className="space-y-6">
                         <Avatar className="h-16 w-16">
                             <AvatarFallback className="bg-primary text-xl text-white">
                                 {initials}
                             </AvatarFallback>
                         </Avatar>
-                        <div>
-                            <p className="text-lg font-semibold text-slate-950">
-                                {session.user.name}
-                            </p>
-                            <p className="text-sm text-slate-500">
-                                {session.user.email}
-                            </p>
-                        </div>
+                        <ProfileForm name={session.user.name} email={session.user.email} />
                     </CardContent>
                 </Card>
             </div>

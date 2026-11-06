@@ -5,7 +5,12 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import initUserBoard from "../init-user-board";
 
-const client = new MongoClient(process.env.MONGODB_URI as string);
+const mongodbUri = process.env.MONGODB_URI;
+if (!mongodbUri) {
+    throw new Error("MONGODB_URI is required to initialize authentication.");
+}
+
+const client = new MongoClient(mongodbUri);
 const db = client.db();
 
 export const auth = betterAuth({

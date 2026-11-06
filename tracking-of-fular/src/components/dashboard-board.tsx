@@ -1,17 +1,20 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useMemo, useOptimistic, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import {
     Archive,
     BookOpen,
     ChevronDown,
     CirclePlus,
+    ExternalLink,
     GripVertical,
     LayoutDashboard,
     Plus,
     Search,
     Star,
     Trash2,
+    X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -26,11 +29,15 @@ import {
 } from "@/lib/actions/board";
 
 type BoardData = Awaited<ReturnType<typeof import("@/lib/actions/board").getDashboardData>>;
+type BoardState = NonNullable<BoardData>;
 type Fular = NonNullable<BoardData>["fulars"][number];
 type Column = NonNullable<BoardData>["columns"][number];
 
 export default function DashboardBoard({ initialData }: { initialData: NonNullable<BoardData> }) {
-    const [data, setData] = useState(initialData);
+    const [data, setData] = useOptimistic<BoardState, (next: BoardState) => BoardState>(
+        initialData,
+        (current, update) => update(current),
+    );
     const [activeBoardId, setActiveBoardId] = useState(initialData.boards[0]?.id ?? "");
     const [query, setQuery] = useState("");
     const [showFularForm, setShowFularForm] = useState(false);
@@ -38,8 +45,10 @@ export default function DashboardBoard({ initialData }: { initialData: NonNullab
     const [showBoardForm, setShowBoardForm] = useState(false);
     const [activeColumnId, setActiveColumnId] = useState("");
     const [draggedId, setDraggedId] = useState<string | null>(null);
+    const [selectedFular, setSelectedFular] = useState<Fular | null>(null);
     const [error, setError] = useState("");
     const [isPending, startTransition] = useTransition();
+    const router = useRouter();
 
     const columns = useMemo(
         () => data.columns.filter((column) => column.boardId === activeBoardId).sort((a, b) => a.order - b.order),
@@ -72,7 +81,7 @@ export default function DashboardBoard({ initialData }: { initialData: NonNullab
                 return;
             }
             onSuccess();
-            window.location.reload();
+            router.refresh();
         });
     }
 
@@ -80,19 +89,28 @@ export default function DashboardBoard({ initialData }: { initialData: NonNullab
         if (!draggedId) return;
         const dragged = data.fulars.find((fular) => fular.id === draggedId);
         if (!dragged || dragged.columnId === columnId) return;
-        setData((current) => ({
-            ...current,
-            fulars: current.fulars.map((fular) =>
-                fular.id === draggedId ? { ...fular, columnId } : fular,
-            ),
-        }));
         setDraggedId(null);
         startTransition(async () => {
+            setData((current) => ({
+                ...current,
+                fulars: current.fulars.map((fular) =>
+                    fular.id === draggedId ? { ...fular, columnId } : fular,
+                ),
+            }));
             const result = await moveFular(draggedId, columnId);
             if (result.error) {
                 setError(result.error);
-                window.location.reload();
+                setData((current) => ({
+                    ...current,
+                    fulars: current.fulars.map((fular) =>
+                        fular.id === draggedId
+                            ? { ...fular, columnId: dragged.columnId }
+                            : fular,
+                    ),
+                }));
+                return;
             }
+            router.refresh();
         });
     }
 
@@ -101,7 +119,13 @@ export default function DashboardBoard({ initialData }: { initialData: NonNullab
         startTransition(async () => {
             const result = await deleteFular(fularId);
             if (result.error) setError(result.error);
-            else setData((current) => ({ ...current, fulars: current.fulars.filter((fular) => fular.id !== fularId) }));
+            else {
+                setData((current) => ({
+                    ...current,
+                    fulars: current.fulars.filter((fular) => fular.id !== fularId),
+                }));
+                router.refresh();
+            }
         });
     }
 
@@ -153,7 +177,7 @@ export default function DashboardBoard({ initialData }: { initialData: NonNullab
 
                 <div className="flex gap-4 overflow-x-auto pb-5">
                     {columns.map((column) => (
-                        <ColumnView key={column.id} column={column} fulars={fulars.filter((fular) => fular.columnId === column.id)} onDragStart={setDraggedId} onDrop={handleDrop} onDelete={removeFular} onAdd={() => { setActiveColumnId(column.id); setShowFularForm(true); }} />
+                        <ColumnView key={column.id} column={column} fulars={fulars.filter((fular) => fular.columnId === column.id)} onDragStart={setDraggedId} onDrop={handleDrop} onDelete={removeFular} onSelect={setSelectedFular} onAdd={() => { setActiveColumnId(column.id); setShowFularForm(true); }} />
                     ))}
                     <button onClick={() => setShowColumnForm(true)} className="flex min-h-40 min-w-64 items-center justify-center rounded-xl border-2 border-dashed border-pink-200 text-sm font-medium text-primary transition hover:border-primary hover:bg-pink-50">
                         <Plus className="mr-2 size-4" /> Yeni kolon
@@ -188,6 +212,7 @@ export default function DashboardBoard({ initialData }: { initialData: NonNullab
                     <div className="flex justify-end gap-2"><Button type="button" variant="ghost" onClick={() => setShowBoardForm(false)}>Vazgeç</Button><Button type="submit" disabled={isPending}>Board oluştur</Button></div>
                 </form>
             </Modal>}
+            {selectedFular && <FularDetailModal fular={selectedFular} onClose={() => setSelectedFular(null)} />}
         </main>
     );
 }
@@ -196,20 +221,48 @@ function StatCard({ label, value, detail, icon }: { label: string; value: string
     return <Card className="border-pink-100 bg-white shadow-sm"><CardContent className="flex items-center justify-between p-5"><div><p className="text-sm text-slate-500">{label}</p><p className="mt-1 text-2xl font-semibold text-slate-950">{value}</p><p className="mt-1 text-xs text-slate-400">{detail}</p></div><div className="rounded-xl bg-pink-50 p-3 text-primary">{icon}</div></CardContent></Card>;
 }
 
-function ColumnView({ column, fulars, onDragStart, onDrop, onDelete, onAdd }: { column: Column; fulars: Fular[]; onDragStart: (id: string) => void; onDrop: (id: string) => void; onDelete: (id: string) => void; onAdd: () => void }) {
+function ColumnView({ column, fulars, onDragStart, onDrop, onDelete, onSelect, onAdd }: { column: Column; fulars: Fular[]; onDragStart: (id: string) => void; onDrop: (id: string) => void; onDelete: (id: string) => void; onSelect: (fular: Fular) => void; onAdd: () => void }) {
     return <section onDragOver={(event) => event.preventDefault()} onDrop={() => onDrop(column.id)} className="min-h-72 min-w-72 rounded-xl border border-pink-100 bg-pink-50/60 p-3 sm:min-w-80">
         <div className="mb-3 flex items-center justify-between px-1"><div className="flex items-center gap-2"><span className="size-2 rounded-full bg-primary" /><h2 className="font-semibold text-slate-800">{column.name}</h2><span className="rounded-full bg-white px-2 py-0.5 text-xs text-slate-500">{fulars.length}</span></div><Button variant="ghost" size="icon-xs" onClick={onAdd}><Plus /></Button></div>
-        <div className="space-y-3">{fulars.map((fular) => <FularCard key={fular.id} fular={fular} onDragStart={onDragStart} onDelete={onDelete} />)}</div>
+        <div className="space-y-3">{fulars.map((fular) => <FularCard key={fular.id} fular={fular} onDragStart={onDragStart} onDelete={onDelete} onSelect={onSelect} />)}</div>
         <button onClick={onAdd} className="mt-3 flex w-full items-center justify-center gap-1 rounded-lg border border-dashed border-pink-200 py-2 text-xs text-slate-500 hover:bg-white hover:text-primary"><Plus className="size-3" /> Fular ekle</button>
     </section>;
 }
 
-function FularCard({ fular, onDragStart, onDelete }: { fular: Fular; onDragStart: (id: string) => void; onDelete: (id: string) => void }) {
-    return <Card draggable onDragStart={() => onDragStart(fular.id)} className="cursor-grab border-pink-100 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md active:cursor-grabbing"><CardContent className="p-4">
-        <div className="mb-2 flex items-start justify-between gap-2"><GripVertical className="mt-0.5 size-4 shrink-0 text-slate-300" /><div className="min-w-0 flex-1"><h3 className="font-semibold leading-tight text-slate-900">{fular.title}</h3><p className="mt-1 text-sm text-slate-500">{fular.creator}</p></div><Button variant="ghost" size="icon-xs" onClick={() => onDelete(fular.id)} title="Sil"><Trash2 className="text-slate-400" /></Button></div>
+function FularCard({ fular, onDragStart, onDelete, onSelect }: { fular: Fular; onDragStart: (id: string) => void; onDelete: (id: string) => void; onSelect: (fular: Fular) => void }) {
+    return <Card draggable onDragStart={() => onDragStart(fular.id)} onClick={() => onSelect(fular)} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") onSelect(fular); }} role="button" tabIndex={0} className="cursor-grab border-pink-100 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md active:cursor-grabbing">
+        <CardContent className="p-4">
+        <div className="mb-2 flex items-start justify-between gap-2"><GripVertical className="mt-0.5 size-4 shrink-0 text-slate-300" /><div className="min-w-0 flex-1"><h3 className="font-semibold leading-tight text-slate-900">{fular.title}</h3><p className="mt-1 text-sm text-slate-500">{fular.creator}</p></div><Button variant="ghost" size="icon-xs" onClick={(event) => { event.stopPropagation(); onDelete(fular.id); }} title="Sil"><Trash2 className="text-slate-400" /></Button></div>
         {fular.description && <p className="mb-3 line-clamp-2 text-xs leading-relaxed text-slate-500">{fular.description}</p>}
         <div className="flex flex-wrap items-center gap-1.5">{fular.category && <span className="rounded bg-pink-50 px-2 py-1 text-[11px] text-primary">{fular.category}</span>}{fular.tags.slice(0, 2).map((tag: string) => <span key={tag} className="rounded bg-slate-100 px-2 py-1 text-[11px] text-slate-500">#{tag}</span>)}{fular.rating && <span className="ml-auto flex items-center gap-0.5 text-xs text-amber-500"><Star className="size-3 fill-current" /> {fular.rating}</span>}</div>
-    </CardContent></Card>;
+        </CardContent></Card>;
+}
+
+function FularDetailModal({ fular, onClose }: { fular: Fular; onClose: () => void }) {
+    return <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/30 p-4" onMouseDown={onClose}>
+        <div role="dialog" aria-modal="true" aria-labelledby="fular-detail-title" className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl" onMouseDown={(event) => event.stopPropagation()}>
+            <div className="flex items-center justify-between border-b border-pink-100 p-6">
+                <div><p className="text-sm font-medium text-primary">Fular detayı</p><h2 id="fular-detail-title" className="mt-1 text-2xl font-semibold text-slate-950">{fular.title}</h2></div>
+                <Button variant="ghost" size="icon" onClick={onClose} aria-label="Kapat"><X /></Button>
+            </div>
+            <div className="grid gap-6 p-6 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+                {fular.mediaUrl ? <a href={fular.mediaUrl} target="_blank" rel="noreferrer" className="group overflow-hidden rounded-xl border border-pink-100 bg-pink-50"><img src={fular.mediaUrl} alt={`${fular.title} görseli`} className="h-full min-h-52 w-full object-cover transition group-hover:scale-105" /><span className="flex items-center justify-center gap-1 border-t border-pink-100 bg-white p-2 text-xs text-primary"><ExternalLink className="size-3" /> Görseli yeni sekmede aç</span></a> : <div className="flex min-h-52 items-center justify-center rounded-xl bg-pink-50 text-sm text-slate-400">Görsel eklenmemiş</div>}
+                <div className="space-y-4">
+                    <DetailRow label="Üretici / sanatçı" value={fular.creator} />
+                    <DetailRow label="İçerik türü" value={fular.mediaType} />
+                    {fular.category && <DetailRow label="Kategori" value={fular.category} />}
+                    {fular.rating && <DetailRow label="Puan" value={`${fular.rating} / 5`} />}
+                    {fular.actionDate && <DetailRow label="Tarih" value={new Date(fular.actionDate).toLocaleDateString("tr-TR")} />}
+                    {fular.tags.length > 0 && <DetailRow label="Etiketler" value={fular.tags.map((tag: string) => `#${tag}`).join(" ")} />}
+                    {fular.description && <DetailRow label="Not" value={fular.description} />}
+                </div>
+            </div>
+        </div>
+    </div>;
+}
+
+function DetailRow({ label, value }: { label: string; value: string }) {
+    return <div><p className="text-xs font-medium uppercase tracking-wide text-slate-400">{label}</p><p className="mt-1 text-sm text-slate-700">{value}</p></div>;
 }
 
 function Field({ name, label, placeholder, type = "text", required = false }: { name: string; label: string; placeholder?: string; type?: string; required?: boolean }) {

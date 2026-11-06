@@ -1,10 +1,5 @@
 import { MongoClient } from "mongodb";
-
-const uri = process.env.MONGODB_URI;
-
-if (!uri) {
-    throw new Error("MONGODB_URI is not configured.");
-}
+import { env } from "@/lib/env";
 
 type MongoCache = {
     client: MongoClient;
@@ -16,7 +11,7 @@ const globalWithMongo = globalThis as typeof globalThis & {
 };
 
 const cached = globalWithMongo._mongoClient ?? {
-    client: new MongoClient(uri),
+    client: new MongoClient(env.mongodbUri),
     promise: null,
 };
 

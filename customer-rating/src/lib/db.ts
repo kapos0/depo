@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { env } from "@/lib/env";
 
 type MongooseCache = {
     conn: typeof mongoose | null;
@@ -17,19 +18,13 @@ const cached = globalWithMongoose._mongoose ?? {
 globalWithMongoose._mongoose = cached;
 
 export async function connectToDatabase(): Promise<typeof mongoose> {
-    const uri = process.env.MONGODB_URI;
-
-    if (!uri) {
-        throw new Error("MONGODB_URI is not configured.");
-    }
-
     if (cached.conn) {
         return cached.conn;
     }
 
     if (!cached.promise) {
         cached.promise = mongoose
-            .connect(uri, { dbName: process.env.MONGODB_DB_NAME ?? "active" })
+            .connect(env.mongodbUri, { dbName: env.mongodbDbName })
             .catch((error: unknown) => {
                 cached.promise = null;
                 throw error;

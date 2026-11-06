@@ -21,6 +21,10 @@ function createSlug(value: string): string {
         .slice(0, 70);
 }
 
+function isDuplicateKeyError(error: unknown): boolean {
+    return typeof error === "object" && error !== null && "code" in error && error.code === 11000;
+}
+
 export async function createRestaurant(
     _previousState: RestaurantActionState,
     formData: FormData,
@@ -53,17 +57,32 @@ export async function createRestaurant(
     try {
         await connectToDatabase();
 
-        const existing = await Restaurant.findOne({ slug: baseSlug }).select("_id").lean();
-        const slug = existing ? `${baseSlug}-${Date.now().toString(36)}` : baseSlug;
+        const ownedRestaurant = await Restaurant.findOne({ ownerId: session.user.id }).select("_id").lean();
+        if (ownedRestaurant) {
+            return { error: "Zaten bir işletmeniz bulunuyor." };
+        }
 
-        await Restaurant.create({
-            ownerId: session.user.id,
-            name,
-            slug,
-            description: description || undefined,
-        });
+        for (let attempt = 0; attempt < 3; attempt += 1) {
+            const existing = await Restaurant.exists({ slug: baseSlug });
+            const slug = existing ? `${baseSlug}-${Date.now().toString(36)}-${attempt}` : baseSlug;
 
-        return { success: true };
+            try {
+                await Restaurant.create({
+                    ownerId: session.user.id,
+                    name,
+                    slug,
+                    description: description || undefined,
+                });
+
+                return { success: true };
+            } catch (error) {
+                if (!isDuplicateKeyError(error) || attempt === 2) {
+                    throw error;
+                }
+            }
+        }
+
+        return { error: "İşletme oluşturulamadı. Lütfen tekrar deneyin." };
     } catch (error) {
         console.error("Restaurant creation failed.", error);
         return { error: "İşletme oluşturulurken bir hata oluştu. Lütfen tekrar deneyin." };

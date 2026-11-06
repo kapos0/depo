@@ -26,6 +26,7 @@ export function TableQr({
 }: TableQrProps) {
     const router = useRouter();
     const [isEditing, setIsEditing] = useState(false);
+    const [isCopied, setIsCopied] = useState(false);
     const [state, formAction, isPending] = useActionState<
         TableActionState,
         FormData
@@ -45,8 +46,21 @@ export function TableQr({
         }
     }, [router, state.success]);
 
+    useEffect(() => {
+        if (!isCopied) {
+            return;
+        }
+
+        const timeoutId = window.setTimeout(() => {
+            setIsCopied(false);
+        }, 2000);
+
+        return () => window.clearTimeout(timeoutId);
+    }, [isCopied]);
+
     async function copyUrl() {
         await navigator.clipboard.writeText(url);
+        setIsCopied(true);
     }
 
     function downloadQr() {
@@ -105,9 +119,28 @@ export function TableQr({
                         <button
                             type="button"
                             onClick={copyUrl}
-                            className="rounded-full border border-black/10 px-4 py-2 text-sm font-medium transition hover:border-black/30"
+                            aria-live="polite"
+                            className="inline-flex items-center gap-2 rounded-full border border-black/10 px-4 py-2 text-sm font-medium transition hover:border-black/30"
                         >
-                            Bağlantıyı kopyala
+                            <span
+                                className={`inline-flex h-4 w-4 items-center justify-center rounded-full bg-[#33774b] text-white transition-all duration-300 ${isCopied ? "scale-100 opacity-100" : "scale-0 opacity-0"}`}
+                                aria-hidden="true"
+                            >
+                                <svg
+                                    viewBox="0 0 16 16"
+                                    fill="none"
+                                    className="h-3 w-3"
+                                >
+                                    <path
+                                        d="m3.5 8 3 3 6-6"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+                            </span>
+                            {isCopied ? "Kopyalandı" : "Bağlantıyı kopyala"}
                         </button>
                     )}
                     {isActive && (

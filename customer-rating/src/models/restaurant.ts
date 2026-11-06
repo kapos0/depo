@@ -5,7 +5,7 @@ const restaurantSchema = new Schema(
         ownerId: {
             type: String,
             required: true,
-            index: true,
+            unique: true,
         },
         name: {
             type: String,

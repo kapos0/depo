@@ -80,5 +80,8 @@ const FularSchema = new Schema<IFular>(
     },
 );
 
+FularSchema.index({ userId: 1, boardId: 1, order: 1, createdAt: -1 });
+FularSchema.index({ columnId: 1, order: 1 });
+
 export default mongoose.models.Fular ||
     mongoose.model<IFular>("Fular", FularSchema);

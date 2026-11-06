@@ -31,5 +31,10 @@ const BoardSchema = new Schema<IBoard>(
     },
 );
 
+BoardSchema.index(
+    { userId: 1, name: 1 },
+    { unique: true, partialFilterExpression: { name: "Fular" } },
+);
+
 export default mongoose.models.Board ||
     mongoose.model<IBoard>("Board", BoardSchema);

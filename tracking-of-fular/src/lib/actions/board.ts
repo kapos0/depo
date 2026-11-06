@@ -1,5 +1,6 @@
 "use server";
 
+import mongoose from "mongoose";
 import connectDB from "@/lib/db";
 import { getSession } from "@/lib/auth/auth";
 import { Board, Column, Fular } from "@/lib/models";
@@ -15,6 +16,44 @@ async function getUserId() {
 
 function clean(value: FormDataEntryValue | null) {
     return typeof value === "string" ? value.trim() : "";
+}
+
+function validId(value: string) {
+    return mongoose.isObjectIdOrHexString(value);
+}
+
+function limited(value: string, maxLength: number) {
+    return value.length <= maxLength;
+}
+
+function parseDate(value: string) {
+    if (!value) return undefined;
+    const date = new Date(`${value}T00:00:00.000Z`);
+    return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function parseRating(value: string) {
+    if (!value) return "";
+    return /^[1-5]$/.test(value) ? value : null;
+}
+
+function parseMediaUrl(value: string) {
+    if (!value) return "";
+    try {
+        const url = new URL(value);
+        return url.protocol === "http:" || url.protocol === "https:" ? value : null;
+    } catch {
+        return null;
+    }
+}
+
+function isDuplicateKeyError(error: unknown): error is { code: 11000 } {
+    return (
+        typeof error === "object" &&
+        error !== null &&
+        "code" in error &&
+        error.code === 11000
+    );
 }
 
 export async function getDashboardData() {
@@ -61,6 +100,7 @@ export async function createBoard(formData: FormData): Promise<ActionResult> {
     const name = clean(formData.get("name"));
     if (!userId) return { error: "Oturumunuzun süresi dolmuş." };
     if (!name) return { error: "Board adı gerekli." };
+    if (!limited(name, 100)) return { error: "Board adı 100 karakteri geçemez." };
 
     await connectDB();
     const board = await Board.create({ name, userId, columns: [] });
@@ -76,12 +116,22 @@ export async function createColumn(formData: FormData): Promise<ActionResult> {
     const boardId = clean(formData.get("boardId"));
     const name = clean(formData.get("name"));
     if (!userId || !boardId || !name) return { error: "Kolon adı gerekli." };
+    if (!validId(boardId)) return { error: "Geçersiz board." };
+    if (!limited(name, 100)) return { error: "Kolon adı 100 karakteri geçemez." };
 
     await connectDB();
     const board = await Board.findOne({ _id: boardId, userId });
     if (!board) return { error: "Board bulunamadı." };
     const order = await Column.countDocuments({ boardId });
-    const column = await Column.create({ name, boardId, order, fulars: [] });
+    let column;
+    try {
+        column = await Column.create({ name, boardId, order, fulars: [] });
+    } catch (error) {
+        if (isDuplicateKeyError(error)) {
+            return { error: "Bu board'da aynı isimde bir kolon zaten var." };
+        }
+        throw error;
+    }
     board.columns.push(column._id);
     await board.save();
     revalidatePath("/dashboard");
@@ -97,6 +147,24 @@ export async function createFular(formData: FormData): Promise<ActionResult> {
     if (!userId || !boardId || !columnId || !title || !creator) {
         return { error: "Başlık ve üretici bilgisi gerekli." };
     }
+    if (!validId(boardId) || !validId(columnId)) {
+        return { error: "Geçersiz board veya kolon." };
+    }
+    if (!limited(title, 200) || !limited(creator, 200)) {
+        return { error: "Başlık ve üretici bilgisi 200 karakteri geçemez." };
+    }
+    const rating = parseRating(clean(formData.get("rating")));
+    const mediaUrl = parseMediaUrl(clean(formData.get("mediaUrl")));
+    const actionDate = parseDate(clean(formData.get("actionDate")));
+    if (rating === null) return { error: "Puan 1 ile 5 arasında olmalıdır." };
+    if (mediaUrl === null) return { error: "Geçerli bir medya URL'si girin." };
+    if (actionDate === null) return { error: "Geçerli bir tarih girin." };
+    if (!limited(clean(formData.get("description")), 2000)) {
+        return { error: "Açıklama 2000 karakteri geçemez." };
+    }
+    if (!limited(clean(formData.get("category")), 100)) {
+        return { error: "Kategori 100 karakteri geçemez." };
+    }
 
     await connectDB();
     const column = await Column.findOne({ _id: columnId, boardId });
@@ -104,6 +172,13 @@ export async function createFular(formData: FormData): Promise<ActionResult> {
         return { error: "Geçersiz board veya kolon." };
     }
     const order = await Fular.countDocuments({ columnId });
+    const tags = clean(formData.get("tags"))
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter(Boolean);
+    if (tags.length > 20 || tags.some((tag) => !limited(tag, 40))) {
+        return { error: "En fazla 20 etiket girebilir, her etiket 40 karakter olabilir." };
+    }
     await Fular.create({
         title,
         creator,
@@ -114,10 +189,10 @@ export async function createFular(formData: FormData): Promise<ActionResult> {
         order,
         category: clean(formData.get("category")),
         description: clean(formData.get("description")),
-        rating: clean(formData.get("rating")),
-        mediaUrl: clean(formData.get("mediaUrl")),
-        tags: clean(formData.get("tags")).split(",").map((tag) => tag.trim()).filter(Boolean),
-        actionDate: clean(formData.get("actionDate")) || undefined,
+        rating: rating || undefined,
+        mediaUrl: mediaUrl || undefined,
+        tags,
+        actionDate: actionDate || undefined,
     });
     revalidatePath("/dashboard");
     return { success: true };
@@ -129,12 +204,23 @@ export async function moveFular(
 ): Promise<ActionResult> {
     const userId = await getUserId();
     if (!userId) return { error: "Oturumunuzun süresi dolmuş." };
+    if (!validId(fularId) || !validId(columnId)) {
+        return { error: "Geçersiz fular veya kolon." };
+    }
     await connectDB();
     const fular = await Fular.findOne({ _id: fularId, userId });
     const column = fular && await Column.findOne({ _id: columnId, boardId: fular.boardId });
     if (!fular || !column) return { error: "Fular veya kolon bulunamadı." };
+    const previousColumnId = fular.columnId;
+    const previousOrder = fular.order;
     fular.columnId = column._id;
     fular.order = await Fular.countDocuments({ columnId });
+    if (!previousColumnId.equals(column._id)) {
+        await Fular.updateMany(
+            { columnId: previousColumnId, order: { $gt: previousOrder } },
+            { $inc: { order: -1 } },
+        );
+    }
     await fular.save();
     revalidatePath("/dashboard");
     return { success: true };
@@ -143,9 +229,16 @@ export async function moveFular(
 export async function deleteFular(fularId: string): Promise<ActionResult> {
     const userId = await getUserId();
     if (!userId) return { error: "Oturumunuzun süresi dolmuş." };
+    if (!validId(fularId)) return { error: "Geçersiz fular." };
     await connectDB();
+    const fular = await Fular.findOne({ _id: fularId, userId }).select("columnId order").lean();
+    if (!fular) return { error: "Fular bulunamadı." };
     const result = await Fular.deleteOne({ _id: fularId, userId });
     if (!result.deletedCount) return { error: "Fular bulunamadı." };
+    await Fular.updateMany(
+        { columnId: fular.columnId, order: { $gt: fular.order } },
+        { $inc: { order: -1 } },
+    );
     revalidatePath("/dashboard");
     return { success: true };
 }

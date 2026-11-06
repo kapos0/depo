@@ -14,6 +14,7 @@ import { Brand } from "@/components/brand";
 import Link from "next/link";
 import { RatingCard } from "@/components/rating-card";
 import { deleteRating } from "@/app/dashboard/rating-actions";
+import { env } from "@/lib/env";
 
 async function DashboardContent() {
     const session = await auth.api.getSession({
@@ -70,7 +71,7 @@ async function DashboardContent() {
     const activeTables = tables.filter((table) => table.isActive);
     const tableNames = new Map(tables.map((table) => [String(table._id), table.name]));
     const summary = ratingSummary[0];
-    const appUrl = process.env.PUBLIC_APP_URL ?? process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
+    const appUrl = env.publicAppUrl;
 
     return (
         <main className="min-h-screen bg-[#f7f7f4] px-5 py-8 text-[#161616] sm:px-8">

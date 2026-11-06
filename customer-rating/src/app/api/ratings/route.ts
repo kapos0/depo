@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import mongoose from "mongoose";
+import { env } from "@/lib/env";
 import { connectToDatabase } from "@/lib/db";
+import { connectMongoClient, mongoClient } from "@/lib/mongodb";
 import { Rating } from "@/models/rating";
 import { Table } from "@/models/table";
 
@@ -15,45 +17,52 @@ type RatingRequest = {
 
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX_REQUESTS = 10;
-const requestCounts = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_COLLECTION = "ratingRateLimits";
 
-function getClientKey(request: Request): string {
-    return (
-        request.headers.get("x-real-ip") ??
-        request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-        "unknown"
-    );
+type RateLimitDocument = {
+    _id: string;
+    count: number;
+    expiresAt: Date;
+};
+
+let rateLimitIndexPromise: Promise<string> | null = null;
+
+function getClientKey(request: Request, tableId: string): string {
+    if (!env.trustProxy) {
+        return `anonymous:${tableId}`;
+    }
+
+    const forwardedFor = request.headers.get("x-forwarded-for");
+    const realIp = request.headers.get("x-real-ip");
+    const clientIp = realIp ?? forwardedFor?.split(",")[0]?.trim();
+
+    return `${clientIp || "unknown"}:${tableId}`;
 }
 
-function isRateLimited(key: string): boolean {
+async function isRateLimited(request: Request, tableId: string): Promise<boolean> {
     const now = Date.now();
-    const current = requestCounts.get(key);
+    const window = Math.floor(now / RATE_LIMIT_WINDOW_MS);
+    const key = `${getClientKey(request, tableId)}:${window}`;
+    const expiresAt = new Date((window + 1) * RATE_LIMIT_WINDOW_MS);
+    const collection = mongoClient
+        .db(env.mongodbDbName)
+        .collection<RateLimitDocument>(RATE_LIMIT_COLLECTION);
 
-    if (requestCounts.size > 1_000) {
-        for (const [storedKey, entry] of requestCounts) {
-            if (entry.resetAt <= now) {
-                requestCounts.delete(storedKey);
-            }
-        }
-    }
+    rateLimitIndexPromise ??= connectMongoClient().then(() =>
+        collection.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 }),
+    );
+    await rateLimitIndexPromise;
 
-    if (!current || current.resetAt <= now) {
-        requestCounts.set(key, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-        return false;
-    }
+    const result = await collection.findOneAndUpdate(
+        { _id: key },
+        { $inc: { count: 1 }, $setOnInsert: { expiresAt } },
+        { upsert: true, returnDocument: "after" },
+    );
 
-    current.count += 1;
-    return current.count > RATE_LIMIT_MAX_REQUESTS;
+    return (result?.count ?? 0) > RATE_LIMIT_MAX_REQUESTS;
 }
 
 export async function POST(request: Request) {
-    if (isRateLimited(getClientKey(request))) {
-        return NextResponse.json(
-            { error: "Çok fazla istek gönderildi. Lütfen biraz sonra tekrar deneyin." },
-            { status: 429 },
-        );
-    }
-
     let body: RatingRequest;
 
     try {
@@ -89,6 +98,13 @@ export async function POST(request: Request) {
 
         if (!table) {
             return NextResponse.json({ error: "Bu masa bağlantısı artık aktif değil." }, { status: 404 });
+        }
+
+        if (await isRateLimited(request, tableId)) {
+            return NextResponse.json(
+                { error: "Çok fazla istek gönderildi. Lütfen biraz sonra tekrar deneyin." },
+                { status: 429 },
+            );
         }
 
         await Rating.create({

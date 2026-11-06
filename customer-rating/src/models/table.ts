@@ -35,4 +35,6 @@ const tableSchema = new Schema(
     { timestamps: true },
 );
 
+tableSchema.index({ restaurantId: 1, createdAt: -1 });
+
 export const Table = models.Table || model("Table", tableSchema);
