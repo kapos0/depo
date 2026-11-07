@@ -11,18 +11,18 @@ const DEFAULT_COLUMNS = [
 export default async function initUserBoard(userId: string) {
     await connectDB();
     const board = await Board.findOneAndUpdate(
-        { userId, name: "Fular" },
+        { userId, name: "Fularlar" },
         {
             $setOnInsert: {
                 userId,
-                name: "Fular",
+                name: "Fularlar",
                 columns: [],
             },
         },
         { returnDocument: "after", upsert: true },
     );
     if (!board) {
-        throw new Error("Fular board could not be initialized.");
+        throw new Error("Fularlar board could not be initialized.");
     }
 
     const columns = await Promise.all(
@@ -40,7 +40,9 @@ export default async function initUserBoard(userId: string) {
                 { returnDocument: "after", upsert: true },
             );
             if (!existingColumn) {
-                throw new Error(`Could not initialize column "${column.name}".`);
+                throw new Error(
+                    `Could not initialize column "${column.name}".`,
+                );
             }
             return existingColumn;
         }),
@@ -48,7 +50,11 @@ export default async function initUserBoard(userId: string) {
 
     await Board.updateOne(
         { _id: board._id, userId },
-        { $addToSet: { columns: { $each: columns.map((column) => column._id) } } },
+        {
+            $addToSet: {
+                columns: { $each: columns.map((column) => column._id) },
+            },
+        },
     );
     board.columns = columns.map((column) => column._id);
     return board;
