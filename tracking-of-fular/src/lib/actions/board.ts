@@ -103,10 +103,14 @@ export async function createBoard(formData: FormData): Promise<ActionResult> {
     if (!limited(name, 100)) return { error: "Board adı 100 karakteri geçemez." };
 
     await connectDB();
-    const board = await Board.create({ name, userId, columns: [] });
-    const column = await Column.create({ name: "Planlandı", boardId: board._id, order: 0 });
-    board.columns = [column._id];
-    await board.save();
+    try {
+        const board = await Board.create({ name, userId, columns: [] });
+        const column = await Column.create({ name: "Planlandı", boardId: board._id, order: 0 });
+        await Board.updateOne({ _id: board._id, userId }, { $push: { columns: column._id } });
+    } catch (error) {
+        if (isDuplicateKeyError(error)) return { error: "Bu isimde bir board zaten var." };
+        throw error;
+    }
     revalidatePath("/dashboard");
     return { success: true };
 }
@@ -132,8 +136,7 @@ export async function createColumn(formData: FormData): Promise<ActionResult> {
         }
         throw error;
     }
-    board.columns.push(column._id);
-    await board.save();
+    await Board.updateOne({ _id: board._id }, { $push: { columns: column._id } });
     revalidatePath("/dashboard");
     return { success: true };
 }
@@ -147,6 +150,7 @@ export async function createFular(formData: FormData): Promise<ActionResult> {
     if (!userId || !boardId || !columnId || !title || !creator) {
         return { error: "Başlık ve üretici bilgisi gerekli." };
     }
+
     if (!validId(boardId) || !validId(columnId)) {
         return { error: "Geçersiz board veya kolon." };
     }
@@ -194,6 +198,49 @@ export async function createFular(formData: FormData): Promise<ActionResult> {
         tags,
         actionDate: actionDate || undefined,
     });
+    revalidatePath("/dashboard");
+    return { success: true };
+}
+
+export async function updateFular(formData: FormData): Promise<ActionResult> {
+    const userId = await getUserId();
+    const fularId = clean(formData.get("fularId"));
+    const title = clean(formData.get("title"));
+    const creator = clean(formData.get("creator"));
+    if (!userId || !validId(fularId) || !title || !creator) return { error: "Başlık ve üretici bilgisi gerekli." };
+    if (!limited(title, 200) || !limited(creator, 200)) return { error: "Başlık ve üretici bilgisi 200 karakteri geçemez." };
+    const rating = parseRating(clean(formData.get("rating")));
+    const mediaUrl = parseMediaUrl(clean(formData.get("mediaUrl")));
+    const actionDate = parseDate(clean(formData.get("actionDate")));
+    if (rating === null) return { error: "Puan 1 ile 5 arasında olmalıdır." };
+    if (mediaUrl === null) return { error: "Geçerli bir medya URL'si girin." };
+    if (actionDate === null) return { error: "Geçerli bir tarih girin." };
+    if (!limited(clean(formData.get("description")), 2000) || !limited(clean(formData.get("category")), 100)) return { error: "Kategori 100, açıklama 2000 karakteri geçemez." };
+    const tags = clean(formData.get("tags")).split(",").map((tag) => tag.trim()).filter(Boolean);
+    if (tags.length > 20 || tags.some((tag) => !limited(tag, 40))) return { error: "En fazla 20 etiket girebilir, her etiket 40 karakter olabilir." };
+    await connectDB();
+    const fular = await Fular.findOne({ _id: fularId, userId });
+    if (!fular) return { error: "Fular bulunamadı." };
+    Object.assign(fular, {
+        title, creator, mediaType: clean(formData.get("mediaType")) || "Diğer",
+        category: clean(formData.get("category")), description: clean(formData.get("description")),
+        rating: rating || undefined, mediaUrl: mediaUrl || undefined, actionDate: actionDate || undefined, tags,
+    });
+    await fular.save();
+    revalidatePath("/dashboard");
+    return { success: true };
+}
+
+export async function deleteBoard(boardId: string): Promise<ActionResult> {
+    const userId = await getUserId();
+    if (!userId) return { error: "Oturumunuzun süresi dolmuş." };
+    if (!validId(boardId)) return { error: "Geçersiz board." };
+    await connectDB();
+    const board = await Board.findOne({ _id: boardId, userId }).select("_id");
+    if (!board) return { error: "Board bulunamadı." };
+    await Fular.deleteMany({ boardId: board._id, userId });
+    await Column.deleteMany({ boardId: board._id });
+    await Board.deleteOne({ _id: board._id, userId });
     revalidatePath("/dashboard");
     return { success: true };
 }

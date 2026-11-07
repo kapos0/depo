@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import "@/css/globals.css";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/navbar";
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
     description: "Kitap, film, podcast ve daha fazlasını kişisel panolarında takip et.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang="tr" className={cn(roboto.variable, "font-sans")}>
             <body className="antialiased">

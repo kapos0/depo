@@ -46,7 +46,10 @@ export default async function initUserBoard(userId: string) {
         }),
     );
 
+    await Board.updateOne(
+        { _id: board._id, userId },
+        { $addToSet: { columns: { $each: columns.map((column) => column._id) } } },
+    );
     board.columns = columns.map((column) => column._id);
-    await board.save();
     return board;
 }

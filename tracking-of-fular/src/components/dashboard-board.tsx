@@ -24,8 +24,10 @@ import {
     createBoard,
     createColumn,
     createFular,
+    deleteBoard,
     deleteFular,
     moveFular,
+    updateFular,
 } from "@/lib/actions/board";
 
 type BoardData = Awaited<ReturnType<typeof import("@/lib/actions/board").getDashboardData>>;
@@ -46,6 +48,7 @@ export default function DashboardBoard({ initialData }: { initialData: NonNullab
     const [activeColumnId, setActiveColumnId] = useState("");
     const [draggedId, setDraggedId] = useState<string | null>(null);
     const [selectedFular, setSelectedFular] = useState<Fular | null>(null);
+    const [editingFular, setEditingFular] = useState<Fular | null>(null);
     const [error, setError] = useState("");
     const [isPending, startTransition] = useTransition();
     const router = useRouter();
@@ -126,6 +129,20 @@ export default function DashboardBoard({ initialData }: { initialData: NonNullab
                 }));
                 router.refresh();
             }
+
+        });
+    }
+
+    function removeBoard() {
+        if (!activeBoard || !window.confirm(`"${activeBoard.name}" boardını ve içindeki fuları silmek istediğinize emin misiniz?`)) return;
+        startTransition(async () => {
+            const result = await deleteBoard(activeBoard.id);
+            if (result.error) {
+                setError(result.error);
+                return;
+            }
+            setActiveBoardId(data.boards.find((board) => board.id !== activeBoard.id)?.id ?? "");
+            router.refresh();
         });
     }
 
@@ -147,6 +164,9 @@ export default function DashboardBoard({ initialData }: { initialData: NonNullab
                     <div className="flex flex-wrap gap-2">
                         <Button variant="outline" onClick={() => setShowBoardForm(true)}>
                             <LayoutDashboard /> Yeni board
+                        </Button>
+                        <Button variant="destructive" onClick={removeBoard} disabled={!activeBoard}>
+                            <Trash2 /> Boardı sil
                         </Button>
                         <Button variant="outline" onClick={() => setShowColumnForm(true)}>
                             <Plus /> Kolon ekle
@@ -212,7 +232,8 @@ export default function DashboardBoard({ initialData }: { initialData: NonNullab
                     <div className="flex justify-end gap-2"><Button type="button" variant="ghost" onClick={() => setShowBoardForm(false)}>Vazgeç</Button><Button type="submit" disabled={isPending}>Board oluştur</Button></div>
                 </form>
             </Modal>}
-            {selectedFular && <FularDetailModal fular={selectedFular} onClose={() => setSelectedFular(null)} />}
+            {selectedFular && <FularDetailModal fular={selectedFular} onClose={() => setSelectedFular(null)} onEdit={() => { setEditingFular(selectedFular); setSelectedFular(null); }} />}
+            {editingFular && <FularEditModal fular={editingFular} isPending={isPending} onClose={() => setEditingFular(null)} onSubmit={(form) => submitAction(updateFular, form, () => setEditingFular(null))} />}
         </main>
     );
 }
@@ -238,12 +259,12 @@ function FularCard({ fular, onDragStart, onDelete, onSelect }: { fular: Fular; o
         </CardContent></Card>;
 }
 
-function FularDetailModal({ fular, onClose }: { fular: Fular; onClose: () => void }) {
+function FularDetailModal({ fular, onClose, onEdit }: { fular: Fular; onClose: () => void; onEdit: () => void }) {
     return <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/30 p-4" onMouseDown={onClose}>
         <div role="dialog" aria-modal="true" aria-labelledby="fular-detail-title" className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl" onMouseDown={(event) => event.stopPropagation()}>
             <div className="flex items-center justify-between border-b border-pink-100 p-6">
                 <div><p className="text-sm font-medium text-primary">Fular detayı</p><h2 id="fular-detail-title" className="mt-1 text-2xl font-semibold text-slate-950">{fular.title}</h2></div>
-                <Button variant="ghost" size="icon" onClick={onClose} aria-label="Kapat"><X /></Button>
+                <div className="flex items-center gap-2"><Button variant="outline" onClick={onEdit}>Düzenle</Button><Button variant="ghost" size="icon" onClick={onClose} aria-label="Kapat"><X /></Button></div>
             </div>
             <div className="grid gap-6 p-6 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
                 {fular.mediaUrl ? <a href={fular.mediaUrl} target="_blank" rel="noreferrer" className="group overflow-hidden rounded-xl border border-pink-100 bg-pink-50"><img src={fular.mediaUrl} alt={`${fular.title} görseli`} className="h-full min-h-52 w-full object-cover transition group-hover:scale-105" /><span className="flex items-center justify-center gap-1 border-t border-pink-100 bg-white p-2 text-xs text-primary"><ExternalLink className="size-3" /> Görseli yeni sekmede aç</span></a> : <div className="flex min-h-52 items-center justify-center rounded-xl bg-pink-50 text-sm text-slate-400">Görsel eklenmemiş</div>}
@@ -261,16 +282,34 @@ function FularDetailModal({ fular, onClose }: { fular: Fular; onClose: () => voi
     </div>;
 }
 
+function FularEditModal({ fular, isPending, onClose, onSubmit }: { fular: Fular; isPending: boolean; onClose: () => void; onSubmit: (form: HTMLFormElement) => void }) {
+    return <Modal title="Fuları düzenle" onClose={onClose}>
+        <form onSubmit={(event) => { event.preventDefault(); onSubmit(event.currentTarget); }} className="grid gap-4 sm:grid-cols-2">
+            <input type="hidden" name="fularId" value={fular.id} />
+            <Field name="title" label="Başlık" required defaultValue={fular.title} />
+            <Field name="creator" label="Üretici / sanatçı" required defaultValue={fular.creator} />
+            <SelectField name="mediaType" label="İçerik türü" options={["Kitap", "Film", "Dizi", "Podcast", "Müzik", "Oyun", "Diğer"]} defaultValue={fular.mediaType} />
+            <Field name="category" label="Tür / kategori" defaultValue={fular.category} />
+            <Field name="rating" label="Puan (1-5)" defaultValue={fular.rating} />
+            <Field name="tags" label="Etiketler" defaultValue={fular.tags.join(", ")} />
+            <Field name="actionDate" label="Tüketim / bitirme tarihi" type="date" defaultValue={fular.actionDate ? fular.actionDate.slice(0, 10) : ""} />
+            <div className="sm:col-span-2"><Field name="mediaUrl" label="Görsel / medya URL'si (opsiyonel)" defaultValue={fular.mediaUrl} /></div>
+            <div className="sm:col-span-2"><Field name="description" label="Kısa not" defaultValue={fular.description} /></div>
+            <div className="flex justify-end gap-2 sm:col-span-2"><Button type="button" variant="ghost" onClick={onClose}>Vazgeç</Button><Button type="submit" disabled={isPending}>{isPending ? "Kaydediliyor..." : "Değişiklikleri kaydet"}</Button></div>
+        </form>
+    </Modal>;
+}
+
 function DetailRow({ label, value }: { label: string; value: string }) {
     return <div><p className="text-xs font-medium uppercase tracking-wide text-slate-400">{label}</p><p className="mt-1 text-sm text-slate-700">{value}</p></div>;
 }
 
-function Field({ name, label, placeholder, type = "text", required = false }: { name: string; label: string; placeholder?: string; type?: string; required?: boolean }) {
-    return <div className="space-y-1.5"><Label htmlFor={name}>{label}{required && <span className="text-primary"> *</span>}</Label><Input id={name} name={name} type={type} placeholder={placeholder} required={required} /></div>;
+function Field({ name, label, placeholder, type = "text", required = false, defaultValue }: { name: string; label: string; placeholder?: string; type?: string; required?: boolean; defaultValue?: string }) {
+    return <div className="space-y-1.5"><Label htmlFor={name}>{label}{required && <span className="text-primary"> *</span>}</Label><Input id={name} name={name} type={type} placeholder={placeholder} defaultValue={defaultValue} required={required} /></div>;
 }
 
-function SelectField({ name, label, options }: { name: string; label: string; options: string[] }) {
-    return <div className="space-y-1.5"><Label htmlFor={name}>{label}</Label><select id={name} name={name} defaultValue={options[0]} className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus:border-primary">{options.map((option) => <option key={option}>{option}</option>)}</select></div>;
+function SelectField({ name, label, options, defaultValue }: { name: string; label: string; options: string[]; defaultValue?: string }) {
+    return <div className="space-y-1.5"><Label htmlFor={name}>{label}</Label><select id={name} name={name} defaultValue={defaultValue ?? options[0]} className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus:border-primary">{options.map((option) => <option key={option}>{option}</option>)}</select></div>;
 }
 
 function Modal({ title, children, onClose }: { title: string; children: React.ReactNode; onClose: () => void }) {
