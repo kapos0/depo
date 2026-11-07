@@ -1,18 +1,19 @@
-import ImageTabs from "@/components/image-tabs";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpen, CheckCircle2, Layers3 } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
     return (
-        <div className="flex min-h-screen flex-col bg-white">
+        <div className="flex flex-col bg-white">
             <main className="flex-1">
                 {/* Hero Section */}
                 <section className="container mx-auto px-4 py-32">
                     <div className="mx-auto max-w-4xl text-center">
                         <h1 className="text-black mb-6 text-6xl font-bold">
                             Okuma yolculuğunu
-                            <span className="block text-primary">kendin tasarla.</span>
+                            <span className="block text-primary">
+                                kendin tasarla.
+                            </span>
                         </h1>
                         <p className="text-muted-foreground mb-10 text-xl">
                             Okuduğun, okumak istediğin ve keşfetmek için
@@ -35,11 +36,8 @@ export default function Home() {
                     </div>
                 </section>
 
-                {/* Hero Images Section with Tabs */}
-                <ImageTabs />
-
                 {/* Features Section */}
-                <section className="border-t bg-white py-24">
+                <section className="border-t bg-white pt-24">
                     <div className="container mx-auto px-4">
                         <div className="grid gap-12 md:grid-cols-3">
                             <div className="flex flex-col">
@@ -50,8 +48,8 @@ export default function Home() {
                                     Kitaplarını düzenle
                                 </h3>
                                 <p className="text-muted-foreground">
-                                    Okuma listelerini board ve kolonlarla
-                                    kendi yöntemine göre şekillendir.
+                                    Okuma listelerini board ve kolonlarla kendi
+                                    yöntemine göre şekillendir.
                                 </p>
                             </div>
                             <div className="flex flex-col">

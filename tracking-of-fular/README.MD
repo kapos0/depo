@@ -1,4 +1,4 @@
-#env file example
+# env file example
 
 MONGODB_URI=
 
